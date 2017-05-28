@@ -2,10 +2,8 @@ package com.hack2017.shay_z.printerinfo;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ListView;
 
 import com.hack2017.shay_z.printerinfo.controllers.MainActivity;
-import com.hack2017.shay_z.printerinfo.controllers.MyCustomAdapter;
 import com.hack2017.shay_z.printerinfo.models.UrlUtils;
 import com.hack2017.shay_z.printerinfo.models.MyJsoup;
 import com.hack2017.shay_z.printerinfo.models.University;
@@ -14,8 +12,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 /**
@@ -71,10 +67,9 @@ public class UniversityDataBase extends AsyncTask<String, Integer, ArrayList<Uni
 
     @Override
     protected void onPostExecute(ArrayList<University> universities) {
-        universities.toString(); //only for breakpoint..
         Log.d("a", "size" + universities.size());
         mainActivity.getUniversityDataBase(universities);
-        MyCustomAdapter adapter = new MyCustomAdapter(universities, mainActivity);
+//        MyCustomAdapter adapter = new MyCustomAdapter(universities, mainActivity);
         Log.d("a", universities + "");
     }
     //    class GetJsonData extends AsyncTask<String, String, ArrayList<University>> {
