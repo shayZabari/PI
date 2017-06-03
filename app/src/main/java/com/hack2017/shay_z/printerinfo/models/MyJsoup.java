@@ -6,7 +6,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.jsoup.select.Evaluator;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,12 +23,12 @@ public class MyJsoup {
     //    public HashMap<String, Integer> statusesCountArr = new HashMap<>();
     Table table = new Table();
     ArrayList<StatusTable> statusTableArr = new ArrayList<>();
+    ArrayList<Subject> subjects = new ArrayList<>();
 
 
-
-    public Table getUrl(String url)  { // changed from <LineInTable> to <Table>..
-            Log.d("a", "ENTERING getUrl in Jsoup !!!!!!!!!!!!!!!!");
-        Document document =null;
+    public Table getUrl(String url) { // changed from <LineInTable> to <Table>..
+        Log.d("a", "ENTERING getUrl in Jsoup !!!!!!!!!!!!!!!!");
+        Document document = null;
 
         try {
             if (Jsoup.connect(url).get() != null) {
@@ -49,18 +48,19 @@ public class MyJsoup {
 
 
         try {
+            assert document != null;
             Element indexTable = document.select("Table").get(0); // get index table
             Log.d("a", "indexTable is = " + indexTable.text());
             Elements indexTds = indexTable.getElementsByTag("Td"); // array of tds in index table
-            HashMap<String, String> indexTableHashMap;
-            indexTableHashMap = new HashMap<>();
+//            HashMap<String, String> indexTableHashMap;
+//            indexTableHashMap = new HashMap<>();
             for (Element td : indexTds) {
                 Log.d("a", "element is =" + td.text());
                 StatusTable tempStatusTable = new StatusTable();
                 tempStatusTable.statusID = td.text().replace("\u00a0", "").trim();
                 tempStatusTable.hexColor = td.attr("bgcolor").trim();
                 statusTableArr.add(tempStatusTable);
-    //            indexTableHashMap.put(td.attr("bgcolor").trim(), td.text().replace("\u00a0", "").trim()); // array of key value of td from table1
+                //            indexTableHashMap.put(td.attr("bgcolor").trim(), td.text().replace("\u00a0", "").trim()); // array of key value of td from table1
             }
 //        hashMapIndexTable = indexTableHashMap;  // save index table <KEY=STATUS , VALUE=HEX COLOR>
         } catch (Exception e) {
@@ -74,6 +74,15 @@ public class MyJsoup {
         Elements trs = printersTable.getElementsByTag("tr");// save all line in linesArrInPrintersTable
         int c = 0;
         int count = 1;
+        Elements tdsID = trs.get(0).getElementsByTag("td");
+        for (int i = 0; i < tdsID.size(); i++) {
+            Subject subject = new Subject();
+            subject.name = tdsID.get(i).text().trim();
+            subject.getPosition = i;
+            subjects.add(subject);
+            Log.d("a", "element tdID id " + tdsID.get(i).text().trim());
+
+        }
         for (Element tr : trs) { // ITER ON TR printer table ***
             String bgColor = tr.getElementsByTag("td").get(0).attr("bgcolor").trim();// hex color
             LineInTable lineInTable = null;
@@ -81,9 +90,6 @@ public class MyJsoup {
             for (StatusTable statusTable : statusTableArr) {
                 if (statusTable.hexColor.equals(bgColor)) {
                     statusTable.count += 1;
-                    
-
-
 //                    if (hexColor.equals(bgColor)) { //s=ff00ff td=ff00ff
 //                    Log.d("a", "hex color= " + hexColor + " td color= " + tr.getElementsByTag("td").get(0).attr("bgcolor").trim());
 //            Log.d("a", "count trs="+ c++ +" " +tr.text());
@@ -97,26 +103,26 @@ public class MyJsoup {
 //                            Log.d("a", "not null");
 //                            table.statusesCountArr.put(keyStatus, valueStatus + 1);// STATUS COUNTER
 //                        }
+                    lineInTable = new LineInTable();  // NEW OBJECT OF LineInTable
+                    Elements lineTDS = tr.getElementsByTag("td"); // ARRAY OF TD IN 1 ROW
+                    for (Element td : lineTDS) { // ITER ON TD'S OF ONE ROW
+                        lineInTable.status = statusTable.statusID;
+                        lineInTable.hexColor = statusTable.hexColor;
+                        lineInTable.stringOfAllTheLine.add(td.text().trim()); // add single td to strings in LineInTable
+                    }
 
-                        lineInTable = new LineInTable();  // NEW OBJECT OF LineInTable
-                        Elements lineTDS = tr.getElementsByTag("td"); // ARRAY OF TD IN 1 ROW
-                        for (Element td : lineTDS) { // ITER ON TD'S OF ONE ROW
-                            lineInTable.status = statusTable.statusID;
-                            lineInTable.hexColor = statusTable.hexColor;
-                            lineInTable.stringOfAllTheLine.add(td.text().trim()); // add single td to strings in LineInTable
-                        }
-                        
 //                        lines.add(lineInTable); temp removed 0524 17:19
                     statusTable.allLinesOfStatus.add(lineInTable); // TODO: 24-May-17
-                    }
-                table.statusTableArr = statusTableArr;
                 }
+                table.statusTableArr = statusTableArr;
+                table.subjects = subjects;
+            }
         }
 
-      // END OF ALL ITERS ***
+        // END OF ALL ITERS ***
 
-    table.lineInTableArrayList =lines;
+//        table.lineInTableArrayList = lines; temp removed // TODO: 02-Jun-17
         return table;
-}
+    }
 }
 

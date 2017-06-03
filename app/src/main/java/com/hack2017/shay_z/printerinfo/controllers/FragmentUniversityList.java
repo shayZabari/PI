@@ -25,10 +25,10 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link UniversityListFragment#newInstance} factory method to
+ * Use the {@link FragmentUniversityList#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class UniversityListFragment extends Fragment {
+public class FragmentUniversityList extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 //    private static final String ARG_PARAM1 = "param1";
@@ -39,13 +39,13 @@ public class UniversityListFragment extends Fragment {
     OnUniversitySelectedListener onUniversitySelectedListener;
 
 
-    public UniversityListFragment() {
+    public FragmentUniversityList() {
         // Required empty public constructor
     }
 
     // TODO: Rename and change types and number of parameters
-    public static UniversityListFragment newInstance(ArrayList<University> universities) {
-        UniversityListFragment fragment = new UniversityListFragment();
+    public static FragmentUniversityList newInstance(ArrayList<University> universities) {
+        FragmentUniversityList fragment = new FragmentUniversityList();
         Bundle args = new Bundle();
         args.putSerializable(ARG_TAG,universities);
         fragment.setArguments(args);
@@ -71,6 +71,10 @@ public class UniversityListFragment extends Fragment {
         return v;
     }
 
+    public interface OnUniversitySelectedListener {
+        void onOniversitySelected(int position);
+    }
+
     class MyList extends ArrayAdapter <University>{
         ArrayList<University> list;
         public MyList(@NonNull Context context, @LayoutRes int resource, @NonNull List objects) {
@@ -87,7 +91,7 @@ public class UniversityListFragment extends Fragment {
             View v = convertView;
             if (v == null) {
                 LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                v = inflater.inflate(R.layout.university_row,null);
+                v = inflater.inflate(R.layout.university_row, parent, false);
                 LinearLayout linearLayout = (LinearLayout) v.findViewById(R.id.llUniversityRow);
                 linearLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -107,9 +111,5 @@ public class UniversityListFragment extends Fragment {
 
 
         }
-    }
-
-    public interface OnUniversitySelectedListener {
-        void onOniversitySelected(int position);
     }
 }

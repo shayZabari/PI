@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/PrinterInfo20170525_try_snackbar.iml" filepath="$PROJECT_DIR$/PrinterInfo20170525_try_snackbar.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PrinterInfo20170602.iml" filepath="$PROJECT_DIR$/PrinterInfo20170602.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

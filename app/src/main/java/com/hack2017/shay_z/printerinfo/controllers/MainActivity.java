@@ -1,10 +1,7 @@
 package com.hack2017.shay_z.printerinfo.controllers;
 
 import android.app.ProgressDialog;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
@@ -16,9 +13,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.hack2017.shay_z.printerinfo.R;
 import com.hack2017.shay_z.printerinfo.UniversityDataBase;
 import com.hack2017.shay_z.printerinfo.models.University;
@@ -27,29 +24,21 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        UniversityListFragment.OnUniversitySelectedListener,
-        PrintersInfoFragment.OnPrinterStatusSelectedListener,TheList.OnFragmentInteractionListener{
+        FragmentUniversityList.OnUniversitySelectedListener,
+        FragmentUniversityPage.OnRefreshSubjectListener {
 
 
-
-    private ArrayList<University> universities;
+    private static final String SAVE_UNIVERSITIES = "123";
     FragmentManager fm = getSupportFragmentManager();
+    private ArrayList<University> universities;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -62,7 +51,18 @@ public class MainActivity extends AppCompatActivity
 
 
         Log.d("shay", "shay on create !");
+
+
         UniversityDataBase list = new UniversityDataBase("https://dl.dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0", this);
+
+//        //load preferences
+//        SharedPreferences appSharedPrefs = PreferenceManager
+//                .getDefaultSharedPreferences(this.getApplicationContext());
+//        Gson gson = new Gson();
+//        String json = appSharedPrefs.getString(SAVE_UNIVERSITIES, "");
+//        Type type = new TypeToken<List<University>>(){}.getType();
+//        universities = gson.fromJson(json, type);
+
 
     }
 
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity
             // Handle the camera action
         } else if (id == R.id.nav_select_universities) {
 
-            fm.beginTransaction().replace(R.id.content_main2, UniversityListFragment.newInstance(universities)).commit();
+            fm.beginTransaction().replace(R.id.content_main, FragmentUniversityList.newInstance(universities)).commit();
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
@@ -132,28 +132,35 @@ public class MainActivity extends AppCompatActivity
         progressDialog.setCancelable(false);
         findViewById(R.id.progressBar).setVisibility(View.GONE);
         int sizeTemp = universities.size();
-        Toast.makeText(this, "" + sizeTemp+"" + sizeTemp+"" + sizeTemp, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "" + sizeTemp + "" + sizeTemp + "" + sizeTemp, Toast.LENGTH_LONG).show();
 
-        Log.i("a", "finish universities size= "+universities.size());
+        Log.i("a", "finish universities size= " + universities.size());
+
+// save preferences
+//        SharedPreferences editor = PreferenceManager.getDefaultSharedPreferences(this);
+//        SharedPreferences.Editor prefEditor = editor.edit();
+        Gson gson = new Gson();
+//        Log.d("a", "json is "+json);
+//        prefEditor.putString(SAVE_UNIVERSITIES, json);
+//        prefEditor.commit();
+
+
+
     }
 
 
     @Override
     public void onOniversitySelected(int position) {
 
-        Toast.makeText(this, "UNIVERSITY POSITION  "+ position, Toast.LENGTH_SHORT).show();
-//        fm.beginTransaction().replace(R.id.content_main2, PrintersInfoFragment.newInstance(universities.get(position))).commit();
+        Toast.makeText(this, "UNIVERSITY POSITION  " + position, Toast.LENGTH_SHORT).show();
+//        fm.beginTransaction().replace(R.id.content_main, PrintersInfoFragment.newInstance(universities.get(position))).commit();
 
-        fm.beginTransaction().replace(R.id.content_main2, TheList.newInstance(universities.get(position))).commit();
+        fm.beginTransaction().replace(R.id.content_main, FragmentUniversityPage.newInstance(universities.get(position))).commit();
     }
 
-    @Override
-    public void onPrinterStatusSelected(Uri uri) {
-
-    }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
-        // TODO: 19-May-17
+    public void refreshSubject(University university) {
+        fm.beginTransaction().replace(R.id.content_main, FragmentUniversityPage.newInstance(university)).commit();
     }
 }

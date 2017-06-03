@@ -1,8 +1,11 @@
 package com.hack2017.shay_z.printerinfo;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.hack2017.shay_z.printerinfo.controllers.MainActivity;
 import com.hack2017.shay_z.printerinfo.models.UrlUtils;
 import com.hack2017.shay_z.printerinfo.models.MyJsoup;
@@ -19,6 +22,7 @@ import java.util.ArrayList;
  */
 
 public class UniversityDataBase extends AsyncTask<String, Integer, ArrayList<University>> {
+    private static final String SAVE_UNIVERSITIES = "123";
     private final MainActivity mainActivity;
     private final String dropBoxLink;
     public ArrayList<University> universities = new ArrayList<>();
@@ -68,6 +72,8 @@ public class UniversityDataBase extends AsyncTask<String, Integer, ArrayList<Uni
     @Override
     protected void onPostExecute(ArrayList<University> universities) {
         Log.d("a", "size" + universities.size());
+
+
         mainActivity.getUniversityDataBase(universities);
 //        MyCustomAdapter adapter = new MyCustomAdapter(universities, mainActivity);
         Log.d("a", universities + "");
