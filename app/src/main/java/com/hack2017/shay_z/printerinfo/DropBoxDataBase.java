@@ -49,9 +49,15 @@ public class DropBoxDataBase extends AsyncTask<String, Integer, ArrayList<Univer
         String stringFromUrl = null;
 
         try {
+            Log.d("a", "oded   " +dropBoxLink);
+            Log.d("a", "String from Url is =" + stringFromUrl);
+            Log.d(("a"), "params 0 is = " + params[0]);
+
             stringFromUrl = UrlUtils.getStringFromUrl(params[0]);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.d("a",e.getMessage()+ " IO EXCEPTION !!!!!!!!!!!!!!!!!!!!!=" + stringFromUrl);
+            return null;
+//            e.printStackTrace();
         }
 
         JSONObject parentJson = null;
@@ -62,7 +68,7 @@ public class DropBoxDataBase extends AsyncTask<String, Integer, ArrayList<Univer
                 Log.d("a", "CURRENT PARENT ARRAY IS  = " + parentArray.get(i));
                 universities.add(new University(parentArray.getJSONObject(i).getString("url"), parentArray.getJSONObject(i).getString("name"), parentArray.getJSONObject(i).getString("logo")));
                 if (universities.get(i).getUrl() != null) {
-                Log.d("a", "inside IF STATMENT  = " );
+                    Log.d("a", "inside IF STATMENT  = ");
                     universities.get(i).table = new MyJsoup(mainActivity).getUrl(universities.get(i).getUrl());
                 } else {
                     Log.e("a", "universities.get(i).getUrl IS NULLLLLLLLLLL!!!!!!");
@@ -76,6 +82,7 @@ public class DropBoxDataBase extends AsyncTask<String, Integer, ArrayList<Univer
         }
 
 
+
         return universities;
     }
 
@@ -83,12 +90,16 @@ public class DropBoxDataBase extends AsyncTask<String, Integer, ArrayList<Univer
 
     @Override
     protected void onPostExecute(ArrayList<University> universities) {
-        Log.d("a", "size" + universities.size());
+//        Log.d("a", "size" + universities.size());
 
+        if (universities == null) {
 
-        mainActivity.getUniversityDataBase(universities);
+            Log.d("a", " 96 University is null");
+            return;
+        }
+            mainActivity.getUniversityDataBase(universities);
 //        MyCustomAdapter adapter = new MyCustomAdapter(universities, mainActivity);
-        Log.d("a", universities + "");
+//        Log.d("a", universities + "");
     }
     //    class GetJsonData extends AsyncTask<String, String, ArrayList<University>> {
 //

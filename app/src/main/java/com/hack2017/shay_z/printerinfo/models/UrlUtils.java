@@ -54,20 +54,20 @@ public class UrlUtils {
 
     public static String getStringFromUrl(String str) throws IOException {
         URL url = null;
-        try {
+            String finalJson = null;
+//        try {
             url = new URL(str);
-        } catch (MalformedURLException e) {
-            Log.e("a", "SHAY ERROR IN URL UTILS");
-            e.printStackTrace();
-        }
-        HttpURLConnection connection = null;
-        BufferedReader reader;
-        String finalJson = null;
+            HttpURLConnection connection = null;
+            BufferedReader reader;
 
-        finalJson = getString(url, finalJson);
-        Log.e("a", "11111111111111111111111111111111SHAY ERROR IN GET STRING FROM URL - URL UTILS");
-
-
+            finalJson = getString(url, finalJson);
+            Log.e("a", "11111111111111111111111111111111SHAY ERROR IN GET STRING FROM URL - URL UTILS");
+//        } catch (MalformedURLException e) {
+//            Log.e("a", "66 SHAY ERROR IN URL UTILS"+e.getMessage());
+//
+//        } catch (IOException e) {
+//            Log.e("a", "70 SHAY ERROR IN URL UTILS"+e.getMessage());
+//        }
 
 
         return finalJson;

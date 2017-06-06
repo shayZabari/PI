@@ -55,7 +55,11 @@ public class MainActivity extends AppCompatActivity
         Log.d("shay", "shay on create !");
 
 
-        DropBoxDataBase list = new DropBoxDataBase("https://dl.1dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0", this);
+        try {
+            DropBoxDataBase list = new DropBoxDataBase("https://dl.1dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0", this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 //        //load preferences
 //        SharedPreferences appSharedPrefs = PreferenceManager
@@ -133,6 +137,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void getUniversityDataBase(ArrayList<University> universities) {
+        Log.d("a", "Mainactivity_140");
         this.universities = universities;
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("CONNECTING ...");
