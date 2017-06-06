@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity
 
 
         try {
-            DropBoxDataBase list = new DropBoxDataBase("https://dl.1dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0", this);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -97,11 +97,20 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.action_settings:
+                return true;
+            case R.id.refresh:
+                refresh();
         }
 
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void refresh() {
+        findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+        new DropBoxDataBase("https://dl.1123dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0", this);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
