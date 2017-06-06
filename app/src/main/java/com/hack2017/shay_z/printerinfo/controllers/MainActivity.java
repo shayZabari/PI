@@ -3,6 +3,7 @@ package com.hack2017.shay_z.printerinfo.controllers;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -17,15 +18,17 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.hack2017.shay_z.printerinfo.R;
-import com.hack2017.shay_z.printerinfo.UniversityDataBase;
+import com.hack2017.shay_z.printerinfo.DropBoxDataBase;
+import com.hack2017.shay_z.printerinfo.models.ExeptionInterface;
 import com.hack2017.shay_z.printerinfo.models.University;
+import com.hack2017.shay_z.printerinfo.models.UrlUtils;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         FragmentUniversityList.OnUniversitySelectedListener,
-        FragmentUniversityPage.OnRefreshSubjectListener {
+        FragmentUniversityPage.OnRefreshSubjectListener, ExeptionInterface {
 
 
     private static final String SAVE_UNIVERSITIES = "123";
@@ -38,7 +41,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity
         Log.d("shay", "shay on create !");
 
 
-        UniversityDataBase list = new UniversityDataBase("https://dl.dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0", this);
+        DropBoxDataBase list = new DropBoxDataBase("https://dl.1dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0", this);
 
 //        //load preferences
 //        SharedPreferences appSharedPrefs = PreferenceManager
@@ -116,7 +118,13 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
-
+//            Toast.makeText(this,UrlUtils.getLog(this), Toast.LENGTH_LONG).show();
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            alertDialog.setTitle("Title");
+            alertDialog.setMessage(UrlUtils.getLog(this));
+//            alertDialog.setButton("OK", null);
+            AlertDialog alert = alertDialog.create();
+            alert.show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -162,5 +170,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void refreshSubject(University university) {
         fm.beginTransaction().replace(R.id.content_main, FragmentUniversityPage.newInstance(university)).commit();
+    }
+
+
+    @Override
+    public void onExceptionCallBack(String message) {
+
     }
 }

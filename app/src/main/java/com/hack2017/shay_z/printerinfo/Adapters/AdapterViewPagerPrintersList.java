@@ -1,5 +1,6 @@
 package com.hack2017.shay_z.printerinfo.Adapters;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,28 +8,35 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.hack2017.shay_z.printerinfo.R;
+import com.hack2017.shay_z.printerinfo.controllers.MainActivity;
 import com.hack2017.shay_z.printerinfo.models.StatusTable;
 import com.hack2017.shay_z.printerinfo.models.Subject;
 import com.hack2017.shay_z.printerinfo.models.University;
+import com.hack2017.shay_z.printerinfo.models.UrlUtils;
 
+import java.io.LineNumberReader;
 import java.util.ArrayList;
+import java.util.logging.ErrorManager;
 
 /**
  * Created by shay_z on 30-May-17.
  */
 
 public class AdapterViewPagerPrintersList extends FragmentStatePagerAdapter {
+    private final Context context;
     University university;
 
     // constructor of AdapterViewPagerPrintersList
-    public AdapterViewPagerPrintersList(FragmentManager fm, University university) {
+    public AdapterViewPagerPrintersList(Context context, FragmentManager fm, University university) {
         super(fm);
         this.university = university;
+        this.context = context;
     }
 
     /**
@@ -100,9 +108,7 @@ public class AdapterViewPagerPrintersList extends FragmentStatePagerAdapter {
             View v = inflater.inflate(R.layout.printers_list_recycler, container, false);
             RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.rv_printers_lines);
             recyclerView.setAdapter(new AdapterPrintersListRecycler(getContext(), statusTable, subjects));
-
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
 //            listView = (ListView) v.findViewById(R.id.lv_fragment_list);
 //            listView.setAdapter(new LVAdapter(arguments));
 //            return v;

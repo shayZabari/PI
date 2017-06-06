@@ -63,7 +63,7 @@ public class FragmentUniversityPage extends Fragment {
 
         final View v = inflater.inflate(R.layout.university_page_fragment, container, false);
 
-        adapterViewPagerPrintersList = new AdapterViewPagerPrintersList(getFragmentManager(), university);
+        adapterViewPagerPrintersList = new AdapterViewPagerPrintersList(getContext(), getFragmentManager(), university);
         viewPager = (ViewPager) v.findViewById(R.id.view_pager);
         viewPager.setAdapter(adapterViewPagerPrintersList);
         tabLayout = (TabLayout) v.findViewById(R.id.tab_layout);

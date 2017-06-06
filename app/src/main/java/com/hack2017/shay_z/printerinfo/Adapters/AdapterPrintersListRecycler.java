@@ -2,10 +2,12 @@ package com.hack2017.shay_z.printerinfo.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hack2017.shay_z.printerinfo.R;
 import com.hack2017.shay_z.printerinfo.models.StatusTable;
@@ -23,10 +25,12 @@ public class AdapterPrintersListRecycler extends RecyclerView.Adapter<AdapterPri
     private final LayoutInflater inflater;
     StatusTable statusTable ;
     ArrayList<Subject> mmm1;
+    Context context;
 
     public AdapterPrintersListRecycler(Context context, StatusTable statusTable, ArrayList<Subject> mmm) {
         inflater = LayoutInflater.from(context);
         this.statusTable = statusTable;
+        this.context = context;
         mmm1 = mmm;
 
     }
@@ -43,8 +47,13 @@ public class AdapterPrintersListRecycler extends RecyclerView.Adapter<AdapterPri
         ArrayList<String> currntLine = statusTable.allLinesOfStatus.get(position).stringOfAllTheLine;
         String temp = "";
         for (int i = 0; i < currntLine.size(); i++) {
-            if (mmm1.get(i).checkBoxStatus && mmm1.get(i) != null)
-                temp = temp + ("[ " + currntLine.get(i) + " ]  ");
+            try {
+                if ((mmm1.get(i).checkBoxStatus != false) && (mmm1.get(i) != null) && currntLine.get(i) != "")
+                    temp = temp + ("[ " + currntLine.get(i) + " ]  ");
+            } catch (Exception e) {
+                Toast.makeText(context, e.toString() + " " + Thread.currentThread().getStackTrace()[2].getLineNumber(), Toast.LENGTH_LONG).show();
+                Log.e("a", e.getStackTrace().toString());
+            }
 
         }
         holder.textView.setText(temp);

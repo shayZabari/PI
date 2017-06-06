@@ -1,5 +1,6 @@
 package com.hack2017.shay_z.printerinfo.models;
 
+import android.content.Context;
 import android.util.Log;
 
 import org.jsoup.Jsoup;
@@ -11,20 +12,25 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static android.content.ContentValues.TAG;
+
 /**
  * Created by shay_z on 28-Apr-17.
  */
 
 public class MyJsoup {
 
+    private final Context context;
     public HashMap<String, String> hashMapIndexTable = new HashMap<>(); //   INDEX TABLE example "00ff11","no connection"
     public ArrayList<LineInTable> lines = new ArrayList<>();// PRINTER LINES INCLUDE HEX COLOR !
-
     //    public HashMap<String, Integer> statusesCountArr = new HashMap<>();
     Table table = new Table();
     ArrayList<StatusTable> statusTableArr = new ArrayList<>();
     ArrayList<Subject> subjects = new ArrayList<>();
 
+    public MyJsoup(Context context) {
+        this.context = context;
+    }
 
     public Table getUrl(String url) { // changed from <LineInTable> to <Table>..
         Log.d("a", "ENTERING getUrl in Jsoup !!!!!!!!!!!!!!!!");
@@ -55,23 +61,28 @@ public class MyJsoup {
 //            HashMap<String, String> indexTableHashMap;
 //            indexTableHashMap = new HashMap<>();
             for (Element td : indexTds) {
-                Log.d("a", "element is =" + td.text());
                 StatusTable tempStatusTable = new StatusTable();
                 tempStatusTable.statusID = td.text().replace("\u00a0", "").trim();
                 tempStatusTable.hexColor = td.attr("bgcolor").trim();
+                Log.d(TAG, "getUrl: " + tempStatusTable.toString());
                 statusTableArr.add(tempStatusTable);
                 //            indexTableHashMap.put(td.attr("bgcolor").trim(), td.text().replace("\u00a0", "").trim()); // array of key value of td from table1
             }
 //        hashMapIndexTable = indexTableHashMap;  // save index table <KEY=STATUS , VALUE=HEX COLOR>
         } catch (Exception e) {
-            Log.d("a", "EXEPTION IN MY JSOUP");
-            e.printStackTrace();
+            UrlUtils.addLog(context, e, e.toString());
         }
 
 
         // **  PRINTERS TABLE **
-        Element printersTable = document.select("Table").get(1); // save all second table(printer table)
-        Elements trs = printersTable.getElementsByTag("tr");// save all line in linesArrInPrintersTable
+        Element printersTable = null; // save all second table(printer table)
+        try {
+            printersTable = document.select("Table").get(1);
+
+            Elements trs = null;// save all line in linesArrInPrintersTable
+            try {
+                trs = printersTable.getElementsByTag("tr");
+
         int c = 0;
         int count = 1;
         Elements tdsID = trs.get(0).getElementsByTag("td");
@@ -82,7 +93,14 @@ public class MyJsoup {
             subjects.add(subject);
             Log.d("a", "element tdID id " + tdsID.get(i).text().trim());
 
+
         }
+            } catch (Exception e) {
+                UrlUtils.addLog(context, e, e.toString());
+                e.printStackTrace();
+            }
+
+
         for (Element tr : trs) { // ITER ON TR printer table ***
             String bgColor = tr.getElementsByTag("td").get(0).attr("bgcolor").trim();// hex color
             LineInTable lineInTable = null;
@@ -122,7 +140,12 @@ public class MyJsoup {
         // END OF ALL ITERS ***
 
 //        table.lineInTableArrayList = lines; temp removed // TODO: 02-Jun-17
+        } catch (Exception e) {
+            UrlUtils.addLog(context, e, e.toString());
+
+        }
         return table;
+
     }
 }
 

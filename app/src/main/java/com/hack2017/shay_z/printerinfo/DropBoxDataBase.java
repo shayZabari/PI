@@ -15,24 +15,28 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.util.ArrayList;
 
 /**
  * Created by shay_z on 27-Apr-17.
  */
 
-public class UniversityDataBase extends AsyncTask<String, Integer, ArrayList<University>> {
+public class DropBoxDataBase extends AsyncTask<String, Integer, ArrayList<University>> {
     private static final String SAVE_UNIVERSITIES = "123";
     private final MainActivity mainActivity;
     private final String dropBoxLink;
     public ArrayList<University> universities = new ArrayList<>();
 
 
-    public UniversityDataBase(String dropBoxLink, MainActivity mainActivity ) {
+    public DropBoxDataBase(String dropBoxLink, MainActivity mainActivity) {
 
         this.dropBoxLink = dropBoxLink;
         this.mainActivity = mainActivity;
+
         execute(dropBoxLink);
+
     }
 
 //    public void getDropboxUrl(String url) throws ExecutionException, InterruptedException {
@@ -42,7 +46,14 @@ public class UniversityDataBase extends AsyncTask<String, Integer, ArrayList<Uni
     @Override
     protected ArrayList<University> doInBackground(String... params) {
 
-        String stringFromUrl = UrlUtils.getStringFromUrl(params[0]);
+        String stringFromUrl = null;
+
+        try {
+            stringFromUrl = UrlUtils.getStringFromUrl(params[0]);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         JSONObject parentJson = null;
         try {
             parentJson = new JSONObject(stringFromUrl);
@@ -52,14 +63,15 @@ public class UniversityDataBase extends AsyncTask<String, Integer, ArrayList<Uni
                 universities.add(new University(parentArray.getJSONObject(i).getString("url"), parentArray.getJSONObject(i).getString("name"), parentArray.getJSONObject(i).getString("logo")));
                 if (universities.get(i).getUrl() != null) {
                 Log.d("a", "inside IF STATMENT  = " );
-                    universities.get(i).table = new MyJsoup().getUrl(universities.get(i).getUrl());
+                    universities.get(i).table = new MyJsoup(mainActivity).getUrl(universities.get(i).getUrl());
                 } else {
-                    Log.i("a", "universities.get(i).getUrl IS NULLLLLLLLLLL!!!!!!");
+                    Log.e("a", "universities.get(i).getUrl IS NULLLLLLLLLLL!!!!!!");
 
                 }
             }
 
         } catch (JSONException e1) {
+            Log.e("a", "333");
             e1.printStackTrace();
         }
 
