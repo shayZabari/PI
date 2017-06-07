@@ -66,7 +66,7 @@ ExeptionInterface exeptionInterface;
             }
 
         } catch (Exception e) {
-            Log.d("a", "66 Exception" + e.getMessage());
+            Log.d("a", "66 Exception11" + e.getMessage());
 
 
         }
