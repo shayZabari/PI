@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         FragmentUniversityList.OnUniversitySelectedListener,
         FragmentUniversityPage.OnRefreshSubjectListener, ExeptionInterface {
+        DropBoxDataBase d;
 
 
     private static final String SAVE_UNIVERSITIES = "123";
@@ -110,7 +111,11 @@ public class MainActivity extends AppCompatActivity
 
     private void refresh() {
         findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
-        new DropBoxDataBase("https://dl.1123dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0", this);
+        try {
+            d = new DropBoxDataBase("https://dl.1123dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0", this);
+        } catch (Exception e) {
+            Log.e("a", "117 " + e.getMessage());
+        }
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -189,7 +194,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onExceptionCallBack(String message) {
-        Log.d("a", "123");
+        Log.e("a", "123");
+        d.cancel(true);
+
+
 //        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }
