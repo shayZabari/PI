@@ -189,6 +189,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onExceptionCallBack(String message) {
-
+        Log.d("a", "123");
+//        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

@@ -52,7 +52,7 @@ public class UrlUtils {
         return sp.getString("loge", "no records");
     }
 
-    public static String getStringFromUrl(String str) throws IOException {
+    public static String getStringFromUrl(String str) throws Exception {
         URL url = null;
             String finalJson = null;
 //        try {

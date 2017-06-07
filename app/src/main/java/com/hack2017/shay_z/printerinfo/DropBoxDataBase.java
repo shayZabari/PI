@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.hack2017.shay_z.printerinfo.controllers.MainActivity;
+import com.hack2017.shay_z.printerinfo.models.ExeptionInterface;
 import com.hack2017.shay_z.printerinfo.models.UrlUtils;
 import com.hack2017.shay_z.printerinfo.models.MyJsoup;
 import com.hack2017.shay_z.printerinfo.models.University;
@@ -25,15 +26,15 @@ import java.util.ArrayList;
 
 public class DropBoxDataBase extends AsyncTask<String, Integer, ArrayList<University>> {
     private static final String SAVE_UNIVERSITIES = "123";
-    private final MainActivity mainActivity;
+    private  MainActivity mainActivity;
     private final String dropBoxLink;
     public ArrayList<University> universities = new ArrayList<>();
-
+ExeptionInterface exeptionInterface;
 
     public DropBoxDataBase(String dropBoxLink, MainActivity mainActivity) {
 
         this.dropBoxLink = dropBoxLink;
-        this.mainActivity = mainActivity;
+        exeptionInterface= mainActivity;
 
         execute(dropBoxLink);
 
@@ -48,20 +49,27 @@ public class DropBoxDataBase extends AsyncTask<String, Integer, ArrayList<Univer
 
         String stringFromUrl = null;
 
-        try {
-            Log.d("a", "oded   " +dropBoxLink);
-            Log.d("a", "String from Url is =" + stringFromUrl);
-            Log.d(("a"), "params 0 is = " + params[0]);
+        Log.d("a", "oded   " +dropBoxLink);
+        Log.d(("a"), "params 0 is = " + params[0]);
 
+        try {
             stringFromUrl = UrlUtils.getStringFromUrl(params[0]);
-        } catch (IOException e) {
-            Log.d("a",e.getMessage()+ " IO EXCEPTION !!!!!!!!!!!!!!!!!!!!!=" + stringFromUrl);
+        } catch (NullPointerException e) {
+            Log.d("a", "59 null pointer exception" + e.getMessage());
             return null;
-//            e.printStackTrace();
+
+        } catch (IOException e) {
+            Log.d("a", "64 IOexception" + e.getMessage());
+
+        } catch (Exception e) {
+            Log.d("a", "66 Exception" + e.getMessage());
+
+
         }
 
         JSONObject parentJson = null;
         try {
+
             parentJson = new JSONObject(stringFromUrl);
             JSONArray parentArray = parentJson.getJSONArray("University"); // array of universities from dropbox file.
             for (int i = 0; i < parentArray.length(); i++) {  // iter on parent array(universities array from dropbox file.)
@@ -77,8 +85,7 @@ public class DropBoxDataBase extends AsyncTask<String, Integer, ArrayList<Univer
             }
 
         } catch (JSONException e1) {
-            Log.e("a", "333");
-            e1.printStackTrace();
+             Log.e("a", "333");
         }
 
 
