@@ -45,19 +45,27 @@ ExeptionInterface exeptionInterface;
 //    }
 
     @Override
-    protected ArrayList<University> doInBackground(String... params)throws IOException {
+    protected ArrayList<University> doInBackground(String... params) {
 
         String stringFromUrl = null;
 
         Log.d("a", "oded   " +dropBoxLink);
         Log.d(("a"), "params 0 is = " + params[0]);
 
+        try {
             stringFromUrl = UrlUtils.getStringFromUrl(params[0]);
+        } catch (NullPointerException e) {
             Log.d("a", "59 null pointer exception" + e.getMessage());
             return null;
 
+        } catch (IOException e) {
+            try {
+                throw (new IOException());
+            } catch (IOException e1) {
             Log.d("a", "64 IOexception" + e.getMessage());
+            }
 
+        } catch (Exception e) {
             Log.d("a", "66 Exception" + e.getMessage());
 
 
