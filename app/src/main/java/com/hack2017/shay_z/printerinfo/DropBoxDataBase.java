@@ -19,6 +19,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by shay_z on 27-Apr-17.
@@ -26,15 +29,15 @@ import java.util.ArrayList;
 
 public class DropBoxDataBase extends AsyncTask<String, Integer, ArrayList<University>> {
     private static final String SAVE_UNIVERSITIES = "123";
-    private  MainActivity mainActivity;
+    private MainActivity mainActivity;
     private final String dropBoxLink;
     public ArrayList<University> universities = new ArrayList<>();
-ExeptionInterface exeptionInterface;
+    ExeptionInterface exeptionInterface;
 
     public DropBoxDataBase(String dropBoxLink, MainActivity mainActivity) {
 
         this.dropBoxLink = dropBoxLink;
-        exeptionInterface= mainActivity;
+        exeptionInterface = mainActivity;
 
         execute(dropBoxLink);
 
@@ -44,12 +47,16 @@ ExeptionInterface exeptionInterface;
 //        new GetJsonData().execute(url).get();
 //    }
 
+    void exp(Exception e) {
+        exeptionInterface.onExceptionCallBack(e.getMessage());
+    }
+
     @Override
     protected ArrayList<University> doInBackground(String... params) {
 
         String stringFromUrl = null;
 
-        Log.d("a", "oded   " +dropBoxLink);
+        Log.d("a", "oded   " + dropBoxLink);
         Log.d(("a"), "params 0 is = " + params[0]);
 
         try {
@@ -62,7 +69,13 @@ ExeptionInterface exeptionInterface;
             try {
                 throw (new IOException());
             } catch (IOException e1) {
-            Log.d("a", "64 IOexception" + e.getMessage());
+//                Log.e("a", "64 IOexception" + e.printStackTrace(););
+
+                Log.getStackTraceString(e);
+                exeptionInterface.onExceptionCallBack(e.getMessage());
+//                Logger.
+//                Logger.Log(Level.INFO, e.getMessage(),e);
+//                Arrays.toString(e.getStackTrace());
             }
 
         } catch (Exception e) {
@@ -70,6 +83,7 @@ ExeptionInterface exeptionInterface;
 
 
         }
+
 
         JSONObject parentJson = null;
         try {
@@ -89,14 +103,12 @@ ExeptionInterface exeptionInterface;
             }
 
         } catch (JSONException e1) {
-             Log.e("a", "333");
+            Log.e("a", "333");
         }
-
 
 
         return universities;
     }
-
 
 
     @Override
@@ -108,7 +120,7 @@ ExeptionInterface exeptionInterface;
             Log.d("a", " 96 University is null");
             return;
         }
-            mainActivity.getUniversityDataBase(universities);
+        mainActivity.getUniversityDataBase(universities);
 //        MyCustomAdapter adapter = new MyCustomAdapter(universities, mainActivity);
 //        Log.d("a", universities + "");
     }

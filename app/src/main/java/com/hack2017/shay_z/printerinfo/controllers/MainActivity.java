@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity
     private static final String SAVE_UNIVERSITIES = "123";
     FragmentManager fm = getSupportFragmentManager();
     private ArrayList<University> universities;
+    private String dropboxUrl="https://dl.1123dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,16 +53,12 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
         Log.d("shay", "shay on create !");
 
-
         try {
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 //        //load preferences
 //        SharedPreferences appSharedPrefs = PreferenceManager
 //                .getDefaultSharedPreferences(this.getApplicationContext());
@@ -69,8 +66,6 @@ public class MainActivity extends AppCompatActivity
 //        String json = appSharedPrefs.getString(SAVE_UNIVERSITIES, "");
 //        Type type = new TypeToken<List<University>>(){}.getType();
 //        universities = gson.fromJson(json, type);
-
-
     }
 
     @Override
@@ -111,11 +106,7 @@ public class MainActivity extends AppCompatActivity
 
     private void refresh() {
         findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
-        try {
-            d = new DropBoxDataBase("https://dl.1123dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0", this);
-        } catch (Exception e) {
-            Log.e("a", "117 " + e.getMessage());
-        }
+            d = new DropBoxDataBase(dropboxUrl, this);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -196,8 +187,8 @@ public class MainActivity extends AppCompatActivity
     public void onExceptionCallBack(String message) {
         Log.e("a", "123");
         d.cancel(true);
-
-
-//        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        Log.e("a", "123"+message);
+        findViewById(R.id.progressBar).setVisibility(View.GONE);
+        Toast.makeText(getApplicationContext(), "198 ", Toast.LENGTH_SHORT).show();
     }
 }
