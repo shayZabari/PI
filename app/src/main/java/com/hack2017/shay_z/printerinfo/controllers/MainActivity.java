@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void refresh() {
+        R.id.refresh
         findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
             d = new DropBoxDataBase(dropboxUrl, this);
     }
@@ -190,7 +191,13 @@ public class MainActivity extends AppCompatActivity
         Log.e("123", "123");
         d.cancel(true);
         Log.e("123", message);
-        findViewById(R.id.progressBar).setVisibility(View.GONE);
+//        findViewById(R.id.progressBar).setVisibility(View.GONE);
+//        maketoast();
+    }
+
+    private void maketoast() {
+        Log.d("123","this = "+this.toString());
         Toast.makeText(this,"toasting",Toast.LENGTH_LONG).show();
     }
+
 }

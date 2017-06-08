@@ -106,7 +106,7 @@ public class DropBoxDataBase extends AsyncTask<String, Integer, ArrayList<Univer
 
         if (universities == null) {
             Log.d("123", " 96 University is null");
-            return;
+        mainActivity.getUniversityDataBase(null);
         }
         mainActivity.getUniversityDataBase(universities);
     }

@@ -152,10 +152,10 @@ public class MyJsoup {
 //        table.lineInTableArrayList = lines; temp removed // TODO: 02-Jun-17
         } catch (Exception e) {
             try {
-                Log.e("123", "155 MY JSOUP"+e.getMessage());
+                Log.e("123", "155 MY JSOUP = "+e.getMessage());
                 UrlUtils.addLog(context, e, e.toString());
             } catch (Exception e1) {
-                Log.e("123", "158 MY JSOUP" + e.getMessage()+"context"+context.toString());
+                Log.e("123", "158 MY JSOUP = " + e.getMessage()+"context"+context.toString());
             }
 
         }
