@@ -61,7 +61,7 @@ public class UrlUtils {
             BufferedReader reader;
 
             finalJson = getString(url, finalJson);
-            Log.e("a", "11111111111111111111111111111111SHAY ERROR IN GET STRING FROM URL - URL UTILS");
+            Log.e("a", "64 ERROR IN URL UTILS/GETSTRINGFROMURL");
 //        } catch (MalformedURLException e) {
 //            Log.e("a", "66 SHAY ERROR IN URL UTILS"+e.getMessage());
 //
