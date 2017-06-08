@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Table {
     //    public ArrayList<LineInTable> lineInTableArrayList = new ArrayList<>(); temp removed 020617
 //    public HashMap<String, Integer> statusesCountArr=new HashMap<>();
-public ArrayList<StatusTable> statusTableArr;
+public ArrayList<StatusTable> statusTableArr=new ArrayList<>();
     public ArrayList<Subject> subjects = new ArrayList<>();
 
 }

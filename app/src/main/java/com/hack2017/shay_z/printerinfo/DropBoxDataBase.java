@@ -1,5 +1,6 @@
 package com.hack2017.shay_z.printerinfo;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
@@ -30,14 +31,15 @@ import java.util.logging.Logger;
 public class DropBoxDataBase extends AsyncTask<String, Integer, ArrayList<University>> {
 
     private static final String SAVE_UNIVERSITIES = "123";
-    private MainActivity mainActivity;
     private final String dropBoxLink;
+    private final MainActivity mainActivity;
     public ArrayList<University> universities = new ArrayList<>();
     ExeptionInterface exeptionInterface;
 
     public DropBoxDataBase(String dropBoxLink, MainActivity mainActivity) {
         this.dropBoxLink = dropBoxLink;
-        exeptionInterface = mainActivity;
+        exeptionInterface = (ExeptionInterface) mainActivity;
+        this.mainActivity = mainActivity;
         execute(dropBoxLink);
     }
 
@@ -113,6 +115,7 @@ public class DropBoxDataBase extends AsyncTask<String, Integer, ArrayList<Univer
         Log.d("123", " 96 universities array is " + universities.toString());
 
         mainActivity.getUniversityDataBase(universities);
+
 
     }
 }

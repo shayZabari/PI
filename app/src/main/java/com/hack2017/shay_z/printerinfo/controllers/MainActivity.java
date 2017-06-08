@@ -1,5 +1,6 @@
 package com.hack2017.shay_z.printerinfo.controllers;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -56,11 +57,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         Log.d("shay", "shay on create !");
+refresh();
 
-        try {
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 //        //load preferences
 //        SharedPreferences appSharedPrefs = PreferenceManager
 //                .getDefaultSharedPreferences(this.getApplicationContext());
@@ -149,10 +147,10 @@ public class MainActivity extends AppCompatActivity
     public void getUniversityDataBase(ArrayList<University> universities) {
         Log.d("123", "Mainactivity_140");
         this.universities = universities;
-        ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("CONNECTING ...");
-        progressDialog.setMessage("Please Wait");
-        progressDialog.setCancelable(false);
+//        ProgressDialog progressDialog = new ProgressDialog(this);
+//        progressDialog.setTitle("CONNECTING ...");
+//        progressDialog.setMessage("Please Wait");
+//        progressDialog.setCancelable(false);
         findViewById(R.id.progressBar).setVisibility(View.GONE);
         int sizeTemp = universities.size();
         Toast.makeText(this, "" + sizeTemp + "" + sizeTemp + "" + sizeTemp, Toast.LENGTH_LONG).show();
