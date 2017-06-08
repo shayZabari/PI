@@ -51,7 +51,9 @@ public class DropBoxDataBase extends AsyncTask<String, Integer, ArrayList<Univer
         Log.d("123", "oded   " + dropBoxLink);
         Log.d(("a"), "params 0 is = " + params[0]);
         try {
-            stringFromUrl = UrlUtils.getStringFromUrl(params[0]);
+            if (UrlUtils.getStringFromUrl(params[0]) != null)
+                stringFromUrl = UrlUtils.getStringFromUrl(params[0]);
+            else return null;
         } catch (NullPointerException e) {
             Log.d("123", "59 null pointer exception" + e.getMessage());
             return null;
@@ -71,11 +73,14 @@ public class DropBoxDataBase extends AsyncTask<String, Integer, ArrayList<Univer
         } catch (Exception e) {
             Log.d("123", "66 Exception11" + e.getMessage());
         }
-        JSONObject parentJson = null;
+        JSONObject parentJson;
         try {
 
+            Log.e("123", "80-DropBoxDataBase-stringFromUrl stringFromUrl is= " + stringFromUrl);
             parentJson = new JSONObject(stringFromUrl);
             JSONArray parentArray = parentJson.getJSONArray("University"); // array of universities from dropbox file.
+            Log.e("123", "85-DropBoxDataBase-parent array is =" + parentArray.toString());
+
             for (int i = 0; i < parentArray.length(); i++) {  // iter on parent array(universities array from dropbox file.)
                 Log.d("123", "CURRENT PARENT ARRAY IS  = " + parentArray.get(i));
                 universities.add(new University(parentArray.getJSONObject(i).getString("url"), parentArray.getJSONObject(i).getString("name"), parentArray.getJSONObject(i).getString("logo")));
@@ -89,11 +94,11 @@ public class DropBoxDataBase extends AsyncTask<String, Integer, ArrayList<Univer
             }
 
         } catch (JSONException e) {
-            Log.e("123", "92 DROP BOX DATA BASE"+e.getMessage());
-            exeptionInterface.onExceptionCallBack(e.getMessage());
+            Log.e("123", "92 DropBoxDataBase-try" + e.getMessage());
+            exeptionInterface.onExceptionCallBack("92 DROP BOX DATA BASE" + e.getMessage());
         } catch (Exception e) {
-            Log.e("123", "94 DROP BOX DATA BASE"+e.getMessage());
-            exeptionInterface.onExceptionCallBack(e.getMessage());
+            Log.e("123", "94 DROP BOX DATA BASE" + e.getMessage());
+            exeptionInterface.onExceptionCallBack("94 DROP BOX DATA BASE" + e.getMessage());
         }
 
         return universities;
@@ -104,11 +109,11 @@ public class DropBoxDataBase extends AsyncTask<String, Integer, ArrayList<Univer
     protected void onPostExecute(ArrayList<University> universities) {
 //        Log.d("123", "size" + universities.size());
 
-        if (universities == null) {
-            Log.d("123", " 96 University is null");
-        mainActivity.getUniversityDataBase(null);
-        }
+
+        Log.d("123", " 96 universities array is " + universities.toString());
+
         mainActivity.getUniversityDataBase(universities);
+
     }
 }
 

@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity
     FragmentManager fm = getSupportFragmentManager();
     private ArrayList<University> universities;
     private String dropboxUrl="https://dl.dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0";
+    private String exceptionMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +97,8 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.action_settings:
-        Toast.makeText(getApplicationContext(), "198 ", Toast.LENGTH_SHORT).show();
+                if (exceptionMessage!=null)
+        Toast.makeText(getApplicationContext(), exceptionMessage, Toast.LENGTH_LONG).show();
                 return true;
             case R.id.refresh:
                 refresh();
@@ -107,7 +109,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void refresh() {
-        R.id.refresh
+
         findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
             d = new DropBoxDataBase(dropboxUrl, this);
     }
@@ -188,16 +190,17 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onExceptionCallBack(String message) {
+        exceptionMessage = message;
         Log.e("123", "123");
         d.cancel(true);
         Log.e("123", message);
-//        findViewById(R.id.progressBar).setVisibility(View.GONE);
+        findViewById(R.id.progressBar).setVisibility(View.GONE);
 //        maketoast();
     }
 
     private void maketoast() {
         Log.d("123","this = "+this.toString());
-        Toast.makeText(this,"toasting",Toast.LENGTH_LONG).show();
+//        Toast.makeText(this,"toasting",Toast.LENGTH_LONG).show();
     }
 
 }
