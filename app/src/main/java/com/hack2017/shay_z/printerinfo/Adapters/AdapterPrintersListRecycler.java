@@ -52,7 +52,7 @@ public class AdapterPrintersListRecycler extends RecyclerView.Adapter<AdapterPri
                     temp = temp + ("[ " + currntLine.get(i) + " ]  ");
             } catch (Exception e) {
                 Toast.makeText(context, e.toString() + " " + Thread.currentThread().getStackTrace()[2].getLineNumber(), Toast.LENGTH_LONG).show();
-                Log.e("a", e.getStackTrace().toString());
+                Log.e("123", e.getStackTrace().toString());
             }
 
         }

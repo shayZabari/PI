@@ -30,21 +30,21 @@ import static android.R.id.message;
 public class UrlUtils {
     private MainActivity activity;
 
-    public static String addLog(Context context, Exception e, String problem) {
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        e.printStackTrace(pw);
+    public static String addLog(Context context, Exception e, String problem) throws Exception {
+//        StringWriter sw = new StringWriter();
+//        PrintWriter pw = new PrintWriter(sw);
+//        e.printStackTrace(pw);
 
 //        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss \n");
 //        String currentDateandTime = sdf.format(new Date());
-
+        Log.d("123", "40 CONTEXT IS ="+context.toString());
         SharedPreferences sp = context.getSharedPreferences("log.txt", Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = sp.edit();
 //        edit.putString("loge",currentDateandTime).commit();
-        edit.putString("loge", sw.toString()).commit();
-
-        Log.e("a", sw.toString());
-        return sw.toString();
+//        edit.putString("loge", sw.toString()).commit();
+//
+//        Log.e("123", sw.toString());
+        return e.getMessage();
     }
 
     public static String getLog(Context context) {
@@ -61,12 +61,12 @@ public class UrlUtils {
             BufferedReader reader;
 
             finalJson = getString(url, finalJson);
-            Log.e("a", "64 ERROR IN URL UTILS/GETSTRINGFROMURL");
+//            Log.e("123", "64 ERROR IN URL UTILS/GETSTRINGFROMURL");
 //        } catch (MalformedURLException e) {
-//            Log.e("a", "66 SHAY ERROR IN URL UTILS"+e.getMessage());
+//            Log.e("123", "66 SHAY ERROR IN URL UTILS"+e.getMessage());
 //
 //        } catch (IOException e) {
-//            Log.e("a", "70 SHAY ERROR IN URL UTILS"+e.getMessage());
+//            Log.e("123", "70 SHAY ERROR IN URL UTILS"+e.getMessage());
 //        }
 
 
@@ -74,7 +74,7 @@ public class UrlUtils {
     }
 
     @NonNull
-    private static String getString(URL url, String finalJson) throws IOException {
+    private static String getString(URL url, String finalJson) throws Exception {
         HttpURLConnection connection;
         BufferedReader reader;
         connection = (HttpURLConnection) url.openConnection();

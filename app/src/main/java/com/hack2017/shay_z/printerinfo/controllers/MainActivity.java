@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity
     private static final String SAVE_UNIVERSITIES = "123";
     FragmentManager fm = getSupportFragmentManager();
     private ArrayList<University> universities;
-    private String dropboxUrl="https://dl.1123dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0";
+    private String dropboxUrl="https://dl.dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void getUniversityDataBase(ArrayList<University> universities) {
-        Log.d("a", "Mainactivity_140");
+        Log.d("123", "Mainactivity_140");
         this.universities = universities;
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("CONNECTING ...");
@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity
 //        SharedPreferences editor = PreferenceManager.getDefaultSharedPreferences(this);
 //        SharedPreferences.Editor prefEditor = editor.edit();
         Gson gson = new Gson();
-//        Log.d("a", "json is "+json);
+//        Log.d("123", "json is "+json);
 //        prefEditor.putString(SAVE_UNIVERSITIES, json);
 //        prefEditor.commit();
 
@@ -187,10 +187,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onExceptionCallBack(String message) {
-        Log.e("a", "123");
+        Log.e("123", "123");
         d.cancel(true);
-        Log.e("a", "123"+message);
+        Log.e("123", message);
         findViewById(R.id.progressBar).setVisibility(View.GONE);
-        Toast.makeText(getApplicationContext(), "198 ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"toasting",Toast.LENGTH_LONG).show();
     }
 }

@@ -38,7 +38,7 @@ public class University implements Serializable {
         try {
             is = (InputStream) new URL(logoUrl).getContent();
         } catch (IOException e) {
-            Log.d("a", "Ioeceptionnnnn UniversityClass inputstream");
+            Log.d("123", "Ioeceptionnnnn UniversityClass inputstream");
             e.printStackTrace();
         }
         this.logo = Drawable.createFromStream(is, "src name");

@@ -67,7 +67,7 @@ public class FragmentUniversityList extends Fragment {
         View v = inflater.inflate(R.layout.fragment_university_list, container, false);
         ListView listView = (ListView) v.findViewById(R.id.lvUniversities);
         listView.setAdapter(new MyList(getActivity(),R.layout.university_row,universities));
-        Log.d("a", universities.size()+"");
+        Log.d("123", universities.size()+"");
         return v;
     }
 
@@ -82,7 +82,7 @@ public class FragmentUniversityList extends Fragment {
             onUniversitySelectedListener = (OnUniversitySelectedListener) context;
             list = (ArrayList<University>) objects;
 
-            Log.d("a", "logggg");
+            Log.d("123", "logggg");
         }
 
         @NonNull
@@ -96,7 +96,7 @@ public class FragmentUniversityList extends Fragment {
                 linearLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d("a", "position= " + position);
+                        Log.d("123", "position= " + position);
                         onUniversitySelectedListener.onOniversitySelected(position);
                     }
                 });
