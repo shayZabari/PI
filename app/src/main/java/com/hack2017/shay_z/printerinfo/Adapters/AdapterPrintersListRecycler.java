@@ -53,6 +53,7 @@ public class AdapterPrintersListRecycler extends RecyclerView.Adapter<AdapterPri
             } catch (Exception e) {
                 Toast.makeText(context, e.toString() + " " + Thread.currentThread().getStackTrace()[2].getLineNumber(), Toast.LENGTH_LONG).show();
                 Log.e("123", e.getStackTrace().toString());
+                e.printStackTrace();
             }
 
         }

@@ -1,12 +1,8 @@
 package com.hack2017.shay_z.printerinfo;
 
-import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.hack2017.shay_z.printerinfo.controllers.MainActivity;
 import com.hack2017.shay_z.printerinfo.models.ExeptionInterface;
 import com.hack2017.shay_z.printerinfo.models.UrlUtils;
@@ -18,11 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.InvalidObjectException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Created by shay_z on 27-Apr-17.
@@ -88,9 +80,9 @@ public class DropBoxDataBase extends AsyncTask<String, Integer, ArrayList<Univer
                 universities.add(new University(parentArray.getJSONObject(i).getString("url"), parentArray.getJSONObject(i).getString("name"), parentArray.getJSONObject(i).getString("logo")));
                 if (universities.get(i).getUrl() != null) {
                     Log.d("123", "inside IF STATMENT  = ");
-                    universities.get(i).table = new MyJsoup(mainActivity).getUrl(universities.get(i).getUrl());
+                    universities.get(i).table = new MyJsoup(mainActivity).getTable(universities.get(i).getUrl());
                 } else {
-                    Log.e("123", "universities.get(i).getUrl IS NULLLLLLLLLLL!!!!!!");
+                    Log.e("123", "universities.get(i).getTable IS NULLLLLLLLLLL!!!!!!");
 
                 }
             }

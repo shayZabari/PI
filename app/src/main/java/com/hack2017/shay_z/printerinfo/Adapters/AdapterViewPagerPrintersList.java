@@ -62,6 +62,8 @@ public class AdapterViewPagerPrintersList extends FragmentStatePagerAdapter {
     // create new MyFragment in the current position and return it to the adapter
     @Override
     public Fragment getItem(int position) {
+
+        Log.d("123", "66- adapter view pager printers list get item");
         MyFragment myFragment = MyFragment.newInstance(university.table.statusTableArr.get(position), university);
         return myFragment;
     }
@@ -69,6 +71,7 @@ public class AdapterViewPagerPrintersList extends FragmentStatePagerAdapter {
     // return the count of the
     @Override
     public int getCount() {
+        Log.d("123", "72- adapter view pager printers list get count");
         return university.table.statusTableArr.size();
     }
 

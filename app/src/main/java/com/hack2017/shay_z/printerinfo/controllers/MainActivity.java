@@ -173,7 +173,7 @@ refresh();
     @Override
     public void onOniversitySelected(int position) {
 
-        Toast.makeText(this, "UNIVERSITY POSITION  " + position, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "UNIVERSITY POSITION  " + position, Toast.LENGTH_SHORT).show();
 //        fm.beginTransaction().replace(R.id.content_main, PrintersInfoFragment.newInstance(universities.get(position))).commit();
 
         fm.beginTransaction().replace(R.id.content_main, FragmentUniversityPage.newInstance(universities.get(position))).commit();

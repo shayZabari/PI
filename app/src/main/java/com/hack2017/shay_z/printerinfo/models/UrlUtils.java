@@ -30,7 +30,7 @@ import static android.R.id.message;
 public class UrlUtils {
     private MainActivity activity;
 
-    public static String addLog(Context context, Exception e, String problem) throws Exception {
+    public static String addLog(Context context, Exception e, String problem)  {
 //        StringWriter sw = new StringWriter();
 //        PrintWriter pw = new PrintWriter(sw);
 //        e.printStackTrace(pw);
@@ -74,17 +74,26 @@ public class UrlUtils {
     }
 
     @NonNull
-    private static String getString(URL url, String finalJson) throws Exception {
+    private static String getString(URL url, String finalJson)  {
         HttpURLConnection connection;
         BufferedReader reader;
+        InputStream stream = null;
+        try {
         connection = (HttpURLConnection) url.openConnection();
         connection.connect();
-        InputStream stream = connection.getInputStream();
+            stream = connection.getInputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         reader = new BufferedReader(new InputStreamReader(stream));
         StringBuffer buffer = new StringBuffer();
         String line = "";
-        while ((line = reader.readLine()) != null) {
-            buffer.append(line);
+        try {
+            while ((line = reader.readLine()) != null) {
+                buffer.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         finalJson = buffer.toString();
         return finalJson;
