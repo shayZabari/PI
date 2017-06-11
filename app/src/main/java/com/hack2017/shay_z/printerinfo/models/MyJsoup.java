@@ -31,7 +31,7 @@ public class MyJsoup {
 
         try {
             if (Jsoup.connect(url).get() != null)
-                Document temp = Jsoup.connect(url) // TODO: 09-Jun-17  
+                Document temp = Jsoup.connect(url) // TODO: 09-Jun-17   
                 return Jsoup.connect(url).get();
             ;
         } catch (IOException e) {
