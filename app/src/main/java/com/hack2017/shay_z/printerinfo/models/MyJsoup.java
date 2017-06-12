@@ -93,6 +93,7 @@ public class MyJsoup {
             }
             
         }
+        table.subjects = getSubjects();
         
 
         
@@ -192,5 +193,9 @@ public class MyJsoup {
         this.context = context;
     }
 
+    public ArrayList<Subject> getSubjects() {
+        // TODO: 12-Jun-17  
+        return subjects;
+    }
 }
 
