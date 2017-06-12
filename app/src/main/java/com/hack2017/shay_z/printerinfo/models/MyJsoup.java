@@ -30,13 +30,17 @@ public class MyJsoup {
     public Document getDocument(String url) {
 
         try {
-            if (Jsoup.connect(url).get() != null)
-                Document temp = Jsoup.connect(url) // TODO: 09-Jun-17   
+            if (Jsoup.connect(url).get() != null) {
+
                 return Jsoup.connect(url).get();
-            ;
-        } catch (IOException e) {
+            }
+
+
+            } catch (IOException e) {
             e.printStackTrace();
-        } 
+            Log.e("123", "41 myjsoup" + e.getMessage());
+        }
+        return null;
     }
 
     public ArrayList<StatusTable> getStatusTableArr(Document document) {
@@ -78,7 +82,6 @@ public class MyJsoup {
                 if (statusTable.hexColor.equals(bgColor)) { //if current status equal current printerTable bgcolor
                     statusTable.count += 1;
                     lineInTable = new LineInTable();  // NEW OBJECT OF LineInTable
-                }
                 Elements lineTDS = tr.getElementsByTag("td"); // ARRAY OF TD IN CURRENT TR
                 for (Element td : lineTDS) { // ITER ON TD'S OF CURRENT ROW
                     lineInTable.status = statusTable.statusID;
@@ -86,6 +89,7 @@ public class MyJsoup {
                     lineInTable.stringOfAllTheLine.add(td.text().trim()); // add single td to strings in LineInTable //need ???
                 }
                 statusTable.allLinesOfStatus.add(lineInTable);
+                }
             }
             
         }
@@ -100,13 +104,18 @@ public class MyJsoup {
         Log.d("123", "ENTERING PRINTERS TABLE");
         Element printersTable = null;
         printersTable = document.select("table").get(1);
-        Log.d("123", "94 MyJsoup - printersTable" + printersTable);
+//        Log.d("123", "94 MyJsoup - printersTable" + printersTable);
         Elements trs = null;// save all line in linesArrInPrintersTable
         trs= printersTable.getElementsByTag("tr"); // array of tr in printers table !
         Elements trsGood = new Elements();
         for (Element tr : trs) {
-            if ((tr.hasAttr("td") && (tr.hasAttr("bgcolor")))) {
+            if (tr.select("td").size()>0) {
+
                 trsGood.add(tr);
+                Log.d("123", "114 myjsoup");
+            }
+            else {
+                Log.d("123", "no hasattr");
             }
         }
         return trsGood;

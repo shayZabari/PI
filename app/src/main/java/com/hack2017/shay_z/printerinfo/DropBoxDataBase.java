@@ -70,10 +70,10 @@ public class DropBoxDataBase extends AsyncTask<String, Integer, ArrayList<Univer
         JSONObject parentJson;
         try {
 
-            Log.e("123", "80-DropBoxDataBase-stringFromUrl stringFromUrl is= " + stringFromUrl);
+
             parentJson = new JSONObject(stringFromUrl);
             JSONArray parentArray = parentJson.getJSONArray("University"); // array of universities from dropbox file.
-            Log.e("123", "85-DropBoxDataBase-parent array is =" + parentArray.toString());
+            Log.d("123", "85-DropBoxDataBase-parent array is =" + parentArray.toString());
 
             for (int i = 0; i < parentArray.length(); i++) {  // iter on parent array(universities array from dropbox file.)
                 Log.d("123", "CURRENT PARENT ARRAY IS  = " + parentArray.get(i));
