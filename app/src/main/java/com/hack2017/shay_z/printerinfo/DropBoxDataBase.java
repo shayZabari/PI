@@ -47,7 +47,8 @@ public class DropBoxDataBase extends AsyncTask<String, Integer, ArrayList<Univer
         try {
             if (UrlUtils.getStringFromUrl(params[0]) != null)
                 stringFromUrl = UrlUtils.getStringFromUrl(params[0]);
-            else return null;
+            else
+                return null;
         } catch (NullPointerException e) {
             Log.d("123", "59 null pointer exception" + e.getMessage());
             return null;
@@ -77,7 +78,12 @@ public class DropBoxDataBase extends AsyncTask<String, Integer, ArrayList<Univer
 
             for (int i = 0; i < parentArray.length(); i++) {  // iter on parent array(universities array from dropbox file.)
                 Log.d("123", "CURRENT PARENT ARRAY IS  = " + parentArray.get(i));
-                universities.add(new University(mainActivity,parentArray.getJSONObject(i).getString("url"), parentArray.getJSONObject(i).getString("name"), parentArray.getJSONObject(i).getString("logo")));
+                universities.add(new University(parentArray.getJSONObject(i).getString("url"), parentArray.getJSONObject(i).getString("name"), parentArray.getJSONObject(i).getString("logo")));
+                String uName = universities.get(i).getName();
+                String uLogoUrl = universities.get(i).getLogoUrl();
+                universities.get(i).setImagePath( // set path ++ save logo !!
+                        UrlUtils.saveImage(mainActivity, uName, uLogoUrl)
+                );
                 if (universities.get(i).getUrl() != null) {
                     Log.d("123", "inside IF STATMENT  = ");
                     universities.get(i).table = new MyJsoup(mainActivity).getTable(universities.get(i).getUrl());

@@ -11,9 +11,26 @@ import java.io.Serializable;
  */
 
 public class University implements Serializable {
-    private final Context mainActivity;
-    private String url, name,logoUrl,imagePath;
+//    private final Context mainActivity;
+    private String url;
+    private String name;
+    private String logoUrl;
+    private String imagePath;
     public Table table;
+
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
 
 
     public Bitmap getBitmap() {
@@ -25,11 +42,11 @@ public class University implements Serializable {
 //    }
 
 
-    public University(Context context, String url, String name, String logoUrl) {
-        this.mainActivity = context;
+    public University(String url, String name, String logoUrl) {
+//        this.mainActivity = context;
         this.url = url;
         this.name = name;
-        imagePath = UrlUtils.saveImage(mainActivity, name, logoUrl);
+//        imagePath = UrlUtils.saveImage(mainActivity, name, logoUrl);
         this.logoUrl = logoUrl;
 //        setDrawbleLogo(logoUrl);
 //        pathandimage = setBitMapLogo(logoUrl);

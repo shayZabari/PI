@@ -58,6 +58,7 @@ public class FragmentUniversityList extends Fragment {
         if (getArguments() != null) {
             try {
                 universities = (ArrayList<University>) getArguments().getSerializable(ARG_TAG);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -92,6 +93,7 @@ public class FragmentUniversityList extends Fragment {
         @NonNull
         @Override
         public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
             View v = convertView;
             if (v == null) {
                 LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
