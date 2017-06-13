@@ -77,7 +77,7 @@ public class DropBoxDataBase extends AsyncTask<String, Integer, ArrayList<Univer
 
             for (int i = 0; i < parentArray.length(); i++) {  // iter on parent array(universities array from dropbox file.)
                 Log.d("123", "CURRENT PARENT ARRAY IS  = " + parentArray.get(i));
-                universities.add(new University(parentArray.getJSONObject(i).getString("url"), parentArray.getJSONObject(i).getString("name"), parentArray.getJSONObject(i).getString("logo")));
+                universities.add(new University(mainActivity,parentArray.getJSONObject(i).getString("url"), parentArray.getJSONObject(i).getString("name"), parentArray.getJSONObject(i).getString("logo")));
                 if (universities.get(i).getUrl() != null) {
                     Log.d("123", "inside IF STATMENT  = ");
                     universities.get(i).table = new MyJsoup(mainActivity).getTable(universities.get(i).getUrl());
