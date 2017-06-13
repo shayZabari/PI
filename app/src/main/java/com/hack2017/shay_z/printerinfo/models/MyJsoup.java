@@ -93,7 +93,7 @@ public class MyJsoup {
             }
             
         }
-        table.subjects = getSubjects();
+        table.subjects = getSubjects(trsInPrintersTable);
         
 
         
@@ -193,8 +193,15 @@ public class MyJsoup {
         this.context = context;
     }
 
-    public ArrayList<Subject> getSubjects() {
-        // TODO: 12-Jun-17  
+    public ArrayList<Subject> getSubjects(Elements trsInPrintersTable) {
+        Elements tds =trsInPrintersTable.get(0).getElementsByTag("td");
+        Subject subject = null;
+        for (int i = 0; i < tds.size(); i++) {
+        subject = new Subject();
+            subject.name = tds.get(i).text().trim();
+            subject.getPosition = i;
+        }
+            subjects.add(subject);
         return subjects;
     }
 }
