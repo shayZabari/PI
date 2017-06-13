@@ -200,8 +200,8 @@ public class MyJsoup {
         subject = new Subject();
             subject.name = tds.get(i).text().trim();
             subject.getPosition = i;
-        }
             subjects.add(subject);
+        }
         return subjects;
     }
 }
