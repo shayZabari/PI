@@ -1,7 +1,10 @@
 package com.hack2017.shay_z.printerinfo.models;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
@@ -9,6 +12,10 @@ import android.widget.Toast;
 import com.hack2017.shay_z.printerinfo.controllers.MainActivity;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -21,6 +28,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static android.R.attr.name;
 import static android.R.id.message;
 
 /**
@@ -101,5 +109,47 @@ public class UrlUtils {
 
     public void addMainActivity(MainActivity activity) {
         this.activity = activity;
+    }
+
+    public  static String saveImage(Context context, String name, String logoUrl) {
+        Bitmap bitmap = null;
+        InputStream inputStream = null;
+        try {
+            inputStream = new URL(logoUrl).openStream();
+            bitmap = BitmapFactory.decodeStream(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ContextWrapper cw = new ContextWrapper(context);
+        File directory = cw.getDir("images", Context.MODE_PRIVATE);
+        File myPathandimage = new File(directory, name +".jpg");
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(myPathandimage);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+        Log.d("123", "sssssssssssssssssssssssssssss"+directory.getAbsolutePath());
+
+        return directory.getAbsolutePath();
+    }
+
+    public static Bitmap loadImage(String imagePath, String imageName) {
+        File f = new File(imagePath, imageName + ".jpg");
+        Bitmap bitmap = null;
+        try {
+            bitmap=BitmapFactory.decodeStream(new FileInputStream(f));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
     }
 }

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 public  class LineInTable implements Serializable {
     public String status = null;
     public String hexColor = null;
-    //    public int count=0; temp removed // TODO: 02-Jun-17  
     public ArrayList<String> stringOfAllTheLine = new ArrayList<>();
 
     @Override

@@ -1,7 +1,7 @@
 package com.hack2017.shay_z.printerinfo.controllers;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -24,6 +25,9 @@ import com.hack2017.shay_z.printerinfo.models.ExeptionInterface;
 import com.hack2017.shay_z.printerinfo.models.University;
 import com.hack2017.shay_z.printerinfo.models.UrlUtils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
@@ -168,6 +172,10 @@ refresh();
 
 
     }
+
+
+
+
 
 
     @Override

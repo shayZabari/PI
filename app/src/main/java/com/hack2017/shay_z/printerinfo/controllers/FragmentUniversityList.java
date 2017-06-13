@@ -56,7 +56,11 @@ public class FragmentUniversityList extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            universities = (ArrayList<University>) getArguments().getSerializable(ARG_TAG);
+            try {
+                universities = (ArrayList<University>) getArguments().getSerializable(ARG_TAG);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -102,7 +106,7 @@ public class FragmentUniversityList extends Fragment {
                 });
                 TextView textInfo = (TextView) v.findViewById(R.id.tvInfo1);
                 ImageView imageView= (ImageView) v.findViewById(R.id.imgUniversityLogo);
-                imageView.setImageDrawable(list.get(position).getLogo());
+//                imageView.setImageBitmap(list.get(position).getBitmap());
                 textInfo.setText(list.get(position).getName());
 
             }

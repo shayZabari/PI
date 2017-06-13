@@ -10,9 +10,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by shay_z on 28-Apr-17.
