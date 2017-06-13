@@ -2,6 +2,7 @@ package com.hack2017.shay_z.printerinfo.models;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
 
 import java.io.Serializable;
 
@@ -15,9 +16,9 @@ public class University implements Serializable {
     public Table table;
 
 
-//    public Bitmap getBitmap() {
-//        return UrlUtils.loadImage(imagePath, name);
-//    }
+    public Bitmap getBitmap() {
+        return UrlUtils.loadImage(imagePath, name);
+    }
 
 //    public Drawable getLogo() {
 //        return logo;
@@ -28,7 +29,7 @@ public class University implements Serializable {
         this.mainActivity = context;
         this.url = url;
         this.name = name;
-//        imagePath = UrlUtils.saveImage(mainActivity, name, logoUrl);
+        imagePath = UrlUtils.saveImage(mainActivity, name, logoUrl);
         this.logoUrl = logoUrl;
 //        setDrawbleLogo(logoUrl);
 //        pathandimage = setBitMapLogo(logoUrl);
