@@ -27,6 +27,32 @@ public class MyJsoup {
     private String url;
 
 
+    public Table getTable(String url) {
+        this.url = url;
+        Document document = getDocument(url);
+        table.statusTableArr = (getStatusTableArr(document));
+        Elements trsInPrintersTable = getTrsFromPrintersTable(document);
+        for (Element tr : trsInPrintersTable) {
+            String bgColor = tr.getElementsByTag("td").get(0).attr("bgcolor").trim();
+            LineInTable lineInTable = null;
+            for (StatusTable statusTable : table.statusTableArr) {
+                if (statusTable.hexColor.equals(bgColor)) { //if current status equal current printerTable bgcolor
+                    statusTable.count += 1;
+                    lineInTable = new LineInTable();  // NEW OBJECT OF LineInTable
+                    Elements lineTDS = tr.getElementsByTag("td"); // ARRAY OF TD IN CURRENT TR
+                    for (Element td : lineTDS) { // ITER ON TD'S OF CURRENT ROW
+                        lineInTable.status = statusTable.statusID;
+                        lineInTable.hexColor = statusTable.hexColor;
+                        lineInTable.stringOfAllTheLine.add(td.text().trim()); // add single td to strings in LineInTable //need ???
+                    }
+                    statusTable.allLinesOfStatus.add(lineInTable);
+                }
+            }
+        }
+        table.subjects = getSubjects(trsInPrintersTable);
+        return table;
+    }
+
     public Document getDocument(String url) {
 
         try {
@@ -36,13 +62,12 @@ public class MyJsoup {
             }
 
 
-            } catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             Log.e("123", "41 myjsoup" + e.getMessage());
         }
         return null;
     }
-
     public ArrayList<StatusTable> getStatusTableArr(Document document) {
         //  **  STATUS TABLE  **   ( examples »  LineInTable OK / No answer / Non Active / Notification  /Alert / Non Rec. Msg
         Log.d("123", "ENTERING STATUS TABLE");
@@ -69,135 +94,33 @@ public class MyJsoup {
         }
         return statusTableArr;
     }
-
-    public Table getTable(String url) {
-        this.url = url;
-        Document document = getDocument(url);
-        table.statusTableArr = (getStatusTableArr(document));
-        Elements trsInPrintersTable = getTrsFromPrintersTable(document);
-        for (Element tr : trsInPrintersTable) {
-            String bgColor = tr.getElementsByTag("td").get(0).attr("bgcolor").trim();
-            LineInTable lineInTable = null;
-            for (StatusTable statusTable : table.statusTableArr) {
-                if (statusTable.hexColor.equals(bgColor)) { //if current status equal current printerTable bgcolor
-                    statusTable.count += 1;
-                    lineInTable = new LineInTable();  // NEW OBJECT OF LineInTable
-                Elements lineTDS = tr.getElementsByTag("td"); // ARRAY OF TD IN CURRENT TR
-                for (Element td : lineTDS) { // ITER ON TD'S OF CURRENT ROW
-                    lineInTable.status = statusTable.statusID;
-                    lineInTable.hexColor = statusTable.hexColor;
-                    lineInTable.stringOfAllTheLine.add(td.text().trim()); // add single td to strings in LineInTable //need ???
-                }
-                statusTable.allLinesOfStatus.add(lineInTable);
-                }
-            }
-            
-        }
-        table.subjects = getSubjects(trsInPrintersTable);
-        
-
-        
-//        return getPrinterTable(document);
-        return table;
-    }
-
     private Elements getTrsFromPrintersTable(Document document) {
         Log.d("123", "ENTERING PRINTERS TABLE");
         Element printersTable = null;
         printersTable = document.select("table").get(1);
 //        Log.d("123", "94 MyJsoup - printersTable" + printersTable);
         Elements trs = null;// save all line in linesArrInPrintersTable
-        trs= printersTable.getElementsByTag("tr"); // array of tr in printers table !
+        trs = printersTable.getElementsByTag("tr"); // array of tr in printers table !
         Elements trsGood = new Elements();
         for (Element tr : trs) {
-            if (tr.select("td").size()>0) {
+            if (tr.select("td").size() > 0) {
 
                 trsGood.add(tr);
                 Log.d("123", "114 myjsoup");
-            }
-            else {
+            } else {
                 Log.d("123", "no hasattr");
             }
         }
         return trsGood;
     }
-
-
-//    // **  PRINTERS TABLE **
-//    private Table getPrinterTable(Document document) {// save all second table(printer table)
-//        Log.d("123", "ENTERING PRINTERS TABLE");
-//        Element printersTable = null;
-//        printersTable = document.select("table").get(1);
-//        Log.d("123", "94 MyJsoup - printersTable" + printersTable);
-//        Elements trs = null;// save all line in linesArrInPrintersTable
-//        trs = printersTable.getElementsByTag("tr"); // array of tr in printers table !
-//        
-
-//// SUBJECT TR
-//        Elements tdsID = trs.get(0).getElementsByTag("td");
-//        for (int i = 0; i < tdsID.size(); i++) {
-//            Subject subject = new Subject();
-//            subject.name = tdsID.get(i).text().trim();
-//            subject.getPosition = i;
-//            subjects.add(subject);
-//            Log.d("123", "element tdID id " + tdsID.get(i).text().trim());
-//        }
-
-//        for (Element tr : trs) { // ITER ON TR printer table ***
-//            String bgColor = null;// hex color
-//
-//            // save bgColor of the first td in all trs
-//            try {
-//                if (!(tr.hasAttr("td") || !(tr.hasAttr("bgcolor")))) {
-//                    break;
-//                }
-//                bgColor = tr.getElementsByTag("td").get(0).attr("bgcolor").trim();
-////                Log.d("123", tr.getElementsByTag("td").toString());
-//
-//            } catch (Exception e) {
-//                Log.e("123", "127-MyJsoup - " + e.getMessage());
-//                e.printStackTrace();
-//            }
-//            LineInTable lineInTable = null;
-//            for (StatusTable statusTable : statusTableArr) {// ITER ON STATUS HEX COLOR ***
-//                if (statusTable.hexColor.equals(bgColor)) { //if current status equal current printerTable bgcolor
-//                    statusTable.count += 1;
-//                  lineInTable = new LineInTable();  // NEW OBJECT OF LineInTable
-//                    Elements lineTDS = tr.getElementsByTag("td"); // ARRAY OF TD IN CURRENT TR
-//                    for (Element td : lineTDS) { // ITER ON TD'S OF CURRENT ROW
-//                        lineInTable.status = statusTable.statusID;
-//                        lineInTable.hexColor = statusTable.hexColor;
-//                        lineInTable.stringOfAllTheLine.add(td.text().trim()); // add single td to strings in LineInTable //need ???
-//                    }
-//
-////                        lines.add(lineInTable); temp removed 0524 17:19
-//                    statusTable.allLinesOfStatus.add(lineInTable); // TODO: 24-May-17
-//                }
-//                table.statusTableArr = statusTableArr;
-//                table.subjects = subjects;
-//            }
-//        }
-//
-//        // END OF ALL ITERS ***
-//
-////        table.lineInTableArrayList = lines; temp removed // TODO: 02-Jun-17
-//
-//
-////                UrlUtils.addLog(context, e, e.toString());
-//
-//
-//        return table;
-//    }
-
     public MyJsoup(Context context) {
         this.context = context;
     }
-
     public ArrayList<Subject> getSubjects(Elements trsInPrintersTable) {
-        Elements tds =trsInPrintersTable.get(0).getElementsByTag("td");
+        Elements tds = trsInPrintersTable.get(0).getElementsByTag("td");
         Subject subject = null;
         for (int i = 0; i < tds.size(); i++) {
-        subject = new Subject();
+            subject = new Subject();
             subject.name = tds.get(i).text().trim();
             subject.getPosition = i;
             subjects.add(subject);

@@ -16,10 +16,10 @@ import java.util.ArrayList;
  */
 
 public class University implements Serializable {
-    private String url,name;
-//    public ArrayList<LineInTable> printerStatuses; // may need to delete after creating Table object :
+    private String url, name;
+    //    public ArrayList<LineInTable> printerStatuses; // may need to delete after creating Table object :
     public Table table;
-        Drawable logo;
+    Drawable logo;
 
 
     public Drawable getLogo() {
@@ -27,7 +27,7 @@ public class University implements Serializable {
     }
 
 
-    public University(String url, String name, String logoUrl)  {
+    public University(String url, String name, String logoUrl) {
         this.url = url;
         setDrawbleLogo(logoUrl);
         this.name = name;
