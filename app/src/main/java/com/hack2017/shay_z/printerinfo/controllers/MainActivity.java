@@ -26,6 +26,7 @@ import com.hack2017.shay_z.printerinfo.R;
 import com.hack2017.shay_z.printerinfo.DropBoxDataBase;
 import com.hack2017.shay_z.printerinfo.models.ExeptionInterface;
 import com.hack2017.shay_z.printerinfo.models.MyJsoup;
+import com.hack2017.shay_z.printerinfo.models.Table;
 import com.hack2017.shay_z.printerinfo.models.University;
 import com.hack2017.shay_z.printerinfo.models.UrlUtils;
 
@@ -178,11 +179,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onOniversitySelected(int position) {
         University mUniversity = universities.get(position);
-        mUniversity.table = new MyJsoup(this).getTable(mUniversity.getUrl());
+        new MyJsoup(this).execute(mUniversity);
 //        Toast.makeText(this, "UNIVERSITY POSITION  " + position, Toast.LENGTH_SHORT).show();
 //        fm.beginTransaction().replace(R.id.content_main, PrintersInfoFragment.newInstance(universities.get(position))).commit();
 
-        fm.beginTransaction().replace(R.id.content_main, FragmentUniversityPage.newInstance(universities.get(position))).commit();
+
     }
 
 
@@ -208,4 +209,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    public void onTableFinished(University university) {
+        fm.beginTransaction().replace(R.id.content_main, FragmentUniversityPage.newInstance(university)).commit();
+    }
 }

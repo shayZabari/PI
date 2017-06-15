@@ -1,8 +1,9 @@
 package com.hack2017.shay_z.printerinfo.models;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.hack2017.shay_z.printerinfo.controllers.MainActivity;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,13 +18,17 @@ import java.util.ArrayList;
  * Created by shay_z on 28-Apr-17.
  */
 
-public class MyJsoup extends AsyncTask<Object, Object, Table> {
+public class MyJsoup extends AsyncTask<University, Object, University> {
 
-    private final Context context;
+    private final MainActivity mainActivity;
     Table table = new Table();
     ArrayList<StatusTable> statusTableArr = new ArrayList<>();
     ArrayList<Subject> subjects = new ArrayList<>();
     private String url;
+
+    public MyJsoup(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
+    }
 
 
     public Table getTable(String url) {
@@ -107,7 +112,7 @@ public class MyJsoup extends AsyncTask<Object, Object, Table> {
             if (tr.select("td").size() > 0) {
 
                 trsGood.add(tr);
-                Log.d("123", "114 myjsoup");
+//                Log.d("123", "114 myjsoup");
             } else {
                 Log.d("123", "no hasattr");
             }
@@ -115,9 +120,7 @@ public class MyJsoup extends AsyncTask<Object, Object, Table> {
         return trsGood;
     }
 
-    public MyJsoup(Context context) {
-        this.context = context;
-    }
+
 
     public ArrayList<Subject> getSubjects(Elements trsInPrintersTable) {
         Elements tds = trsInPrintersTable.get(0).getElementsByTag("td");
@@ -132,9 +135,9 @@ public class MyJsoup extends AsyncTask<Object, Object, Table> {
     }
 
     @Override
-    protected Table doInBackground(Object... strings) {
-
-        this.url = url;
+    protected University doInBackground(University... universities) {
+        University u = universities[0];
+        this.url = u.getUrl();
         Document document = getDocument(url);
         table.statusTableArr = (getStatusTableArr(document));
         Elements trsInPrintersTable = getTrsFromPrintersTable(document);
@@ -156,12 +159,15 @@ public class MyJsoup extends AsyncTask<Object, Object, Table> {
             }
         }
         table.subjects = getSubjects(trsInPrintersTable);
-        return table;
+        u.table = table;
+        return u;
+
     }
 
     @Override
-    protected void onPostExecute(Table table) {
-        super.onPostExecute(table);
+    protected void onPostExecute(University university) {
+        Log.d("123", university.toString());
+        mainActivity.onTableFinished(university);
     }
 }
 
