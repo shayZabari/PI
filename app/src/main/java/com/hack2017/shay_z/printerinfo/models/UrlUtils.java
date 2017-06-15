@@ -5,10 +5,13 @@ import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.hack2017.shay_z.printerinfo.controllers.MainActivity;
 
 import java.io.BufferedReader;
@@ -22,11 +25,14 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static android.R.attr.name;
 import static android.R.id.message;
@@ -36,7 +42,31 @@ import static android.R.id.message;
  */
 
 public class UrlUtils {
+    private static final String SAVE_UNIVERSITIES = "universities";
     private MainActivity activity;
+
+
+    public static void savePreferences(Context context, ArrayList<University> universities) {
+        // save preferences
+        SharedPreferences editor = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor prefEditor = editor.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(universities);
+
+        Log.d("123", "json is "+universities);
+        prefEditor.putString(SAVE_UNIVERSITIES,json );
+        prefEditor.commit();
+    }
+
+    public static ArrayList<University> loadUniversities(Context context) {
+        SharedPreferences appSharedPrefs = PreferenceManager
+                .getDefaultSharedPreferences(context.getApplicationContext());
+        Gson gson = new Gson();
+        String json = appSharedPrefs.getString(SAVE_UNIVERSITIES, "");
+        Type type = new TypeToken<List<University>>() {
+        }.getType();
+        return gson.fromJson(json, type);
+    }
 
     public static String addLog(Context context, Exception e, String problem)  {
 //        StringWriter sw = new StringWriter();

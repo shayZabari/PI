@@ -1,6 +1,7 @@
 package com.hack2017.shay_z.printerinfo.models;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import org.jsoup.Jsoup;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
  * Created by shay_z on 28-Apr-17.
  */
 
-public class MyJsoup {
+public class MyJsoup extends AsyncTask<String,String,String>{
 
     private final Context context;
     Table table = new Table();
@@ -124,6 +125,35 @@ public class MyJsoup {
             subjects.add(subject);
         }
         return subjects;
+    }
+
+    @Override
+    protected String doInBackground(String... strings) {
+        public Table getTable(String url) {
+            this.url = url;
+            Document document = getDocument(url);
+            table.statusTableArr = (getStatusTableArr(document));
+            Elements trsInPrintersTable = getTrsFromPrintersTable(document);
+            for (Element tr : trsInPrintersTable) {
+                String bgColor = tr.getElementsByTag("td").get(0).attr("bgcolor").trim();
+                LineInTable lineInTable = null;
+                for (StatusTable statusTable : table.statusTableArr) {
+                    if (statusTable.hexColor.equals(bgColor)) { //if current status equal current printerTable bgcolor
+                        statusTable.count += 1;
+                        lineInTable = new LineInTable();  // NEW OBJECT OF LineInTable
+                        Elements lineTDS = tr.getElementsByTag("td"); // ARRAY OF TD IN CURRENT TR
+                        for (Element td : lineTDS) { // ITER ON TD'S OF CURRENT ROW
+                            lineInTable.status = statusTable.statusID;
+                            lineInTable.hexColor = statusTable.hexColor;
+                            lineInTable.stringOfAllTheLine.add(td.text().trim()); // add single td to strings in LineInTable //need ???
+                        }
+                        statusTable.allLinesOfStatus.add(lineInTable);
+                    }
+                }
+            }
+            table.subjects = getSubjects(trsInPrintersTable);
+            return table;
+        }
     }
 }
 

@@ -1,8 +1,10 @@
 package com.hack2017.shay_z.printerinfo.controllers;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -19,28 +21,32 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.hack2017.shay_z.printerinfo.R;
 import com.hack2017.shay_z.printerinfo.DropBoxDataBase;
 import com.hack2017.shay_z.printerinfo.models.ExeptionInterface;
+import com.hack2017.shay_z.printerinfo.models.MyJsoup;
 import com.hack2017.shay_z.printerinfo.models.University;
 import com.hack2017.shay_z.printerinfo.models.UrlUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         FragmentUniversityList.OnUniversitySelectedListener,
         FragmentUniversityPage.OnRefreshSubjectListener, ExeptionInterface {
-        DropBoxDataBase d;
+    DropBoxDataBase d;
 
 
     private static final String SAVE_UNIVERSITIES = "123";
     FragmentManager fm = getSupportFragmentManager();
     private ArrayList<University> universities;
-    private String dropboxUrl="https://dl.dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0";
+    private String dropboxUrl = "https://dl.dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0";
     private String exceptionMessage;
 
     @Override
@@ -61,14 +67,18 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         Log.d("shay", "shay on create !");
-refresh();
+//refresh();
 
-//        //load preferences
+        //load preferences
+        if (UrlUtils.loadUniversities(this) != null) {
+            universities = UrlUtils.loadUniversities(this);
+        }
 //        SharedPreferences appSharedPrefs = PreferenceManager
 //                .getDefaultSharedPreferences(this.getApplicationContext());
 //        Gson gson = new Gson();
 //        String json = appSharedPrefs.getString(SAVE_UNIVERSITIES, "");
-//        Type type = new TypeToken<List<University>>(){}.getType();
+//        Type type = new TypeToken<List<University>>() {
+//        }.getType();
 //        universities = gson.fromJson(json, type);
     }
 
@@ -99,8 +109,8 @@ refresh();
         //noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.action_settings:
-                if (exceptionMessage!=null)
-        Toast.makeText(getApplicationContext(), exceptionMessage, Toast.LENGTH_LONG).show();
+                if (exceptionMessage != null)
+                    Toast.makeText(getApplicationContext(), exceptionMessage, Toast.LENGTH_LONG).show();
                 return true;
             case R.id.refresh:
                 refresh();
@@ -113,7 +123,7 @@ refresh();
     private void refresh() {
 
         findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
-            d = new DropBoxDataBase(dropboxUrl, this);
+        d = new DropBoxDataBase(dropboxUrl, this);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -149,6 +159,7 @@ refresh();
     }
 
     public void getUniversityDataBase(ArrayList<University> universities) {
+
         Log.d("123", "Mainactivity_140");
         this.universities = universities;
 //        ProgressDialog progressDialog = new ProgressDialog(this);
@@ -160,27 +171,14 @@ refresh();
         Toast.makeText(this, "" + sizeTemp + "" + sizeTemp + "" + sizeTemp, Toast.LENGTH_LONG).show();
 
         Log.i("a", "finish universities size= " + universities.size());
-
-// save preferences
-//        SharedPreferences editor = PreferenceManager.getDefaultSharedPreferences(this);
-//        SharedPreferences.Editor prefEditor = editor.edit();
-        Gson gson = new Gson();
-//        Log.d("123", "json is "+json);
-//        prefEditor.putString(SAVE_UNIVERSITIES, json);
-//        prefEditor.commit();
-
-
-
+        UrlUtils.savePreferences(this, universities);
     }
-
-
-
-
 
 
     @Override
     public void onOniversitySelected(int position) {
-
+        University mUniversity = universities.get(position);
+        mUniversity.table = new MyJsoup(this).getTable(mUniversity.getUrl());
 //        Toast.makeText(this, "UNIVERSITY POSITION  " + position, Toast.LENGTH_SHORT).show();
 //        fm.beginTransaction().replace(R.id.content_main, PrintersInfoFragment.newInstance(universities.get(position))).commit();
 
@@ -205,7 +203,7 @@ refresh();
     }
 
     private void maketoast() {
-        Log.d("123","this = "+this.toString());
+        Log.d("123", "this = " + this.toString());
 //        Toast.makeText(this,"toasting",Toast.LENGTH_LONG).show();
     }
 

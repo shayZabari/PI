@@ -86,7 +86,7 @@ public class DropBoxDataBase extends AsyncTask<String, Integer, ArrayList<Univer
                 );
                 if (universities.get(i).getUrl() != null) {
                     Log.d("123", "inside IF STATMENT  = ");
-                    universities.get(i).table = new MyJsoup(mainActivity).getTable(universities.get(i).getUrl());
+//                    universities.get(i).table = new MyJsoup(mainActivity).getTable(universities.get(i).getUrl()); // TODO: 14/06/2017  
                 } else {
                     Log.e("123", "universities.get(i).getTable IS NULLLLLLLLLLL!!!!!!");
 
