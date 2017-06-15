@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * Created by shay_z on 28-Apr-17.
  */
 
-public class MyJsoup extends AsyncTask<String,String,String>{
+public class MyJsoup extends AsyncTask<Object, Object, Table> {
 
     private final Context context;
     Table table = new Table();
@@ -67,6 +67,7 @@ public class MyJsoup extends AsyncTask<String,String,String>{
         }
         return null;
     }
+
     public ArrayList<StatusTable> getStatusTableArr(Document document) {
         //  **  STATUS TABLE  **   ( examples »  LineInTable OK / No answer / Non Active / Notification  /Alert / Non Rec. Msg
         Log.d("123", "ENTERING STATUS TABLE");
@@ -93,6 +94,7 @@ public class MyJsoup extends AsyncTask<String,String,String>{
         }
         return statusTableArr;
     }
+
     private Elements getTrsFromPrintersTable(Document document) {
         Log.d("123", "ENTERING PRINTERS TABLE");
         Element printersTable = null;
@@ -112,9 +114,11 @@ public class MyJsoup extends AsyncTask<String,String,String>{
         }
         return trsGood;
     }
+
     public MyJsoup(Context context) {
         this.context = context;
     }
+
     public ArrayList<Subject> getSubjects(Elements trsInPrintersTable) {
         Elements tds = trsInPrintersTable.get(0).getElementsByTag("td");
         Subject subject = null;
@@ -128,32 +132,36 @@ public class MyJsoup extends AsyncTask<String,String,String>{
     }
 
     @Override
-    protected String doInBackground(String... strings) {
-        public Table getTable(String url) {
-            this.url = url;
-            Document document = getDocument(url);
-            table.statusTableArr = (getStatusTableArr(document));
-            Elements trsInPrintersTable = getTrsFromPrintersTable(document);
-            for (Element tr : trsInPrintersTable) {
-                String bgColor = tr.getElementsByTag("td").get(0).attr("bgcolor").trim();
-                LineInTable lineInTable = null;
-                for (StatusTable statusTable : table.statusTableArr) {
-                    if (statusTable.hexColor.equals(bgColor)) { //if current status equal current printerTable bgcolor
-                        statusTable.count += 1;
-                        lineInTable = new LineInTable();  // NEW OBJECT OF LineInTable
-                        Elements lineTDS = tr.getElementsByTag("td"); // ARRAY OF TD IN CURRENT TR
-                        for (Element td : lineTDS) { // ITER ON TD'S OF CURRENT ROW
-                            lineInTable.status = statusTable.statusID;
-                            lineInTable.hexColor = statusTable.hexColor;
-                            lineInTable.stringOfAllTheLine.add(td.text().trim()); // add single td to strings in LineInTable //need ???
-                        }
-                        statusTable.allLinesOfStatus.add(lineInTable);
+    protected Table doInBackground(Object... strings) {
+
+        this.url = url;
+        Document document = getDocument(url);
+        table.statusTableArr = (getStatusTableArr(document));
+        Elements trsInPrintersTable = getTrsFromPrintersTable(document);
+        for (Element tr : trsInPrintersTable) {
+            String bgColor = tr.getElementsByTag("td").get(0).attr("bgcolor").trim();
+            LineInTable lineInTable = null;
+            for (StatusTable statusTable : table.statusTableArr) {
+                if (statusTable.hexColor.equals(bgColor)) { //if current status equal current printerTable bgcolor
+                    statusTable.count += 1;
+                    lineInTable = new LineInTable();  // NEW OBJECT OF LineInTable
+                    Elements lineTDS = tr.getElementsByTag("td"); // ARRAY OF TD IN CURRENT TR
+                    for (Element td : lineTDS) { // ITER ON TD'S OF CURRENT ROW
+                        lineInTable.status = statusTable.statusID;
+                        lineInTable.hexColor = statusTable.hexColor;
+                        lineInTable.stringOfAllTheLine.add(td.text().trim()); // add single td to strings in LineInTable //need ???
                     }
+                    statusTable.allLinesOfStatus.add(lineInTable);
                 }
             }
-            table.subjects = getSubjects(trsInPrintersTable);
-            return table;
         }
+        table.subjects = getSubjects(trsInPrintersTable);
+        return table;
+    }
+
+    @Override
+    protected void onPostExecute(Table table) {
+        super.onPostExecute(table);
     }
 }
 
