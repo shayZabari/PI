@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-
+    // callback after fab collapsed
     @Override
     public void refreshSubject(University university) {
         universities1.set(universityPosition,university);
@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity
 //        Toast.makeText(this,"toasting",Toast.LENGTH_LONG).show();
     }
 
-
+    // callback after jsoup finished
     public void onTableFinished(University university) {
         Log.d("123", "test "+universities1.get(0).table.subjects.get(0).checkBoxStatus+"-");
         for (int i = 0; i < university.table.subjects.size(); i++) {
