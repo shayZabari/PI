@@ -46,7 +46,7 @@ public class UrlUtils {
     private MainActivity activity;
 
 
-    public static void savePreferences(Context context, ArrayList<University> universities) {
+    public static void spSaveUniversities(Context context, ArrayList<University> universities) {
         // save preferences
         SharedPreferences editor = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor prefEditor = editor.edit();
@@ -58,7 +58,7 @@ public class UrlUtils {
         prefEditor.commit();
     }
 
-    public static ArrayList<University> loadUniversities(Context context) {
+    public static ArrayList<University> spLoadUniversities(Context context) {
         SharedPreferences appSharedPrefs = PreferenceManager
                 .getDefaultSharedPreferences(context.getApplicationContext());
         Gson gson = new Gson();

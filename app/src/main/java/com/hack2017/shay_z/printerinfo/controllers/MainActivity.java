@@ -1,10 +1,6 @@
 package com.hack2017.shay_z.printerinfo.controllers;
 
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -17,25 +13,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.hack2017.shay_z.printerinfo.R;
 import com.hack2017.shay_z.printerinfo.DropBoxDataBase;
 import com.hack2017.shay_z.printerinfo.models.ExeptionInterface;
 import com.hack2017.shay_z.printerinfo.models.MyJsoup;
-import com.hack2017.shay_z.printerinfo.models.Table;
 import com.hack2017.shay_z.printerinfo.models.University;
 import com.hack2017.shay_z.printerinfo.models.UrlUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -71,8 +58,8 @@ public class MainActivity extends AppCompatActivity
 //refresh();
 
         //load preferences
-        if (UrlUtils.loadUniversities(this) != null) {
-            universities = UrlUtils.loadUniversities(this);
+        if (UrlUtils.spLoadUniversities(this) != null) {
+            universities = UrlUtils.spLoadUniversities(this);
         }
 //        SharedPreferences appSharedPrefs = PreferenceManager
 //                .getDefaultSharedPreferences(this.getApplicationContext());
@@ -172,7 +159,7 @@ public class MainActivity extends AppCompatActivity
         Toast.makeText(this, "" + sizeTemp + "" + sizeTemp + "" + sizeTemp, Toast.LENGTH_LONG).show();
 
         Log.i("a", "finish universities size= " + universities.size());
-        UrlUtils.savePreferences(this, universities);
+        UrlUtils.spSaveUniversities(this, universities);
     }
 
 
