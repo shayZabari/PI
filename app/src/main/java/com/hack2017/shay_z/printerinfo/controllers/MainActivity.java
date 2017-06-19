@@ -33,9 +33,10 @@ public class MainActivity extends AppCompatActivity
 
     private static final String SAVE_UNIVERSITIES = "123";
     FragmentManager fm = getSupportFragmentManager();
-    private ArrayList<University> universities;
+    private ArrayList<University> universities1;
     private String dropboxUrl = "https://dl.dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0";
     private String exceptionMessage;
+    int universityPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity
 
         //load preferences
         if (UrlUtils.spLoadUniversities(this) != null) {
-            universities = UrlUtils.spLoadUniversities(this);
+            universities1 = UrlUtils.spLoadUniversities(this);
         }
 //        SharedPreferences appSharedPrefs = PreferenceManager
 //                .getDefaultSharedPreferences(this.getApplicationContext());
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity
 //        String json = appSharedPrefs.getString(SAVE_UNIVERSITIES, "");
 //        Type type = new TypeToken<List<University>>() {
 //        }.getType();
-//        universities = gson.fromJson(json, type);
+//        universities1 = gson.fromJson(json, type);
     }
 
     @Override
@@ -123,8 +124,10 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_select_universities) {
-
-            fm.beginTransaction().replace(R.id.content_main, FragmentUniversityList.newInstance(universities)).commit();
+            if (UrlUtils.spLoadUniversities(this)!=null) {
+                universities1 =UrlUtils.spLoadUniversities(this);
+            }
+            fm.beginTransaction().replace(R.id.content_main, FragmentUniversityList.newInstance(universities1)).commit();
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
@@ -148,8 +151,8 @@ public class MainActivity extends AppCompatActivity
 
     public void getUniversityDataBase(ArrayList<University> universities) {
 
-        Log.d("123", "Mainactivity_140");
-        this.universities = universities;
+        this.universities1 = universities;
+        Log.d("123", "Mainactivity_155");
 //        ProgressDialog progressDialog = new ProgressDialog(this);
 //        progressDialog.setTitle("CONNECTING ...");
 //        progressDialog.setMessage("Please Wait");
@@ -158,17 +161,18 @@ public class MainActivity extends AppCompatActivity
         int sizeTemp = universities.size();
         Toast.makeText(this, "" + sizeTemp + "" + sizeTemp + "" + sizeTemp, Toast.LENGTH_LONG).show();
 
-        Log.i("a", "finish universities size= " + universities.size());
+        Log.i("a", "finish universities1 size= " + universities.size());
         UrlUtils.spSaveUniversities(this, universities);
     }
 
 
     @Override
     public void onOniversitySelected(int position) {
-        University mUniversity = universities.get(position);
+        universityPosition = position;
+        University mUniversity = universities1.get(position);
         new MyJsoup(this).execute(mUniversity);
 //        Toast.makeText(this, "UNIVERSITY POSITION  " + position, Toast.LENGTH_SHORT).show();
-//        fm.beginTransaction().replace(R.id.content_main, PrintersInfoFragment.newInstance(universities.get(position))).commit();
+//        fm.beginTransaction().replace(R.id.content_main, PrintersInfoFragment.newInstance(universities1.get(position))).commit();
 
 
     }
@@ -176,6 +180,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void refreshSubject(University university) {
+        universities1.set(universityPosition,university);
+        UrlUtils.spSaveUniversities(this, universities1);
         fm.beginTransaction().replace(R.id.content_main, FragmentUniversityPage.newInstance(university)).commit();
     }
 
@@ -197,6 +203,12 @@ public class MainActivity extends AppCompatActivity
 
 
     public void onTableFinished(University university) {
+        Log.d("123", "test "+universities1.get(0).table.subjects.get(0).checkBoxStatus+"-");
+        for (int i = 0; i < university.table.subjects.size(); i++) {
+                    university.table.subjects.get(i).checkBoxStatus=
+            universities1.get(universityPosition).table.subjects.get(i).checkBoxStatus;
+        }
+        universities1.set(universityPosition, university);
         fm.beginTransaction().replace(R.id.content_main, FragmentUniversityPage.newInstance(university)).commit();
     }
 }
