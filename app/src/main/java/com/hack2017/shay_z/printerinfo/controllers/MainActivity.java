@@ -149,6 +149,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    // callback from DropBoxDataBase
     public void getUniversityDataBase(ArrayList<University> universities) {
 
         this.universities1 = universities;
@@ -165,7 +166,7 @@ public class MainActivity extends AppCompatActivity
         UrlUtils.spSaveUniversities(this, universities);
     }
 
-
+    // calback from FragmentUniversityList
     @Override
     public void onOniversitySelected(int position) {
         universityPosition = position;
@@ -177,7 +178,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    // callback after fab collapsed
+    // callback after fab collapsed(FragmentUniversityPage)
     @Override
     public void refreshSubject(University university) {
         universities1.set(universityPosition,university);
