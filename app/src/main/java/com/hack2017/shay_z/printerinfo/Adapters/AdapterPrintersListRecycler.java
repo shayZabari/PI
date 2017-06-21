@@ -15,6 +15,8 @@ import com.hack2017.shay_z.printerinfo.models.Subject;
 
 import java.util.ArrayList;
 
+import static android.content.ContentValues.TAG;
+
 /**
  * Created by shay_z on 24-May-17.
  */
@@ -48,11 +50,11 @@ public class AdapterPrintersListRecycler extends RecyclerView.Adapter<AdapterPri
         String temp = "";
         for (int i = 0; i < currntLine.size(); i++) {
             try {
-                if ((subjects.get(i).checkBoxStatus != false) && (subjects.get(i) != null) && currntLine.get(i) != "")
+                if ((subjects.get(i).checkBoxStatus == true) && currntLine.get(i) != "")
                     temp = temp + ("[ " + currntLine.get(i) + " ]  ");
             } catch (Exception e) {
                 Toast.makeText(context, e.toString() + " " + Thread.currentThread().getStackTrace()[2].getLineNumber(), Toast.LENGTH_LONG).show();
-                Log.e("123", e.getStackTrace().toString());
+                Log.e(TAG, "onBindViewHolder: 57", e);
                 e.printStackTrace();
             }
 

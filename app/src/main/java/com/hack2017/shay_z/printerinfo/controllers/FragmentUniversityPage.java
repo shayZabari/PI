@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +20,11 @@ import com.hack2017.shay_z.printerinfo.Adapters.AdapterViewPagerPrintersList;
 import com.hack2017.shay_z.printerinfo.R;
 import com.hack2017.shay_z.printerinfo.models.Subject;
 import com.hack2017.shay_z.printerinfo.models.University;
+import com.hack2017.shay_z.printerinfo.models.UrlUtils;
 
 import java.util.ArrayList;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -86,6 +90,12 @@ public class FragmentUniversityPage extends Fragment {
 
                                            mBottomSheetBehavior1.setState(BottomSheetBehavior.STATE_EXPANDED);
                                        } else {
+                                           try {
+                                               UrlUtils.spSaveCheckboxs(getContext(), subjects, university);
+                                           } catch (Exception e) {
+                                               Log.e(TAG, "onClick: 96", e);
+                                               e.printStackTrace();
+                                           }
                                            university.table.subjects = subjects;
                                            mBottomSheetBehavior1.setState(BottomSheetBehavior.STATE_COLLAPSED);
                                            onRefreshSubjectListener.refreshSubject(university);

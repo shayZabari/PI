@@ -46,6 +46,31 @@ public class UrlUtils {
     private MainActivity activity;
 
 
+    public static void spSaveCheckboxs(Context context, ArrayList<Subject> subjects, University university) throws Exception {
+        SharedPreferences editor = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor prefEditor = editor.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(subjects);
+
+        String universityCheckboxes = university.getName() + "checkboxs";
+        prefEditor.putString(universityCheckboxes, json);
+        prefEditor.commit();
+    }
+
+    public static ArrayList<Subject> spLoadCheckboxes(Context context, University university) throws Exception {
+        SharedPreferences appSharedPrefs = PreferenceManager
+                .getDefaultSharedPreferences(context.getApplicationContext());
+        Gson gson = new Gson();
+
+
+        String universityCheckboxes = university.getName() + "checkboxs";
+        String json = appSharedPrefs.getString(universityCheckboxes, "");
+        Type type = new TypeToken<List<Subject>>() {
+        }.getType();
+        return gson.fromJson(json, type);
+    }
+
+
     public static void spSaveUniversities(Context context, ArrayList<University> universities) {
         // save preferences
         SharedPreferences editor = PreferenceManager.getDefaultSharedPreferences(context);

@@ -8,6 +8,6 @@ import java.io.Serializable;
 
 public class Subject implements Serializable {
     public String name;
-    public boolean checkBoxStatus;
+    public boolean checkBoxStatus = true;
     public int getPosition;
 }

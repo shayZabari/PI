@@ -156,7 +156,9 @@ public class MainActivity extends AppCompatActivity
 
     // callback from DropBoxDataBase
     public void getDropBoxDatbase(ArrayList<University> universities) {
+        if (universities1 != null) {
 
+        }
         this.universities1 = universities;
         Log.d("123", "Mainactivity_155");
 //        ProgressDialog progressDialog = new ProgressDialog(this);

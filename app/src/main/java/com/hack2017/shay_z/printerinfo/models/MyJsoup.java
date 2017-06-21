@@ -34,7 +34,7 @@ public class MyJsoup extends AsyncTask<University, Object, University> {
     }
 
 
-    public Table getTable(String url) {
+    public Table getTable(String url) throws Exception {
         this.url = url;
         Document document = getDocument(url);
         table.statusTableArr = (getStatusTableArr(document));
@@ -125,19 +125,22 @@ public class MyJsoup extends AsyncTask<University, Object, University> {
 
 
     //get subjects from printer table (ip/location/ etc..)
-    public ArrayList<Subject> getSubjects(Elements trsInPrintersTable) {
+    public ArrayList<Subject> getSubjects(Elements trsInPrintersTable) throws Exception {
         Elements tds = trsInPrintersTable.get(0).getElementsByTag("td");
         boolean firstTime = false;
         if (currentUniversity.table == null) {
             firstTime = true;
         }
         Subject subject;
+        ArrayList<Subject> tempSubjects = UrlUtils.spLoadCheckboxes(mainActivity, currentUniversity);
         for (int i = 0; i < tds.size(); i++) {
             subject = new Subject();
             subject.name = tds.get(i).text().trim();
             subject.getPosition = i;
-            if (!firstTime) {
-                subject.checkBoxStatus = currentUniversity.table.subjects.get(i).checkBoxStatus;
+            if (!firstTime && tempSubjects != null) {
+                if (tempSubjects.size() > 0)
+                    subject.checkBoxStatus = UrlUtils.spLoadCheckboxes(mainActivity, currentUniversity).get(i).checkBoxStatus;
+                subject.getPosition = UrlUtils.spLoadCheckboxes(mainActivity, currentUniversity).get(i).getPosition;
             }
             subjects.add(subject);
         }
@@ -173,7 +176,12 @@ public class MyJsoup extends AsyncTask<University, Object, University> {
             }
         }
         Log.d(TAG, "doInBackground: 176");
-        table.subjects = getSubjects(trsInPrintersTable);
+        try {
+            table.subjects = getSubjects(trsInPrintersTable);
+        } catch (Exception e) {
+            Log.e(TAG, "doInBackground: 179", e);
+            e.printStackTrace();
+        }
         Log.d(TAG, "doInBackground: 178");
         currentUniversity.table = table;
         return currentUniversity;
