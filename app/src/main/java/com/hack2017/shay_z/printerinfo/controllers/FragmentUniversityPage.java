@@ -86,6 +86,7 @@ public class FragmentUniversityPage extends Fragment {
 
                                            mBottomSheetBehavior1.setState(BottomSheetBehavior.STATE_EXPANDED);
                                        } else {
+                                           university.table.subjects = subjects;
                                            mBottomSheetBehavior1.setState(BottomSheetBehavior.STATE_COLLAPSED);
                                            onRefreshSubjectListener.refreshSubject(university);
                                        }

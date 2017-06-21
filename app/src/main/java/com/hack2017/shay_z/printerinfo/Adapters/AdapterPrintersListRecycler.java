@@ -24,14 +24,14 @@ public class AdapterPrintersListRecycler extends RecyclerView.Adapter<AdapterPri
 
     private final LayoutInflater inflater;
     StatusTable statusTable ;
-    ArrayList<Subject> mmm1;
+    ArrayList<Subject> subjects;
     Context context;
 
-    public AdapterPrintersListRecycler(Context context, StatusTable statusTable, ArrayList<Subject> mmm) {
+    public AdapterPrintersListRecycler(Context context, StatusTable statusTable, ArrayList<Subject> subjects) {
         inflater = LayoutInflater.from(context);
         this.statusTable = statusTable;
         this.context = context;
-        mmm1 = mmm;
+        this.subjects = subjects;
 
     }
 
@@ -48,7 +48,7 @@ public class AdapterPrintersListRecycler extends RecyclerView.Adapter<AdapterPri
         String temp = "";
         for (int i = 0; i < currntLine.size(); i++) {
             try {
-                if ((mmm1.get(i).checkBoxStatus != false) && (mmm1.get(i) != null) && currntLine.get(i) != "")
+                if ((subjects.get(i).checkBoxStatus != false) && (subjects.get(i) != null) && currntLine.get(i) != "")
                     temp = temp + ("[ " + currntLine.get(i) + " ]  ");
             } catch (Exception e) {
                 Toast.makeText(context, e.toString() + " " + Thread.currentThread().getStackTrace()[2].getLineNumber(), Toast.LENGTH_LONG).show();

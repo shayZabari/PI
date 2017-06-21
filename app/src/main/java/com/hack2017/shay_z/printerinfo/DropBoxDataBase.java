@@ -5,15 +5,8 @@ import android.util.Log;
 
 import com.hack2017.shay_z.printerinfo.controllers.MainActivity;
 import com.hack2017.shay_z.printerinfo.models.ExeptionInterface;
-import com.hack2017.shay_z.printerinfo.models.UrlUtils;
-import com.hack2017.shay_z.printerinfo.models.MyJsoup;
 import com.hack2017.shay_z.printerinfo.models.University;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -57,7 +50,7 @@ public class DropBoxDataBase extends AsyncTask<String, Integer, ArrayList<Univer
 
         Log.d("123", " 96 universities array is " + universities.toString());
         if (universities != null)
-            mainActivity.getUniversityDataBase(universities);
+            mainActivity.getDropBoxDatbase(universities);
 
 
     }

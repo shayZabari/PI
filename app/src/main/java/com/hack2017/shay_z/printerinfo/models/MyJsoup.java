@@ -13,6 +13,8 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static android.content.ContentValues.TAG;
+
 
 /**
  * Created by shay_z on 28-Apr-17.
@@ -25,6 +27,7 @@ public class MyJsoup extends AsyncTask<University, Object, University> {
     ArrayList<StatusTable> statusTableArr = new ArrayList<>();
     ArrayList<Subject> subjects = new ArrayList<>();
     private String url;
+    private University currentUniversity;
 
     public MyJsoup(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
@@ -121,14 +124,21 @@ public class MyJsoup extends AsyncTask<University, Object, University> {
     }
 
 
-
+    //get subjects from printer table (ip/location/ etc..)
     public ArrayList<Subject> getSubjects(Elements trsInPrintersTable) {
         Elements tds = trsInPrintersTable.get(0).getElementsByTag("td");
-        Subject subject = null;
+        boolean firstTime = false;
+        if (currentUniversity.table == null) {
+            firstTime = true;
+        }
+        Subject subject;
         for (int i = 0; i < tds.size(); i++) {
             subject = new Subject();
             subject.name = tds.get(i).text().trim();
             subject.getPosition = i;
+            if (!firstTime) {
+                subject.checkBoxStatus = currentUniversity.table.subjects.get(i).checkBoxStatus;
+            }
             subjects.add(subject);
         }
         return subjects;
@@ -136,11 +146,15 @@ public class MyJsoup extends AsyncTask<University, Object, University> {
 
     @Override
     protected University doInBackground(University... universities) {
-        University u = universities[0];
-        this.url = u.getUrl();
+        currentUniversity = universities[0];
+        this.url = currentUniversity.getUrl();
+        Log.d(TAG, "doInBackground: 152");
         Document document = getDocument(url);
+        Log.d(TAG, "doInBackground: 154");
         table.statusTableArr = (getStatusTableArr(document));
+        Log.d(TAG, "doInBackground: 154");
         Elements trsInPrintersTable = getTrsFromPrintersTable(document);
+        Log.d(TAG, "doInBackground: 157");
         for (Element tr : trsInPrintersTable) {
             String bgColor = tr.getElementsByTag("td").get(0).attr("bgcolor").trim();
             LineInTable lineInTable = null;
@@ -158,9 +172,11 @@ public class MyJsoup extends AsyncTask<University, Object, University> {
                 }
             }
         }
+        Log.d(TAG, "doInBackground: 176");
         table.subjects = getSubjects(trsInPrintersTable);
-        u.table = table;
-        return u;
+        Log.d(TAG, "doInBackground: 178");
+        currentUniversity.table = table;
+        return currentUniversity;
 
     }
 

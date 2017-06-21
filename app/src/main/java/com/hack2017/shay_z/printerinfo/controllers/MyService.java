@@ -68,10 +68,11 @@ public class MyService extends Service {
         Log.d("123", "on do in background service !!!!!");
         try {
             Log.d("123", "try");
-            for (int i = 0; i < 20; i++) {
+            for (int i = 0; i < 2; i++) {
                 ArrayList<University> data = UniversityHelper.getData("https://dl.dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0");
-                Thread.sleep(5000);
+                Thread.sleep(1000);
                 Log.d("123", "myservice ! = " + "counter is " + i + " " + data.get(0).getName());
+                return data;
             }
         } catch (Exception e) {
             Log.d("123", "exeption is do in backgroud" + e.getMessage());

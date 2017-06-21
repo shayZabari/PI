@@ -22,6 +22,8 @@ public class University implements Serializable {
         return logoUrl;
     }
 
+    public University() {
+    }
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;

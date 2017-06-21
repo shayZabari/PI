@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity
 
     private static final String SAVE_UNIVERSITIES = "123";
     FragmentManager fm = getSupportFragmentManager();
-    private ArrayList<University> universities1;
+    public static ArrayList<University> universities1;
     private String dropboxUrl = "https://dl.dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0";
     private String exceptionMessage;
     int universityPosition;
@@ -57,9 +57,9 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         Log.d("shay", "shay on create !");
-        Intent i = new Intent(getBaseContext(), MyService.class);
+//        Intent i = new Intent(getBaseContext(), MyService.class);
         Log.d("shay", "intent");
-        getBaseContext().startService(i);
+//        getBaseContext().startService(i);
         Log.d("shay", "intent1");
 //refresh();
 
@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     // callback from DropBoxDataBase
-    public void getUniversityDataBase(ArrayList<University> universities) {
+    public void getDropBoxDatbase(ArrayList<University> universities) {
 
         this.universities1 = universities;
         Log.d("123", "Mainactivity_155");
@@ -175,8 +175,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onOniversitySelected(int position) {
         universityPosition = position;
-        University mUniversity = universities1.get(position);
-        new MyJsoup(this).execute(mUniversity);
+        University selectedUniversity = new University();
+        selectedUniversity = universities1.get(position);
+        Log.d("123", "");
+        new MyJsoup(this).execute(selectedUniversity);
 //        Toast.makeText(this, "UNIVERSITY POSITION  " + position, Toast.LENGTH_SHORT).show();
 //        fm.beginTransaction().replace(R.id.content_main, PrintersInfoFragment.newInstance(universities1.get(position))).commit();
 
@@ -209,11 +211,11 @@ public class MainActivity extends AppCompatActivity
 
     // callback after jsoup finished
     public void onTableFinished(University university) {
-        Log.d("123", "test "+universities1.get(0).table.subjects.get(0).checkBoxStatus+"-");
-        for (int i = 0; i < university.table.subjects.size(); i++) {
-                    university.table.subjects.get(i).checkBoxStatus=
-            universities1.get(universityPosition).table.subjects.get(i).checkBoxStatus;
-        }
+//        Log.d("123", "test "+universities1.get(0).table.subjects.get(0).checkBoxStatus+"-");
+//        for (int i = 0; i < university.table.subjects.size(); i++) {
+//                    university.table.subjects.get(i).checkBoxStatus=
+//            universities1.get(universityPosition).table.subjects.get(i).checkBoxStatus;
+//        }
         universities1.set(universityPosition, university);
         fm.beginTransaction().replace(R.id.content_main, FragmentUniversityPage.newInstance(university)).commit();
     }
