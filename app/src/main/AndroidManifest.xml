@@ -21,6 +21,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".controllers.MyService"
+            android:exported="false">
+
+        </service>
+        <service
+            android:name=".controllers.MySer"
+            android:exported="false">
+
+        </service>
     </application>
 
 </manifest>

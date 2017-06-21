@@ -1,5 +1,6 @@
 package com.hack2017.shay_z.printerinfo.controllers;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
@@ -56,7 +57,10 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         Log.d("shay", "shay on create !");
-        MyService myService = new MyService();
+        Intent i = new Intent(getBaseContext(), MyService.class);
+        Log.d("shay", "intent");
+        getBaseContext().startService(i);
+        Log.d("shay", "intent1");
 //refresh();
 
         //load preferences
