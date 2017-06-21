@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         Log.d("shay", "shay on create !");
+        MyService myService = new MyService();
 //refresh();
 
         //load preferences
