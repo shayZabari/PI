@@ -24,6 +24,10 @@ public class UniversityHelper {
         String stringFromUrl = null;
         if (UrlUtils.getStringFromUrl(dropBoxLink) != null) {
             stringFromUrl = UrlUtils.getStringFromUrl(dropBoxLink);
+            Log.d("123", "string from url 27");
+            Log.d("123", stringFromUrl.toString());
+        } else {
+            Log.d("123", "UrlUtils.getStringFromUrl(dropBoxLink) is  null!!! on university helper 28");
         }
 
         Log.d("123", "oded   " + dropBoxLink);

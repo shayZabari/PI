@@ -1,11 +1,9 @@
 package com.hack2017.shay_z.printerinfo.controllers;
 
-import android.app.IntentService;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.IBinder;
-import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -19,7 +17,6 @@ import java.util.ArrayList;
  */
 
 public class MyService extends Service {
-
 
 
 //    public MyService() {
@@ -47,28 +44,44 @@ public class MyService extends Service {
         return null;
     }
 
-//    @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
-            Log.d("123", "on hangle in tent in service !!!!!");
-        for (int i = 0; i < 3; i++) {
-            Log.d("123", "  = " + i + "");
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
 
+    public void onHandleIntent(@Nullable Intent intent) {
+        Log.d("123", "on hangle in tent in service !!!!!");
+        new DoBackgroudTask().execute();
+//        for (int i = 0; i < 3; i++) {
+//            Log.d("123", "  = " + i + "");
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+
+//        mainActivity.testService();
+    }
+}
+
+ class DoBackgroudTask extends AsyncTask<Object, Object, ArrayList<University>> {
+
+    @Override
+    protected ArrayList<University> doInBackground(Object... urls) {
+        Log.d("123", "on do in background service !!!!!");
         try {
-            ArrayList<University> data = UniversityHelper.getData("https://dl.dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0");
-                Log.d("123", "on handle sleep 10 sec");
-            for (int i = 0; i < 100; i++) {
-                Thread.sleep(10000);
+            Log.d("123", "try");
+            for (int i = 0; i < 20; i++) {
+                ArrayList<University> data = UniversityHelper.getData("https://dl.dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0");
+                Thread.sleep(5000);
                 Log.d("123", "myservice ! = " + "counter is " + i + " " + data.get(0).getName());
             }
         } catch (Exception e) {
+            Log.d("123", "exeption is do in backgroud" + e.getMessage());
             e.printStackTrace();
+            return null;
         }
-//        mainActivity.testService();
+        Log.d("123", "exeption is do in return null 65" );
+        return null;
     }
+
+    //    @Override
+
 }
