@@ -129,8 +129,10 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_select_universities) {
-            if (UrlUtils.spLoadUniversities(this)!=null) {
-                universities1 =UrlUtils.spLoadUniversities(this);
+            if (UrlUtils.spLoadUniversities(this) != null) {
+                universities1 = UrlUtils.spLoadUniversities(this);
+            } else {
+                refresh();
             }
             fm.beginTransaction().replace(R.id.content_main, FragmentUniversityList.newInstance(universities1)).commit();
         } else if (id == R.id.nav_slideshow) {

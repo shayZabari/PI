@@ -108,7 +108,7 @@ public class FragmentUniversityList extends Fragment {
                 });
                 TextView textInfo = (TextView) v.findViewById(R.id.tvInfo1);
                 ImageView imageView= (ImageView) v.findViewById(R.id.imgUniversityLogo);
-                imageView.setImageBitmap(list.get(position).getBitmap());
+//                imageView.setImageBitmap(list.get(position).getBitmap());// TODO: 21-Jun-17  temp removed
                 textInfo.setText(list.get(position).getName());
 
             }

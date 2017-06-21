@@ -17,6 +17,7 @@
             android:id="@+id/imgUniversityLogo"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:src="@drawable/university"
             android:layout_margin="20dp"
             android:layout_gravity="center"
              />
