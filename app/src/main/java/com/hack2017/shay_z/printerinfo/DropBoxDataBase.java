@@ -50,7 +50,11 @@ public class DropBoxDataBase extends AsyncTask<String, Integer, ArrayList<Univer
 
         Log.d("123", " 96 universities array is " + universities.toString());
         if (universities != null)
-            mainActivity.getDropBoxDatbase(universities);
+            try {
+                mainActivity.getDropBoxDatbase(universities);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
 
     }

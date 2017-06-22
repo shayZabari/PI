@@ -20,6 +20,7 @@ import com.hack2017.shay_z.printerinfo.R;
 import com.hack2017.shay_z.printerinfo.DropBoxDataBase;
 import com.hack2017.shay_z.printerinfo.models.ExeptionInterface;
 import com.hack2017.shay_z.printerinfo.models.MyJsoup;
+import com.hack2017.shay_z.printerinfo.models.Subject;
 import com.hack2017.shay_z.printerinfo.models.University;
 import com.hack2017.shay_z.printerinfo.models.UrlUtils;
 
@@ -157,11 +158,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     // callback from DropBoxDataBase
-    public void getDropBoxDatbase(ArrayList<University> universities) {
+    public void getDropBoxDatbase(ArrayList<University> universities) throws Exception {
         if (universities1 != null) {
 
         }
-        this.universities1 = universities;
         Log.d("123", "Mainactivity_155");
 //        ProgressDialog progressDialog = new ProgressDialog(this);
 //        progressDialog.setTitle("CONNECTING ...");
@@ -172,6 +172,14 @@ public class MainActivity extends AppCompatActivity
         Toast.makeText(this, "" + sizeTemp + "" + sizeTemp + "" + sizeTemp, Toast.LENGTH_LONG).show();
 
         Log.i("a", "finish universities1 size= " + universities.size());
+        for (University university : universities) {
+            ArrayList<Subject> tempSubject = UrlUtils.spLoadCheckboxes(this, university);
+            for (int i = 0; i < university.table.subjects.size(); i++) {
+                university.table.subjects.get(i).checkBoxStatus = tempSubject.get(i).checkBoxStatus;
+                university.table.subjects.get(i).getPosition = tempSubject.get(i).getPosition;
+            }
+        }
+        this.universities1 = universities;
         UrlUtils.spSaveUniversities(this, universities);
     }
 
