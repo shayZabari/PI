@@ -2,6 +2,8 @@ package com.hack2017.shay_z.printerinfo.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -24,7 +26,11 @@ import com.hack2017.shay_z.printerinfo.models.Subject;
 import com.hack2017.shay_z.printerinfo.models.University;
 import com.hack2017.shay_z.printerinfo.models.UrlUtils;
 
+import java.sql.Time;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Timer;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -53,7 +59,6 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -68,6 +73,15 @@ public class MainActivity extends AppCompatActivity
         if (UrlUtils.spLoadUniversities(this) != null) {
             universities1 = UrlUtils.spLoadUniversities(this);
         }
+        Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show();
+        if (UrlUtils.spLoadUniversityPosition(this) > -1) {
+            Toast.makeText(this, "position > -1", Toast.LENGTH_SHORT).show();
+//            getSupportActionBar().setTitle("test 75 main");
+            setToolBar();
+
+            onOniversitySelected(UrlUtils.spLoadUniversityPosition(this));
+        }
+        refresh();
 //        SharedPreferences appSharedPrefs = PreferenceManager
 //                .getDefaultSharedPreferences(this.getApplicationContext());
 //        Gson gson = new Gson();
@@ -75,6 +89,11 @@ public class MainActivity extends AppCompatActivity
 //        Type type = new TypeToken<List<University>>() {
 //        }.getType();
 //        universities1 = gson.fromJson(json, type);
+    }
+
+    private void setToolBar() {
+        getSupportActionBar().setTitle(universities1.get(universityPosition).getName());
+        getSupportActionBar().setSubtitle(DateFormat.getDateTimeInstance().format(new Date()));
     }
 
     @Override
@@ -187,9 +206,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onOniversitySelected(int position) {
         universityPosition = position;
+        UrlUtils.spSaveUniversityPosition(this, position);
         University selectedUniversity = new University();
         selectedUniversity = universities1.get(position);
         Log.d("123", "");
+        setToolBar();
         new MyJsoup(this).execute(selectedUniversity);
 //        Toast.makeText(this, "UNIVERSITY POSITION  " + position, Toast.LENGTH_SHORT).show();
 //        fm.beginTransaction().replace(R.id.content_main, PrintersInfoFragment.newInstance(universities1.get(position))).commit();
@@ -205,6 +226,11 @@ public class MainActivity extends AppCompatActivity
         fm.beginTransaction().replace(R.id.content_main, FragmentUniversityPage.newInstance(university)).commit();
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+
+    }
 
     @Override
     public void onExceptionCallBack(String message) {

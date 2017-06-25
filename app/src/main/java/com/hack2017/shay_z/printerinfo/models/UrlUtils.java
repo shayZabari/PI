@@ -46,6 +46,19 @@ public class UrlUtils {
     private MainActivity activity;
 
 
+    public static int spLoadUniversityPosition(Context context) {
+        SharedPreferences appSharedPrefs = PreferenceManager
+                .getDefaultSharedPreferences(context.getApplicationContext());
+        return appSharedPrefs.getInt("universityPosition", -1);
+    }
+
+    public static void spSaveUniversityPosition(Context context, int universityPosition) {
+        SharedPreferences editor = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor prefEditor = editor.edit();
+        prefEditor.putInt("universityPosition", universityPosition);
+        prefEditor.commit();
+
+    }
     public static void spSaveCheckboxs(Context context, ArrayList<Subject> subjects, University university) throws Exception {
         SharedPreferences editor = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor prefEditor = editor.edit();
