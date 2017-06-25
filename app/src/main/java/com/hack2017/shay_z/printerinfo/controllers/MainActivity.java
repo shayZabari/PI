@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity
 //        progressDialog.setCancelable(false);
         findViewById(R.id.progressBar).setVisibility(View.GONE);
         int sizeTemp = universities.size();
-        Toast.makeText(this, "" + sizeTemp + "" + sizeTemp + "" + sizeTemp, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "FOUND " + sizeTemp + " UNIVERSITIES", Toast.LENGTH_LONG).show();
 
         Log.i("a", "finish universities1 size= " + universities.size());
         for (University university : universities) {

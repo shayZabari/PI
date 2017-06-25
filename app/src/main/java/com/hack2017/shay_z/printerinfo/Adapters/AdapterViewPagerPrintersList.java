@@ -78,7 +78,9 @@ public class AdapterViewPagerPrintersList extends FragmentStatePagerAdapter {
     // add name to the tag
     @Override
     public CharSequence getPageTitle(int position) {
+
         return university.table.statusTableArr.get(position).statusID + " " + university.table.statusTableArr.get(position).allLinesOfStatus.size();
+
     }
 
     interface OnNotifyDataSetCHangeListener {
@@ -112,6 +114,7 @@ public class AdapterViewPagerPrintersList extends FragmentStatePagerAdapter {
             RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.rv_printers_lines);
             recyclerView.setAdapter(new AdapterPrintersListRecycler(getContext(), statusTable, subjects));
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
 //            listView = (ListView) v.findViewById(R.id.lv_fragment_list);
 //            listView.setAdapter(new LVAdapter(arguments));
 //            return v;
