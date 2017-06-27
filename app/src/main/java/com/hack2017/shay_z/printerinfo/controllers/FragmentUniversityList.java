@@ -23,6 +23,8 @@ import com.hack2017.shay_z.printerinfo.models.University;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.ContentValues.TAG;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link FragmentUniversityList#newInstance} factory method to
@@ -60,6 +62,7 @@ public class FragmentUniversityList extends Fragment {
                 universities = (ArrayList<University>) getArguments().getSerializable(ARG_TAG);
 
             } catch (Exception e) {
+                Log.e(TAG, "onCreate: FragmentUniversityList 65", e);
                 e.printStackTrace();
             }
         }

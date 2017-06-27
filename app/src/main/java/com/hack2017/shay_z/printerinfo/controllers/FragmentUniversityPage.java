@@ -75,11 +75,6 @@ public class FragmentUniversityPage extends Fragment {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                View v = new View(getContext());
-                v.setBackgroundColor(Color.parseColor("#7986CB"));
-                v.
-                        tab.setCustomView(v);
-
             }
 
             @Override
