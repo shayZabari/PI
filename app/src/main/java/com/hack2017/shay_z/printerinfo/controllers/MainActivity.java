@@ -36,15 +36,13 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         FragmentUniversityList.OnUniversitySelectedListener,
         FragmentUniversityPage.OnRefreshSubjectListener, ExeptionInterface {
-    DropBoxDataBase d;
-
-
     private static final String SAVE_UNIVERSITIES = "123";
-    FragmentManager fm = getSupportFragmentManager();
     public static ArrayList<University> universities1;
+    DropBoxDataBase d;
+    FragmentManager fm = getSupportFragmentManager();
+    int universityPosition;
     private String dropboxUrl = "https://dl.dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0";
     private String exceptionMessage;
-    int universityPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,12 +191,15 @@ public class MainActivity extends AppCompatActivity
         Log.i("a", "finish universities1 size= " + universities.size());
         for (University university : universities) {
             ArrayList<Subject> tempSubject = UrlUtils.spLoadCheckboxes(this, university);
+            if (tempSubject != null) {
+
             for (int i = 0; i < university.table.subjects.size(); i++) {
                 university.table.subjects.get(i).checkBoxStatus = tempSubject.get(i).checkBoxStatus;
                 university.table.subjects.get(i).getPosition = tempSubject.get(i).getPosition;
             }
+            }
+            universities1 = universities;
         }
-        this.universities1 = universities;
         UrlUtils.spSaveUniversities(this, universities);
     }
 
