@@ -1,6 +1,7 @@
 package com.hack2017.shay_z.printerinfo.controllers;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
@@ -71,6 +72,26 @@ public class FragmentUniversityPage extends Fragment {
         viewPager = (ViewPager) v.findViewById(R.id.view_pager);
         viewPager.setAdapter(adapterViewPagerPrintersList);
         tabLayout = (TabLayout) v.findViewById(R.id.tab_layout);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                View v = new View(getContext());
+                v.setBackgroundColor(Color.parseColor("#7986CB"));
+                v.
+                        tab.setCustomView(v);
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
         tabLayout.setupWithViewPager(viewPager);
 
         // working on bottom sheet
