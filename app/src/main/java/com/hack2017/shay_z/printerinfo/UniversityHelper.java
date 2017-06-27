@@ -30,11 +30,7 @@ public class UniversityHelper {
             Log.d("123", "UrlUtils.getStringFromUrl(dropBoxLink) is  null!!! on university helper 28");
         }
 
-        Log.d("123", "oded   " + dropBoxLink);
-
-
         JSONObject parentJson;
-
         parentJson = new JSONObject(stringFromUrl);
         JSONArray parentArray = parentJson.getJSONArray("University"); // array of universities from dropbox file.
         Log.d("123", "85-DropBoxDataBase-parent array is =" + parentArray.toString());

@@ -1,6 +1,7 @@
 package com.hack2017.shay_z.printerinfo.controllers;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.hack2017.shay_z.printerinfo.R;
@@ -25,6 +27,8 @@ import com.hack2017.shay_z.printerinfo.models.MyJsoup;
 import com.hack2017.shay_z.printerinfo.models.Subject;
 import com.hack2017.shay_z.printerinfo.models.University;
 import com.hack2017.shay_z.printerinfo.models.UrlUtils;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 import java.sql.Time;
 import java.text.DateFormat;
@@ -90,8 +94,22 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setToolBar() {
+        if (universities1 != null) {
+
         getSupportActionBar().setTitle(universities1.get(universityPosition).getName());
         getSupportActionBar().setSubtitle(DateFormat.getDateTimeInstance().format(new Date()));
+        }
+//        ImageView imageView = new ImageView(this);
+//        if (universities1.get(universityPosition).getLogoUrl() != null) {
+//            Picasso.with(this).load(universities1.get(universityPosition).getLogoUrl()).into(imageView);
+////            Drawable drawable = imageView.getDrawable();
+////            drawable.setBounds(0, 0, (int)(drawable.getIntrinsicWidth()*0.5),
+////                    (int)(drawable.getIntrinsicHeight()*0.5));
+//            getSupportActionBar().setLogo(imageView.getDrawable());
+//
+//        } else {
+//            Toast.makeText(this, "logourl null", Toast.LENGTH_SHORT).show();
+//        }
     }
 
     @Override
@@ -136,6 +154,7 @@ public class MainActivity extends AppCompatActivity
 
         findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
         d = new DropBoxDataBase(dropboxUrl, this);
+        setToolBar();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -187,9 +206,9 @@ public class MainActivity extends AppCompatActivity
         findViewById(R.id.progressBar).setVisibility(View.GONE);
         int sizeTemp = universities.size();
         Toast.makeText(this, "FOUND " + sizeTemp + " UNIVERSITIES", Toast.LENGTH_LONG).show();
-
         Log.i("a", "finish universities1 size= " + universities.size());
         for (University university : universities) {
+//        Picasso.with(this).load(university.getLogoUrl())
             ArrayList<Subject> tempSubject = UrlUtils.spLoadCheckboxes(this, university);
             if (tempSubject != null) {
 
