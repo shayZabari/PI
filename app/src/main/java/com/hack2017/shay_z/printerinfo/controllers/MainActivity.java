@@ -1,14 +1,12 @@
 package com.hack2017.shay_z.printerinfo.controllers;
 
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -17,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.hack2017.shay_z.printerinfo.R;
@@ -27,14 +24,10 @@ import com.hack2017.shay_z.printerinfo.models.MyJsoup;
 import com.hack2017.shay_z.printerinfo.models.Subject;
 import com.hack2017.shay_z.printerinfo.models.University;
 import com.hack2017.shay_z.printerinfo.models.UrlUtils;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.RequestCreator;
 
-import java.sql.Time;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Timer;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -47,6 +40,14 @@ public class MainActivity extends AppCompatActivity
     int universityPosition;
     private String dropboxUrl = "https://dl.dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0";
     private String exceptionMessage;
+    //    AlertDialog alert;
+    private ProgressDialog progressDialog;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshUniversities();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +70,12 @@ public class MainActivity extends AppCompatActivity
         Log.d("shay", "intent");
 //        getBaseContext().startService(i);
         Log.d("shay", "intent1");
-//refresh();
+//refreshUniversities();
 
         //load preferences
         if (UrlUtils.spLoadUniversities(this) != null) {
             universities1 = UrlUtils.spLoadUniversities(this);
         }
-        Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show();
         if (UrlUtils.spLoadUniversityPosition(this) > -1) {
             Toast.makeText(this, "position > -1", Toast.LENGTH_SHORT).show();
 //            getSupportActionBar().setTitle("test 75 main");
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity
 
             onOniversitySelected(UrlUtils.spLoadUniversityPosition(this));
         }
-        refresh();
+//        refreshUniversities();
 //        SharedPreferences appSharedPrefs = PreferenceManager
 //                .getDefaultSharedPreferences(this.getApplicationContext());
 //        Gson gson = new Gson();
@@ -143,18 +143,27 @@ public class MainActivity extends AppCompatActivity
                     Toast.makeText(getApplicationContext(), exceptionMessage, Toast.LENGTH_LONG).show();
                 return true;
             case R.id.refresh:
-                refresh();
+                onOniversitySelected(universityPosition);
         }
 
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void refresh() {
-
-        findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+    private void refreshUniversities() {
+        addProgressDialog();
+//        findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
         d = new DropBoxDataBase(dropboxUrl, this);
         setToolBar();
+    }
+
+    private void addProgressDialog() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Please Wait");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Updating database..");
+        progressDialog.show();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -169,7 +178,7 @@ public class MainActivity extends AppCompatActivity
             if (UrlUtils.spLoadUniversities(this) != null) {
                 universities1 = UrlUtils.spLoadUniversities(this);
             } else {
-                refresh();
+                refreshUniversities();
             }
             fm.beginTransaction().replace(R.id.content_main, FragmentUniversityList.newInstance(universities1)).commit();
         } else if (id == R.id.nav_slideshow) {
@@ -203,7 +212,8 @@ public class MainActivity extends AppCompatActivity
 //        progressDialog.setTitle("CONNECTING ...");
 //        progressDialog.setMessage("Please Wait");
 //        progressDialog.setCancelable(false);
-        findViewById(R.id.progressBar).setVisibility(View.GONE);
+        progressDialog.cancel();
+//        findViewById(R.id.progressBar).setVisibility(View.GONE);
         int sizeTemp = universities.size();
         Toast.makeText(this, "FOUND " + sizeTemp + " UNIVERSITIES", Toast.LENGTH_LONG).show();
         Log.i("a", "finish universities1 size= " + universities.size());
@@ -225,12 +235,14 @@ public class MainActivity extends AppCompatActivity
     // calback from FragmentUniversityList
     @Override
     public void onOniversitySelected(int position) {
+
         universityPosition = position;
         UrlUtils.spSaveUniversityPosition(this, position);
         University selectedUniversity = new University();
         selectedUniversity = universities1.get(position);
         Log.d("123", "");
         setToolBar();
+        Toast.makeText(this, DateFormat.getDateTimeInstance().format(new Date()), Toast.LENGTH_SHORT).show();
         new MyJsoup(this).execute(selectedUniversity);
 //        Toast.makeText(this, "UNIVERSITY POSITION  " + position, Toast.LENGTH_SHORT).show();
 //        fm.beginTransaction().replace(R.id.content_main, PrintersInfoFragment.newInstance(universities1.get(position))).commit();
@@ -258,7 +270,7 @@ public class MainActivity extends AppCompatActivity
         Log.e("123", "123");
         d.cancel(true);
         Log.e("123", message);
-        findViewById(R.id.progressBar).setVisibility(View.GONE);
+//        findViewById(R.id.progressBar).setVisibility(View.GONE);
 //        maketoast();
     }
 
