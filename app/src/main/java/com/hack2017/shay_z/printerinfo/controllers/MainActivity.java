@@ -1,6 +1,7 @@
 package com.hack2017.shay_z.printerinfo.controllers;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -34,10 +35,12 @@ public class MainActivity extends AppCompatActivity
         FragmentUniversityList.OnUniversitySelectedListener,
         FragmentUniversityPage.OnRefreshSubjectListener, ExeptionInterface {
     private static final String SAVE_UNIVERSITIES = "123";
+    private static final String TAG = "123";
     public static ArrayList<University> universities1;
     DropBoxDataBase d;
     FragmentManager fm = getSupportFragmentManager();
     int universityPosition;
+    Intent intent;
     private String dropboxUrl = "https://dl.dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0";
     private String exceptionMessage;
     //    AlertDialog alert;
@@ -184,9 +187,12 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
-
+            intent = new Intent(this, MyService.class);
+            Log.d(TAG, "onNavigationItemSelected: start service 191");
+            startService(intent);
         } else if (id == R.id.nav_share) {
-
+            Log.d(TAG, "onNavigationItemSelected: stopping service 192");
+            stopService(intent);
         } else if (id == R.id.nav_send) {
 //            Toast.makeText(this,UrlUtils.getLog(this), Toast.LENGTH_LONG).show();
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
