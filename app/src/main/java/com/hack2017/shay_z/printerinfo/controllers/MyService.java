@@ -1,11 +1,13 @@
 package com.hack2017.shay_z.printerinfo.controllers;
 
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.hack2017.shay_z.printerinfo.R;
@@ -20,6 +22,9 @@ import java.util.ArrayList;
 
 public class MyService extends Service {
     private Intent intent;
+    private NotificationCompat.Builder notification;
+    private int ID = 123;
+    NotificationManager nm;
 
 
 //    public MyService() {
@@ -63,45 +68,46 @@ public class MyService extends Service {
 
 //        mainActivity.testService();
     }
-}
+//}
 
     public void setNotification() {
-        Notification n = new Notification.Builder(this)
-                .setContentTitle("New mail from " + "test@gmail.com")
-                .setContentText("Subject")
-//                .setSmallIcon(R.drawable.icon)
-//                .setContentIntent(pIntent)
-                .setAutoCancel(true).build();
-//                .addAction(R.drawable.icon, "Call", pIntent)
-//                .addAction(R.drawable.icon, "More", pIntent)
-//                .addAction(R.drawable.icon, "And more", pIntent).build();
+        notification = new NotificationCompat.Builder(getBaseContext());
+        notification.setAutoCancel(true);
+        notification.setTicker("this is tiker");
+        notification.setSmallIcon(R.mipmap.ic_launcher);
+        notification.setContentTitle("setcontenttitle");
+        notification.setContentText("setcontentText");
+        nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        nm.notify(ID, notification.build());
     }
 
 
- class DoBackgroudTask extends AsyncTask<Object, Object, ArrayList<University>> {
+    class DoBackgroudTask extends AsyncTask<Object, Object, ArrayList<University>> {
 
-    @Override
-    protected ArrayList<University> doInBackground(Object... urls) {
-        Log.d("123", "on do in background service !!!!!");
-        try {
-            ArrayList<University> universities = null;
-            for (int i = 0; i < 50; i++) {
-                universities = UniversityHelper.getData("https://dl.dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0");
-                Thread.sleep(2000);
-                Log.d("123", "myservice ! = " + "counter is " + i + " " + universities.get(0).getName());
+        @Override
+        protected ArrayList<University> doInBackground(Object... urls) {
+            Log.d("123", "on do in background service !!!!!");
+            try {
+                ArrayList<University> universities = null;
+                for (int i = 0; i < 5; i++) {
+                    universities = UniversityHelper.getData("https://dl.dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0");
+                    setNotification();
+                    Thread.sleep(4000);
+                    Log.d("123", "myservice ! = " + "counter is " + i + " " + universities.get(0).getName());
+                    nm.cancel(ID);
+                }
+                return universities;
+            } catch (Exception e) {
+                Log.d("123", "exeption is do in backgroud" + e.getMessage());
+                e.printStackTrace();
+                return null;
+            } finally {
 
+                return null;
             }
-            return universities;
-        } catch (Exception e) {
-            Log.d("123", "exeption is do in backgroud" + e.getMessage());
-            e.printStackTrace();
-            return null;
-        } finally {
-
-        return null;
         }
+
+        //    @Override
+
     }
-
-    //    @Override
-
 }
