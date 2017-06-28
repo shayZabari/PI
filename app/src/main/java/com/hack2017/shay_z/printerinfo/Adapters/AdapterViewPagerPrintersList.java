@@ -79,7 +79,7 @@ public class AdapterViewPagerPrintersList extends FragmentStatePagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
 
-        return university.table.statusTableArr.get(position).statusID + " " + university.table.statusTableArr.get(position).allLinesOfStatus.size();
+        return university.table.statusTableArr.get(position).statusID + " (" + university.table.statusTableArr.get(position).allLinesOfStatus.size() + ")";
 
     }
 

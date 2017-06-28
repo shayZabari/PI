@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
     android:orientation="horizontal">
 
     <CheckBox
@@ -14,6 +15,7 @@
     <TextView
         android:id="@+id/tvSubjectItem"
         android:textColor="#fff"
+        android:layout_marginLeft="6dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="subject" />
