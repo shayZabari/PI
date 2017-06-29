@@ -1,8 +1,9 @@
-package com.hack2017.shay_z.printerinfo;
+package com.hack2017.shay_z.printerinfo.models;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.hack2017.shay_z.printerinfo.UniversityHelper;
 import com.hack2017.shay_z.printerinfo.controllers.MainActivity;
 import com.hack2017.shay_z.printerinfo.models.ExeptionInterface;
 import com.hack2017.shay_z.printerinfo.models.University;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
  * Created by shay_z on 27-Apr-17.
  */
 
-public class DropBoxDataBase extends AsyncTask<String, Integer, ArrayList<University>> {
+public class DatabaseDropbox extends AsyncTask<String, Integer, ArrayList<University>> {
 
     private static final String SAVE_UNIVERSITIES = "123";
     private final String dropBoxLink;
@@ -21,9 +22,9 @@ public class DropBoxDataBase extends AsyncTask<String, Integer, ArrayList<Univer
     public ArrayList<University> universities = new ArrayList<>();
     ExeptionInterface exeptionInterface;
 
-    public DropBoxDataBase(String dropBoxLink, MainActivity mainActivity) {
+    public DatabaseDropbox(String dropBoxLink, MainActivity mainActivity) {
         this.dropBoxLink = dropBoxLink;
-        exeptionInterface = (ExeptionInterface) mainActivity;
+        exeptionInterface = mainActivity;
         this.mainActivity = mainActivity;
         execute(dropBoxLink);
     }
@@ -35,7 +36,7 @@ public class DropBoxDataBase extends AsyncTask<String, Integer, ArrayList<Univer
     @Override
     protected ArrayList<University> doInBackground(String... params) {
         try {
-            return UniversityHelper.getData(params[0]);
+            return UniversityHelper.getDropboxData(params[0]);
         } catch (Exception e) {
             exeptionInterface.onExceptionCallBack(e.getMessage());
             return null;

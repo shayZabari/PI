@@ -1,6 +1,5 @@
 package com.hack2017.shay_z.printerinfo.controllers;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
@@ -21,16 +20,15 @@ import java.util.ArrayList;
  */
 
 public class MyService extends Service {
+    NotificationManager nm;
     private Intent intent;
     private NotificationCompat.Builder notification;
     private int ID = 123;
-    NotificationManager nm;
 
 
 //    public MyService() {
 //        super("constructor MyService");
 //    }
-
 
     @Override
     public void onCreate() {
@@ -90,7 +88,7 @@ public class MyService extends Service {
             try {
                 ArrayList<University> universities = null;
                 for (int i = 0; i < 5; i++) {
-                    universities = UniversityHelper.getData("https://dl.dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0");
+                    universities = UniversityHelper.getDropboxData("https://dl.dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0");
                     setNotification();
                     Thread.sleep(4000);
                     Log.d("123", "myservice ! = " + "counter is " + i + " " + universities.get(0).getName());

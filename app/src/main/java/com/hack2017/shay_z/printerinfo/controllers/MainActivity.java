@@ -18,10 +18,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.hack2017.shay_z.printerinfo.models.DatabaseDropbox;
 import com.hack2017.shay_z.printerinfo.R;
-import com.hack2017.shay_z.printerinfo.DropBoxDataBase;
+import com.hack2017.shay_z.printerinfo.models.DatabaseTable;
 import com.hack2017.shay_z.printerinfo.models.ExeptionInterface;
-import com.hack2017.shay_z.printerinfo.models.MyJsoup;
 import com.hack2017.shay_z.printerinfo.models.Subject;
 import com.hack2017.shay_z.printerinfo.models.University;
 import com.hack2017.shay_z.printerinfo.models.UrlUtils;
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity
     private static final String SAVE_UNIVERSITIES = "123";
     private static final String TAG = "123";
     public static ArrayList<University> universities1;
-    DropBoxDataBase d;
+    DatabaseDropbox d;
     FragmentManager fm = getSupportFragmentManager();
     int universityPosition;
     Intent intent;
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity
     private void refreshUniversities() {
         addProgressDialog();
 //        findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
-        d = new DropBoxDataBase(dropboxUrl, this);
+        d = new DatabaseDropbox(dropboxUrl, this);
         setToolBar();
     }
 
@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    // callback from DropBoxDataBase
+    // callback from DatabaseDropbox
     public void getDropBoxDatbase(ArrayList<University> universities) throws Exception {
         if (universities1 != null) {
 
@@ -249,7 +249,7 @@ public class MainActivity extends AppCompatActivity
         Log.d("123", "");
         setToolBar();
         Toast.makeText(this, DateFormat.getDateTimeInstance().format(new Date()), Toast.LENGTH_SHORT).show();
-        new MyJsoup(this).execute(selectedUniversity);
+        new DatabaseTable(this).execute(selectedUniversity);
 //        Toast.makeText(this, "UNIVERSITY POSITION  " + position, Toast.LENGTH_SHORT).show();
 //        fm.beginTransaction().replace(R.id.content_main, PrintersInfoFragment.newInstance(universities1.get(position))).commit();
 
