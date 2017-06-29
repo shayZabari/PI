@@ -29,6 +29,7 @@ public class MyService extends Service {
 //    public MyService() {
 //        super("constructor MyService");
 //    }
+University university;
 
     @Override
     public void onCreate() {
@@ -39,6 +40,7 @@ public class MyService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("123", "on start command from service");
+        university = (University) intent.getSerializableExtra("uni");
         onHandleIntent(intent);
         return START_STICKY;
     }
@@ -68,13 +70,13 @@ public class MyService extends Service {
     }
 //}
 
-    public void setNotification() {
+    public void setNotification(String name) {
         notification = new NotificationCompat.Builder(getBaseContext());
         notification.setAutoCancel(true);
-        notification.setTicker("this is tiker");
+        notification.setTicker(name);
         notification.setSmallIcon(R.mipmap.ic_launcher);
-        notification.setContentTitle("setcontenttitle");
-        notification.setContentText("setcontentText");
+        notification.setContentTitle("setcontenttitle" + name);
+//        notification.setContentText("setcontentText"+name);
         nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         nm.notify(ID, notification.build());
     }
@@ -88,10 +90,10 @@ public class MyService extends Service {
             try {
                 ArrayList<University> universities = null;
                 for (int i = 0; i < 5; i++) {
-                    universities = UniversityHelper.getDropboxData("https://dl.dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0");
-                    setNotification();
+//                    universities = UniversityHelper.getDropboxData("https://dl.dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0");
+                    University university1 = UniversityHelper.getTableDatabase(getBaseContext(), university);
+                    setNotification(university1.getName());
                     Thread.sleep(4000);
-                    Log.d("123", "myservice ! = " + "counter is " + i + " " + universities.get(0).getName());
                     nm.cancel(ID);
                 }
                 return universities;

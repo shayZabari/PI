@@ -188,6 +188,7 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_manage) {
             intent = new Intent(this, MyService.class);
+            intent.putExtra("uni", universities1.get(universityPosition));
             Log.d(TAG, "onNavigationItemSelected: start service 191");
             startService(intent);
         } else if (id == R.id.nav_share) {
