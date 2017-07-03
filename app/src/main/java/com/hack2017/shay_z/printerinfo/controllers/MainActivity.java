@@ -156,21 +156,22 @@ public class MainActivity extends AppCompatActivity
 
     private void refreshUniversities() {
 
-        addProgressDialog();
+        addProgressDialog("Please Wait..", "Updating Database");
 //        findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
         d = new DatabaseDropbox(dropboxUrl, this);
         setToolBar();
     }
 
-    private void addProgressDialog() {
+    private void addProgressDialog(String setTitle, String setMessage) {
         progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Please Wait");
+        progressDialog.setTitle(setTitle);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Updating database..");
+        progressDialog.setMessage(setMessage);
         progressDialog.show();
     }
 
+    // navigation drawer
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -243,8 +244,8 @@ public class MainActivity extends AppCompatActivity
                         university.table.subjects.get(i).getPosition = tempSubject.get(i).getPosition;
                     }
                 } else {
-                    Log.e(TAG, "getDropBoxDatbase: university.table is nullllll 238");
-                    maketoast("university table is null");
+                    Log.e(TAG, "getDropBoxDatbase: universityFromIntent.table is nullllll 238");
+                    maketoast("universityFromIntent table is null");
                 }
 
             } catch (Exception e) {
@@ -305,8 +306,8 @@ public class MainActivity extends AppCompatActivity
     // callback after jsoup finished
     public void onTableFinished(University university) {
 //        Log.d("123", "test "+universities1.get(0).table.subjects.get(0).checkBoxStatus+"-");
-//        for (int i = 0; i < university.table.subjects.size(); i++) {
-//                    university.table.subjects.get(i).checkBoxStatus=
+//        for (int i = 0; i < universityFromIntent.table.subjects.size(); i++) {
+//                    universityFromIntent.table.subjects.get(i).checkBoxStatus=
 //            universities1.get(universityPosition).table.subjects.get(i).checkBoxStatus;
 //        }
 

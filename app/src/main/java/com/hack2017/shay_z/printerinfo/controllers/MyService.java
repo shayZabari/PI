@@ -13,8 +13,6 @@ import com.hack2017.shay_z.printerinfo.R;
 import com.hack2017.shay_z.printerinfo.UniversityHelper;
 import com.hack2017.shay_z.printerinfo.models.University;
 
-import java.util.ArrayList;
-
 /**
  * Created by shay_z on 16-Jun-17.
  */
@@ -29,7 +27,7 @@ public class MyService extends Service {
 //    public MyService() {
 //        super("constructor MyService");
 //    }
-University university;
+University universityFromIntent;
 
     @Override
     public void onCreate() {
@@ -40,7 +38,7 @@ University university;
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("123", "on start command from service");
-        university = (University) intent.getSerializableExtra("uni");
+        universityFromIntent = (University) intent.getSerializableExtra("uni");
         onHandleIntent(intent);
         return START_STICKY;
     }
@@ -56,7 +54,7 @@ University university;
     public void onHandleIntent(@Nullable Intent intent) {
         this.intent = intent;
         Log.d("123", "on hangle in tent in service !!!!!");
-        new DoBackgroudTask().execute();
+        new DoBackgroudTask().execute(universityFromIntent);
 //        for (int i = 0; i < 3; i++) {
 //            Log.d("123", "  = " + i + "");
 //            try {
@@ -75,28 +73,38 @@ University university;
         notification.setAutoCancel(true);
         notification.setTicker(name);
         notification.setSmallIcon(R.mipmap.ic_launcher);
-        notification.setContentTitle("setcontenttitle" + name);
+        notification.setContentTitle(name);
 //        notification.setContentText("setcontentText"+name);
         nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         nm.notify(ID, notification.build());
     }
 
 
-    class DoBackgroudTask extends AsyncTask<Object, Object, ArrayList<University>> {
+    class DoBackgroudTask extends AsyncTask<University, Object, University> {
 
         @Override
-        protected ArrayList<University> doInBackground(Object... urls) {
+        protected University doInBackground(University... universities) {
             Log.d("123", "on do in background service !!!!!");
             try {
-                ArrayList<University> universities = null;
-                for (int i = 0; i < 5; i++) {
+                University mUniversity = null;
+                for (int i = 0; i < 20; i++) {
 //                    universities = UniversityHelper.getDropboxData("https://dl.dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0");
-                    University university1 = UniversityHelper.getTableDatabase(getBaseContext(), university);
-                    setNotification(university1.getName());
-                    Thread.sleep(4000);
+                    if (UniversityHelper.getTableDatabase(getBaseContext(), universities[0]) != null) {
+
+                        mUniversity = UniversityHelper.getTableDatabase(getBaseContext(), universities[0]);
+                    }
+                    String subject;
+                    int countSubject;
+
+                    subject = mUniversity.table.statusTableArr.get(0).statusID;
+                    countSubject = mUniversity.table.statusTableArr.get(0).count;
+                    setNotification(subject + " " + countSubject);
+
+                    Thread.sleep(10000);
                     nm.cancel(ID);
                 }
-                return universities;
+
+                return universityFromIntent;
             } catch (Exception e) {
                 Log.d("123", "exeption is do in backgroud" + e.getMessage());
                 e.printStackTrace();
