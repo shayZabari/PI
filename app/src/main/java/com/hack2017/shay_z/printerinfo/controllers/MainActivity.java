@@ -33,7 +33,7 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         FragmentUniversityList.OnUniversitySelectedListener,
-        FragmentUniversityPage.OnRefreshSubjectListener, ExeptionInterface {
+        FragmentUniversityPage.OnRefreshSubjectListener, ExeptionInterface, DatabaseTable.OnDataBaseTableReceivedListener {
     private static final String SAVE_UNIVERSITIES = "123";
     private static final String TAG = "123";
     public static ArrayList<University> universities1;
@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        // TODO: 03-Jul-17
         refreshUniversities();
     }
 
@@ -99,8 +100,8 @@ public class MainActivity extends AppCompatActivity
     private void setToolBar() {
         if (universities1 != null) {
 
-        getSupportActionBar().setTitle(universities1.get(universityPosition).getName());
-        getSupportActionBar().setSubtitle(DateFormat.getDateTimeInstance().format(new Date()));
+            getSupportActionBar().setTitle(universities1.get(universityPosition).getName());
+            getSupportActionBar().setSubtitle(DateFormat.getDateTimeInstance().format(new Date()));
         }
 //        ImageView imageView = new ImageView(this);
 //        if (universities1.get(universityPosition).getLogoUrl() != null) {
@@ -154,6 +155,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void refreshUniversities() {
+
         addProgressDialog();
 //        findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
         d = new DatabaseDropbox(dropboxUrl, this);
@@ -183,7 +185,11 @@ public class MainActivity extends AppCompatActivity
             } else {
                 refreshUniversities();
             }
-            fm.beginTransaction().replace(R.id.content_main, FragmentUniversityList.newInstance(universities1)).commit();
+            if (universities1 != null) {
+                fm.beginTransaction().replace(R.id.content_main, FragmentUniversityList.newInstance(universities1)).commit();
+            } else {
+                maketoast("universities1 is null");
+            }
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
@@ -210,9 +216,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     // callback from DatabaseDropbox
-    public void getDropBoxDatbase(ArrayList<University> universities) throws Exception {
-        if (universities1 != null) {
-
+    public void getDropBoxDatbase(ArrayList<University> universities) {
+        if (universities == null) {
+            Log.e(TAG, "getDropBoxDatbase: in mainactivity 215 " + exceptionMessage);
+            maketoast("universityes are null");
+            return;
         }
         Log.d("123", "Mainactivity_155");
 //        ProgressDialog progressDialog = new ProgressDialog(this);
@@ -222,21 +230,29 @@ public class MainActivity extends AppCompatActivity
         progressDialog.cancel();
 //        findViewById(R.id.progressBar).setVisibility(View.GONE);
         int sizeTemp = universities.size();
-        Toast.makeText(this, "FOUND " + sizeTemp + " UNIVERSITIES", Toast.LENGTH_LONG).show();
+        maketoast("FOUND " + sizeTemp + " UNIVERSITIES");
         Log.i("a", "finish universities1 size= " + universities.size());
         for (University university : universities) {
-//        Picasso.with(this).load(university.getLogoUrl())
-            ArrayList<Subject> tempSubject = UrlUtils.spLoadCheckboxes(this, university);
-            if (tempSubject != null) {
+            ArrayList<Subject> tempSubject = null;
+            try {
 
-            for (int i = 0; i < university.table.subjects.size(); i++) {
-                university.table.subjects.get(i).checkBoxStatus = tempSubject.get(i).checkBoxStatus;
-                university.table.subjects.get(i).getPosition = tempSubject.get(i).getPosition;
+                if (UrlUtils.spLoadCheckboxes(this, university) != null && university.table != null) {
+                    tempSubject = UrlUtils.spLoadCheckboxes(this, university);
+                    for (int i = 0; i < university.table.subjects.size(); i++) {
+                        university.table.subjects.get(i).checkBoxStatus = tempSubject.get(i).checkBoxStatus;
+                        university.table.subjects.get(i).getPosition = tempSubject.get(i).getPosition;
+                    }
+                } else {
+                    Log.e(TAG, "getDropBoxDatbase: university.table is nullllll 238");
+                    maketoast("university table is null");
+                }
+
+            } catch (Exception e) {
+                maketoast(e.getMessage());
             }
-            }
+            UrlUtils.spSaveUniversities(this, universities);
             universities1 = universities;
         }
-        UrlUtils.spSaveUniversities(this, universities);
     }
 
     // calback from FragmentUniversityList
@@ -260,7 +276,7 @@ public class MainActivity extends AppCompatActivity
     // callback after fab collapsed(FragmentUniversityPage)
     @Override
     public void refreshSubject(University university) {
-        universities1.set(universityPosition,university);
+        universities1.set(universityPosition, university);
         UrlUtils.spSaveUniversities(this, universities1);
         fm.beginTransaction().replace(R.id.content_main, FragmentUniversityPage.newInstance(university)).commit();
     }
@@ -281,9 +297,9 @@ public class MainActivity extends AppCompatActivity
 //        maketoast();
     }
 
-    private void maketoast() {
-        Log.d("123", "this = " + this.toString());
-//        Toast.makeText(this,"toasting",Toast.LENGTH_LONG).show();
+    private void maketoast(String message) {
+        Log.d("123", "294 = " + message);
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     // callback after jsoup finished
@@ -293,6 +309,11 @@ public class MainActivity extends AppCompatActivity
 //                    university.table.subjects.get(i).checkBoxStatus=
 //            universities1.get(universityPosition).table.subjects.get(i).checkBoxStatus;
 //        }
+
+    }
+
+    @Override
+    public void onDataBaseTableReceived(University university) {
         universities1.set(universityPosition, university);
         fm.beginTransaction().replace(R.id.content_main, FragmentUniversityPage.newInstance(university)).commit();
     }
