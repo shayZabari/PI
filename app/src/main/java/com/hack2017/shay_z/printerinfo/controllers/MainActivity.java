@@ -1,6 +1,9 @@
 package com.hack2017.shay_z.printerinfo.controllers;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -28,6 +31,7 @@ import com.hack2017.shay_z.printerinfo.models.UrlUtils;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
@@ -41,6 +45,8 @@ public class MainActivity extends AppCompatActivity
     FragmentManager fm = getSupportFragmentManager();
     int universityPosition;
     Intent intent;
+    AlarmManager alarmManager;
+    PendingIntent pendingIntent;
     private String dropboxUrl = "https://dl.dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0";
     private String exceptionMessage;
     //    AlertDialog alert;
@@ -50,6 +56,9 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         // TODO: 03-Jul-17
+        if (alarmManager != null) {
+            alarmManager.cancel(pendingIntent);
+        }
         refreshUniversities();
     }
 
@@ -196,8 +205,16 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
             intent = new Intent(this, MyService.class);
             intent.putExtra("uni", universities1.get(universityPosition));
+
+            pendingIntent = PendingIntent.getService(this, 0, intent, 0);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            calendar.add(Calendar.SECOND, 5);
+
+            alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 30 * 1000, pendingIntent);
             Log.d(TAG, "onNavigationItemSelected: start service 191");
-            startService(intent);
+//            startService(intent);
         } else if (id == R.id.nav_share) {
             Log.d(TAG, "onNavigationItemSelected: stopping service 192");
             stopService(intent);

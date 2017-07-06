@@ -6,12 +6,16 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.constraint.solver.ArrayLinkedVariables;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.hack2017.shay_z.printerinfo.R;
 import com.hack2017.shay_z.printerinfo.UniversityHelper;
+import com.hack2017.shay_z.printerinfo.models.StatusTable;
 import com.hack2017.shay_z.printerinfo.models.University;
+
+import java.util.ArrayList;
 
 /**
  * Created by shay_z on 16-Jun-17.
@@ -19,15 +23,13 @@ import com.hack2017.shay_z.printerinfo.models.University;
 
 public class MyService extends Service {
     NotificationManager nm;
-    private Intent intent;
-    private NotificationCompat.Builder notification;
-    private int ID = 123;
-
-
 //    public MyService() {
 //        super("constructor MyService");
 //    }
 University universityFromIntent;
+    private Intent intent;
+    private NotificationCompat.Builder notification;
+    private int ID = 123;
 
     @Override
     public void onCreate() {
@@ -87,7 +89,7 @@ University universityFromIntent;
             Log.d("123", "on do in background service !!!!!");
             try {
                 University mUniversity = null;
-                for (int i = 0; i < 20; i++) {
+//                for (int i = 0; i < 200; i++) {
 //                    universities = UniversityHelper.getDropboxData("https://dl.dropboxusercontent.com/s/fjouslzbhn5chlh/printerInfoApp.txt?dl=0");
                     if (UniversityHelper.getTableDatabase(getBaseContext(), universities[0]) != null) {
 
@@ -95,14 +97,17 @@ University universityFromIntent;
                     }
                     String subject;
                     int countSubject;
+                ArrayList<StatusTable> currentStatusTable = mUniversity.table.statusTableArr;
+                for (int i = 0; i < currentStatusTable.size(); i++) {
 
+                }
                     subject = mUniversity.table.statusTableArr.get(0).statusID;
                     countSubject = mUniversity.table.statusTableArr.get(0).count;
-                    setNotification(subject + " " + countSubject);
+                setNotification(subject + " \n" + countSubject);
 
                     Thread.sleep(10000);
                     nm.cancel(ID);
-                }
+//                }
 
                 return universityFromIntent;
             } catch (Exception e) {
