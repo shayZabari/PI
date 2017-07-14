@@ -18,6 +18,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.firebase.jobdispatcher.Job;
+import com.hack2017.shay_z.printerinfo.MyJobService;
 import com.hack2017.shay_z.printerinfo.models.DatabaseDropbox;
 import com.hack2017.shay_z.printerinfo.R;
 import com.hack2017.shay_z.printerinfo.models.DatabaseTable;
@@ -59,6 +63,15 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
+        Job myJob = dispatcher.newJobBuilder()
+                .setService(MyJobService.class) // the JobService that will be called
+                .setTag("my-unique-tag")        // uniquely identifies the job
+                .build();
+        Log.d("jobdispatcher", "onCreate: before start job !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        dispatcher.mustSchedule(myJob);
+
 
         Toast.makeText(getApplicationContext(), "198 ", Toast.LENGTH_SHORT).show();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
