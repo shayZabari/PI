@@ -12,6 +12,9 @@ import android.util.Log;
 import com.hack2017.shay_z.printerinfo.R;
 import com.hack2017.shay_z.printerinfo.UniversityHelper;
 import com.hack2017.shay_z.printerinfo.models.University;
+import com.hack2017.shay_z.printerinfo.models.UrlUtils;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by shay_z on 16-Jun-17.
@@ -22,23 +25,38 @@ public class MyService extends Service {
     private Intent intent;
     private NotificationCompat.Builder notification;
     private int ID = 123;
+    public static boolean myServiceRunning = false;
 
 
-//    public MyService() {
+    //    public MyService() {
 //        super("constructor MyService");
 //    }
-University universityFromIntent;
+    University universityFromIntent;
 
     @Override
     public void onCreate() {
+        myServiceRunning = true;
         Log.d("123", "timer service had started");
         super.onCreate();
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopSelf();
+        myServiceRunning = false;
+    }
+
+    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("123", "on start command from service");
-        universityFromIntent = (University) intent.getSerializableExtra("uni");
+        try {
+            universityFromIntent = (UrlUtils.spLoadUniversities(getApplicationContext()).get(UrlUtils.spLoadUniversityPosition(getApplicationContext())));
+        } catch (Exception e) {
+            Log.e("123", "onStartCommand: universityfromIntent 47=" + universityFromIntent.toString());
+            e.printStackTrace();
+
+        }
         onHandleIntent(intent);
         return START_STICKY;
     }
@@ -117,5 +135,7 @@ University universityFromIntent;
 
         //    @Override
 
+
     }
+
 }

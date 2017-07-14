@@ -1,10 +1,12 @@
 package com.hack2017.shay_z.printerinfo.controllers;
 
+import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityManagerCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -18,6 +20,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.firebase.jobdispatcher.Job;
+import com.firebase.jobdispatcher.Lifetime;
+import com.firebase.jobdispatcher.Trigger;
+import com.hack2017.shay_z.printerinfo.MyJobService;
 import com.hack2017.shay_z.printerinfo.models.DatabaseDropbox;
 import com.hack2017.shay_z.printerinfo.R;
 import com.hack2017.shay_z.printerinfo.models.DatabaseTable;
@@ -45,10 +53,26 @@ public class MainActivity extends AppCompatActivity
     private String exceptionMessage;
     //    AlertDialog alert;
     private ProgressDialog progressDialog;
+    private boolean progressDialogActive = false;
+
+    boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : activityManager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume: ");
+        if (isMyServiceRunning(MyService.class)) {
+            stopService(new Intent(getApplicationContext(), MyService.class));
+
+        }
         // TODO: 03-Jul-17
         refreshUniversities();
     }
@@ -59,6 +83,12 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
+
+//        simpleJob(dispatcher);
+
+        extendJob(dispatcher);
+
 
         Toast.makeText(getApplicationContext(), "198 ", Toast.LENGTH_SHORT).show();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -95,6 +125,31 @@ public class MainActivity extends AppCompatActivity
 //        Type type = new TypeToken<List<University>>() {
 //        }.getType();
 //        universities1 = gson.fromJson(json, type);
+    }
+
+    private void simpleJob(FirebaseJobDispatcher dispatcher) {
+        Job myJob = dispatcher.newJobBuilder()
+                .setService(MyJobService.class) // the JobService that will be called
+                .setTag("my-unique-tag")        // uniquely identifies the job
+                .build();
+
+        dispatcher.mustSchedule(myJob);
+    }
+
+    private void extendJob(FirebaseJobDispatcher dispatcher) {
+        int start = (int) java.util.concurrent.TimeUnit.HOURS.toSeconds(7); //7 hours in seconds
+        int end = (int) java.util.concurrent.TimeUnit.HOURS.toSeconds(8);   //8 hours in seconds
+
+        Job myJob = dispatcher.newJobBuilder().
+                setService(MyJobService.class).
+                setTag("myJob").
+                setTrigger(Trigger.executionWindow(10, 20)).
+                setRecurring(true).
+                setReplaceCurrent(true).
+//                setLifetime(Lifetime.FOREVER).
+        build();
+        Log.d("jobdispatcher", "extendJob: before starting the job !!!");
+        dispatcher.schedule(myJob);
     }
 
     private void setToolBar() {
@@ -163,12 +218,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void addProgressDialog(String setTitle, String setMessage) {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle(setTitle);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage(setMessage);
-        progressDialog.show();
+
+        if (!progressDialogActive) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle(setTitle);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage(setMessage);
+            progressDialog.show();
+            progressDialogActive = true;
+        }
     }
 
     // navigation drawer
@@ -196,6 +255,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
             intent = new Intent(this, MyService.class);
             intent.putExtra("uni", universities1.get(universityPosition));
+            intent.setFlags(12);
             Log.d(TAG, "onNavigationItemSelected: start service 191");
             startService(intent);
         } else if (id == R.id.nav_share) {
@@ -229,6 +289,7 @@ public class MainActivity extends AppCompatActivity
 //        progressDialog.setMessage("Please Wait");
 //        progressDialog.setCancelable(false);
         progressDialog.cancel();
+        progressDialogActive = false;
 //        findViewById(R.id.progressBar).setVisibility(View.GONE);
         int sizeTemp = universities.size();
         maketoast("FOUND " + sizeTemp + " UNIVERSITIES");

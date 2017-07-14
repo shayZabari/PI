@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1027666634805",
+    "firebase_url": "https://printerinfo-7427b.firebaseio.com",
+    "project_id": "printerinfo-7427b",
+    "storage_bucket": "printerinfo-7427b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1027666634805:android:52521a87fcbfe521",
+        "android_client_info": {
+          "package_name": "com.hack2017.shay_z.printerinfo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1027666634805-v5esipsj6l5u1ilglgniutuvu08k7kn2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hack2017.shay_z.printerinfo",
+            "certificate_hash": "7f04fcbc6846ff60c9fed7127fac14a6413a8705"
+          }
+        },
+        {
+          "client_id": "1027666634805-6rs123k948ceua8rkl9sb3mv4cp0gp67.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGYF6iccJHhdBlo2w5dBSln6oc_tWNtOI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1027666634805-6rs123k948ceua8rkl9sb3mv4cp0gp67.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
