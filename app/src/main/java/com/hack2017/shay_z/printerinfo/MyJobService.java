@@ -28,6 +28,7 @@ import java.util.Date;
 
 public class MyJobService extends JobService {
     private String TAG = "jobdispatcher";
+    NotificationManagerCompat mgr;
 
     @Override
     public boolean onStartJob(JobParameters job) {
@@ -77,15 +78,17 @@ public class MyJobService extends JobService {
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setLargeIcon(bitmap);
-        
+
         Notification notification = builder.build();
-        NotificationManagerCompat mgr = NotificationManagerCompat.from(this);
+        mgr = NotificationManagerCompat.from(this);
+        Log.d(TAG, "push: notification in service");
         mgr.notify(1, notification);
 
     }
 
     @Override
     public boolean onStopJob(JobParameters job) {
+        mgr.cancel(1);
         return false;
     }
 }

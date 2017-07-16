@@ -1,12 +1,15 @@
 package com.hack2017.shay_z.printerinfo.controllers;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,14 +19,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.firebase.jobdispatcher.Job;
 import com.firebase.jobdispatcher.Lifetime;
-import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
 import com.hack2017.shay_z.printerinfo.MyJobService;
 import com.hack2017.shay_z.printerinfo.models.DatabaseDropbox;
@@ -68,26 +71,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
-        Job myJob = dispatcher.newJobBuilder()
-                // the JobService that will be called
-                .setService(MyJobService.class)
-                // uniquely identifies the job
-                .setTag("my-unique-tag")
-                // one-off job
-                .setRecurring(true)
-                // don't persist past a device reboot
-                .setLifetime(Lifetime.FOREVER)
-                // start between 0 and 60 seconds from now
-                .setTrigger(Trigger.executionWindow(0, 60))
-                // don't overwrite an existing job with the same tag
-                .setReplaceCurrent(true)
-                // retry with exponential backoff
-                // constraints that need to be satisfied for the job to run
 
-                .build();
-
-        dispatcher.mustSchedule(myJob);
 
 
         Toast.makeText(getApplicationContext(), "198 ", Toast.LENGTH_SHORT).show();
@@ -125,6 +109,39 @@ public class MainActivity extends AppCompatActivity
 //        Type type = new TypeToken<List<University>>() {
 //        }.getType();
 //        universities1 = gson.fromJson(json, type);
+    }
+
+    private void notifications(boolean start) {
+        FirebaseJobDispatcher dispatcher = null;
+        dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
+        if (start) {
+            Job myJob = dispatcher.newJobBuilder()
+                    // the JobService that will be called
+                    .setService(MyJobService.class)
+                    // uniquely identifies the job
+                    .setTag("my-unique-tag")
+                    // one-off job
+                    .setRecurring(true)
+                    // don't persist past a device reboot
+                    .setLifetime(Lifetime.FOREVER)
+                    // start between 0 and 60 seconds from now
+                    .setTrigger(Trigger.executionWindow(0, 60))
+                    // don't overwrite an existing job with the same tag
+                    .setReplaceCurrent(true)
+                    // retry with exponential backoff
+                    // constraints that need to be satisfied for the job to run
+
+                    .build();
+
+            dispatcher.mustSchedule(myJob);
+        } else {
+            if (dispatcher != null) {
+                dispatcher.cancelAll();
+            } else {
+                Toast.makeText(this, "notification is null", Toast.LENGTH_SHORT).show();
+            }
+        }
+
     }
 
     private void setToolBar() {
@@ -223,22 +240,53 @@ public class MainActivity extends AppCompatActivity
             }
         } else if (id == R.id.nav_slideshow) {
 
-        } else if (id == R.id.nav_manage) {
-            intent = new Intent(this, MyService.class);
-            intent.putExtra("uni", universities1.get(universityPosition));
-            Log.d(TAG, "onNavigationItemSelected: start service 191");
-            startService(intent);
-        } else if (id == R.id.nav_share) {
-            Log.d(TAG, "onNavigationItemSelected: stopping service 192");
-            stopService(intent);
-        } else if (id == R.id.nav_send) {
-//            Toast.makeText(this,UrlUtils.getLog(this), Toast.LENGTH_LONG).show();
+        } else if (id == R.id.start_service) {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-            alertDialog.setTitle("Title");
-            alertDialog.setMessage(UrlUtils.getLog(this));
-//            alertDialog.setButton("OK", null);
-            AlertDialog alert = alertDialog.create();
-            alert.show();
+            alertDialog.setTitle("PASSWORD");
+            alertDialog.setMessage("Enter Password");
+            final EditText input = new EditText(MainActivity.this);
+            input.setInputType(InputType.TYPE_CLASS_NUMBER);
+            int maxLength = 3;
+            InputFilter[] filterArray = new InputFilter[1];
+            filterArray[0] = new InputFilter.LengthFilter(maxLength);
+            input.setFilters(filterArray);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT);
+            input.setLayoutParams(lp);
+            alertDialog.setView(input);
+            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                }
+            });
+            alertDialog.setPositiveButton("Set", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    notifications(true);
+                    Toast.makeText(MainActivity.this, input.getText(), Toast.LENGTH_SHORT).show();
+                }
+            });
+            alertDialog.show();
+//            notifications(true);
+//            intent = new Intent(this, MyService.class);
+//            intent.putExtra("uni", universities1.get(universityPosition));
+//            Log.d(TAG, "onNavigationItemSelected: start service 191");
+//            startService(intent);
+        } else if (id == R.id.nav_share) {
+//            notifications(false);
+//            Log.d(TAG, "onNavigationItemSelected: stopping service 192");
+//            stopService(intent);
+        } else if (id == R.id.stop_service) {
+            notifications(false);
+            Toast.makeText(this, "Service Stopped!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this,UrlUtils.getLog(this), Toast.LENGTH_LONG).show();
+//            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+//            alertDialog.setTitle("Title");
+//            alertDialog.setMessage(UrlUtils.getLog(this));
+////            alertDialog.setButton("OK", null);
+//            AlertDialog alert = alertDialog.create();
+//            alert.show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
