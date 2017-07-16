@@ -18,9 +18,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.firebase.jobdispatcher.Job;
+import com.firebase.jobdispatcher.Lifetime;
+import com.firebase.jobdispatcher.RetryStrategy;
+import com.firebase.jobdispatcher.Trigger;
 import com.hack2017.shay_z.printerinfo.MyJobService;
 import com.hack2017.shay_z.printerinfo.models.DatabaseDropbox;
 import com.hack2017.shay_z.printerinfo.R;
@@ -66,10 +70,23 @@ public class MainActivity extends AppCompatActivity
 
         FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
         Job myJob = dispatcher.newJobBuilder()
-                .setService(MyJobService.class) // the JobService that will be called
-                .setTag("my-unique-tag")        // uniquely identifies the job
+                // the JobService that will be called
+                .setService(MyJobService.class)
+                // uniquely identifies the job
+                .setTag("my-unique-tag")
+                // one-off job
+                .setRecurring(true)
+                // don't persist past a device reboot
+                .setLifetime(Lifetime.FOREVER)
+                // start between 0 and 60 seconds from now
+                .setTrigger(Trigger.executionWindow(0, 60))
+                // don't overwrite an existing job with the same tag
+                .setReplaceCurrent(true)
+                // retry with exponential backoff
+                // constraints that need to be satisfied for the job to run
+
                 .build();
-        Log.d("jobdispatcher", "onCreate: before start job !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
         dispatcher.mustSchedule(myJob);
 
 

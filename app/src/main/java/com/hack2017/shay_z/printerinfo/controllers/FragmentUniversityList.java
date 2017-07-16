@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.hack2017.shay_z.printerinfo.R;
 import com.hack2017.shay_z.printerinfo.models.University;
+import com.hack2017.shay_z.printerinfo.models.UrlUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -85,11 +86,11 @@ public class FragmentUniversityList extends Fragment {
     }
 
     class MyList extends ArrayAdapter <University>{
-        ArrayList<University> list;
+        ArrayList<University> universities;
         public MyList(@NonNull Context context, @LayoutRes int resource, @NonNull List objects) {
             super(context, resource, objects);
             onUniversitySelectedListener = (OnUniversitySelectedListener) context;
-            list = (ArrayList<University>) objects;
+            universities = (ArrayList<University>) objects;
 
             Log.d("123", "logggg");
         }
@@ -112,9 +113,10 @@ public class FragmentUniversityList extends Fragment {
                 });
                 TextView textInfo = (TextView) v.findViewById(R.id.tvInfo1);
                 ImageView imageView= (ImageView) v.findViewById(R.id.imgUniversityLogo);
-                Picasso.with(getContext()).load(list.get(position).getLogoUrl()).into(imageView);
-//                imageView.setImageBitmap(list.get(position).getBitmap());// TODO: 21-Jun-17  temp removed
-                textInfo.setText(list.get(position).getName());
+                Picasso.with(getContext()).load(universities.get(position).getLogoUrl()).into(imageView);
+
+//                imageView.setImageBitmap(universities.get(position).getBitmap());// TODO: 21-Jun-17  temp removed
+                textInfo.setText(universities.get(position).getName());
 
             }
             return v;
