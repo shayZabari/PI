@@ -20,6 +20,7 @@ import com.hack2017.shay_z.printerinfo.models.UrlUtils;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -27,8 +28,8 @@ import java.util.Date;
  */
 
 public class MyJobService extends JobService {
-    private String TAG = "jobdispatcher";
     NotificationManagerCompat mgr;
+    private String TAG = "jobdispatcher";
 
     @Override
     public boolean onStartJob(JobParameters job) {
@@ -81,7 +82,7 @@ public class MyJobService extends JobService {
 
         Notification notification = builder.build();
         mgr = NotificationManagerCompat.from(this);
-        Log.d(TAG, "push: notification in service");
+        Log.d(TAG, "push: notification in service" + Calendar.getInstance().get(Calendar.DATE));
         mgr.notify(1, notification);
 
     }

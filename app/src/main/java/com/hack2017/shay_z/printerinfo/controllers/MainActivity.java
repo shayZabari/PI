@@ -39,7 +39,9 @@ import com.hack2017.shay_z.printerinfo.models.UrlUtils;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -112,6 +114,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void notifications(boolean start) {
+        Calendar cal = Calendar.getInstance();
+//        Date currentTime = cal.getTime();
+        int selectedHour = 13;
+        // TODO: 20/07/2017 trying set specific hour 
+        int from = (int) TimeUnit.HOURS.toSeconds((selectedHour - (cal.get(Calendar.HOUR))));
+        int to = (int) (from + TimeUnit.HOURS.toSeconds(1));
+//        currentTime.getTime();
         FirebaseJobDispatcher dispatcher = null;
         dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
         if (start) {
@@ -125,7 +134,8 @@ public class MainActivity extends AppCompatActivity
                     // don't persist past a device reboot
                     .setLifetime(Lifetime.FOREVER)
                     // start between 0 and 60 seconds from now
-                    .setTrigger(Trigger.executionWindow(0, 60))
+                    .setTrigger(Trigger.executionWindow(from, to))
+
                     // don't overwrite an existing job with the same tag
                     .setReplaceCurrent(true)
                     // retry with exponential backoff
