@@ -39,6 +39,7 @@ import com.hack2017.shay_z.printerinfo.models.Subject;
 import com.hack2017.shay_z.printerinfo.models.University;
 import com.hack2017.shay_z.printerinfo.models.UrlUtils;
 
+import java.security.Timestamp;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         JobManager.create(this).addJobCreator(new AdeptAndroidJobCreator());
+
 
 
         Toast.makeText(getApplicationContext(), "198 ", Toast.LENGTH_SHORT).show();
@@ -309,8 +311,10 @@ public class MainActivity extends AppCompatActivity
 
     private void evernoteJobs() {
         new JobRequest.Builder(DemoJob.JOB_TAG)
-                .setExecutionWindow(2000, 5000)
+                .setExecutionWindow(2000, 15000)
+//                .setPeriodic(TimeUnit.MINUTES.toMillis(15))
                 .build()
+
                 .schedule();
     }
 

@@ -39,6 +39,9 @@
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
             </intent-filter>
         </service>
+        <service
+            android:name=".models.MyEvernoteService"
+            android:exported="false" />
     </application>
 
 </manifest>

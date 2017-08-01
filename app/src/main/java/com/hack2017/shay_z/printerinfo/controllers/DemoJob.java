@@ -1,10 +1,14 @@
 package com.hack2017.shay_z.printerinfo.controllers;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.pm.ComponentInfo;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.evernote.android.job.Job;
 import com.hack2017.shay_z.printerinfo.MyJobService;
+import com.hack2017.shay_z.printerinfo.models.MyEvernoteService;
 
 /**
  * Created by Toshiba on 01/08/2017.
@@ -16,8 +20,13 @@ class DemoJob extends Job {
     @NonNull
     @Override
     protected Result onRunJob(Params params) {
-        new MyJobService();
+
+        Intent intent = new Intent(getContext(), MyEvernoteService.class);
+        Log.d("123", "MY LOG !!--class= DemoJob: method=onRunJob:  before startservice");
+        getContext().startService(intent);
+
         Log.d("123", "evernote success !!!!" + params.getTag());
         return Result.SUCCESS;
     }
+
 }
