@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity
         Calendar cal = Calendar.getInstance();
 //        Date currentTime = cal.getTime();
         int selectedHour = 13;
-        // TODO: 20/07/2017 trying set specific hour 
+        // TODO: 20/07/2017 trying set specific hour
         int from = (int) TimeUnit.HOURS.toSeconds((selectedHour - (cal.get(Calendar.HOUR))));
         int to = (int) (from + TimeUnit.HOURS.toSeconds(1));
 //        currentTime.getTime();
