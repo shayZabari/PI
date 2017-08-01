@@ -23,6 +23,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.evernote.android.job.JobManager;
+import com.evernote.android.job.JobRequest;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.firebase.jobdispatcher.Job;
@@ -73,7 +75,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        JobManager.create(this).addJobCreator(new AdeptAndroidJobCreator());
 
 
         Toast.makeText(getApplicationContext(), "198 ", Toast.LENGTH_SHORT).show();
@@ -273,7 +275,8 @@ public class MainActivity extends AppCompatActivity
             alertDialog.setPositiveButton("Set", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    notifications(true);
+                    evernoteJobs();
+//                    notifications(true); // TODO: 01/08/2017 temp removed try evernote 
                     Toast.makeText(MainActivity.this, input.getText(), Toast.LENGTH_SHORT).show();
                 }
             });
@@ -302,6 +305,13 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void evernoteJobs() {
+        new JobRequest.Builder(DemoJob.JOB_TAG)
+                .setExecutionWindow(2000, 5000)
+                .build()
+                .schedule();
     }
 
     // callback from DatabaseDropbox
