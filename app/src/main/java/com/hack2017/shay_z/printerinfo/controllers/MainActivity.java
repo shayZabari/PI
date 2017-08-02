@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        AdeptAndroidJobCreator aajc = new AdeptAndroidJobCreator();
         JobManager.create(this).addJobCreator(new AdeptAndroidJobCreator());
 
 
