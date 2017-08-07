@@ -2,15 +2,11 @@ package com.hack2017.shay_z.printerinfo.controllers;
 
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
-import android.text.InputFilter;
-import android.text.InputType;
 import android.util.Log;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,8 +16,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -41,7 +35,6 @@ import com.hack2017.shay_z.printerinfo.models.Subject;
 import com.hack2017.shay_z.printerinfo.models.University;
 import com.hack2017.shay_z.printerinfo.models.UrlUtils;
 
-import java.security.Timestamp;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -82,7 +75,6 @@ public class MainActivity extends AppCompatActivity
 
         AdeptAndroidJobCreator aajc = new AdeptAndroidJobCreator();
         JobManager.create(this).addJobCreator(new AdeptAndroidJobCreator());
-
 
 
         Toast.makeText(getApplicationContext(), "198 ", Toast.LENGTH_SHORT).show();
@@ -259,9 +251,9 @@ public class MainActivity extends AppCompatActivity
             }
         } else if (id == R.id.nav_slideshow) {
 
-        } else if (id == R.id.start_service) {
+        } else if (id == R.id.add_notification) {
 
-            new TimePickerDialog(MainActivity.this, this, timePickerHour, timePickerMinute, false).show();
+            new TimePickerDialog(MainActivity.this, this, timePickerHour, timePickerMinute, true).show();
         } else if (id == R.id.nav_share) {
 //            notifications(false);
 //            Log.d(TAG, "onNavigationItemSelected: stopping service 192");
@@ -290,7 +282,7 @@ public class MainActivity extends AppCompatActivity
         long currentMinute = calendar.get(Calendar.MINUTE);
 //        long timeChoosedInMinutes = TimeUnit.HOURS.toMinutes(hourChoosed) + TimeUnit.MINUTES.toMillis(minuteChoosed);
 
-        long startMill = TimeUnit.MINUTES.toMillis((minuteChoosed) + (60 * (hourChoosed - currentHour)) - (currentMinute));
+        long startMill = TimeUnit.MINUTES.toMillis((minuteChoosed) + (60 * (hourChoosed + 24 - currentHour)) + (60 - currentMinute));
 //        long startMill = TimeUnit.HOURS.toMillis(hourChoosed + 24 - currentHour) + TimeUnit.MINUTES.toMillis(60 - currentMinute);
         long totalMinutesLeft = startMill / 1000 / 60;// sum of minutes to choosed hour.
         long hoursLeft = startMill / 3600000;

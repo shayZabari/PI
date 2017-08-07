@@ -15,9 +15,9 @@
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Slideshow" />
         <item
-            android:id="@+id/start_service"
+            android:id="@+id/add_notification"
             android:icon="@drawable/ic_menu_manage"
-            android:title="StartService" />
+            android:title="Notification" />
     </group>
 
     <item android:title="Communicate">
