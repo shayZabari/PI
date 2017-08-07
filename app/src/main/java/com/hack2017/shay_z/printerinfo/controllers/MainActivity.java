@@ -311,12 +311,26 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void evernoteJobs() {
-        new JobRequest.Builder(DemoJob.JOB_TAG)
-                .setExecutionWindow(2000, 15000)
-//                .setPeriodic(TimeUnit.MINUTES.toMillis(15))
-                .build()
+        Calendar calendar = Calendar.getInstance();
+        long hour1 = calendar.get(Calendar.HOUR_OF_DAY);
+        long minute1 = calendar.get(Calendar.MINUTE);
 
+        long hourChoosed = 8;
+        long startMill = TimeUnit.HOURS.toMillis(hourChoosed + 24 - hour1) + TimeUnit.MINUTES.toMillis(60 - minute1);
+        long totalMinutesLeft = startMill / 1000 / 60;// sum of minutes to choosed hour.
+        long hoursLeft = startMill / 3600000;
+        long minutesLeft = totalMinutesLeft - ((startMill / 3600000) * 60);
+        String timeLeft = hoursLeft + ":" + minutesLeft;
+
+        long endMill = startMill + TimeUnit.HOURS.toMillis(2);
+        Log.d(TAG, "evernoteJobs: " + hoursLeft);
+        new JobRequest.Builder(DemoJob.JOB_TAG)
+                .setExecutionWindow(startMill, endMill)
+                .setPersisted(true)
+                .setUpdateCurrent(true)
+                .build()
                 .schedule();
+        Toast.makeText(this, timeLeft, Toast.LENGTH_SHORT).show();
     }
 
     // callback from DatabaseDropbox
