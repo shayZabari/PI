@@ -1,6 +1,7 @@
 package com.hack2017.shay_z.printerinfo.controllers;
 
 import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.evernote.android.job.JobManager;
@@ -49,7 +51,7 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         FragmentUniversityList.OnUniversitySelectedListener,
-        FragmentUniversityPage.OnRefreshSubjectListener, ExeptionInterface, DatabaseTable.OnDataBaseTableReceivedListener {
+        FragmentUniversityPage.OnRefreshSubjectListener, ExeptionInterface, DatabaseTable.OnDataBaseTableReceivedListener, TimePickerDialog.OnTimeSetListener {
     private static final String SAVE_UNIVERSITIES = "123";
     private static final String TAG = "123";
     public static ArrayList<University> universities1;
@@ -61,6 +63,8 @@ public class MainActivity extends AppCompatActivity
     private String exceptionMessage;
     //    AlertDialog alert;
     private ProgressDialog progressDialog;
+    private int timePickerHour;
+    private int timePickerMinute;
 
     @Override
     protected void onResume() {
@@ -256,39 +260,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.start_service) {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-            alertDialog.setTitle("PASSWORD");
-            alertDialog.setMessage("Enter Password");
-            final EditText input = new EditText(MainActivity.this);
-            input.setInputType(InputType.TYPE_CLASS_NUMBER);
-            int maxLength = 3;
-            InputFilter[] filterArray = new InputFilter[1];
-            filterArray[0] = new InputFilter.LengthFilter(maxLength);
-            input.setFilters(filterArray);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT);
-            input.setLayoutParams(lp);
-            alertDialog.setView(input);
-            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                }
-            });
-            alertDialog.setPositiveButton("Set", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    evernoteJobs();
-//                    notifications(true); // TODO: 01/08/2017 temp removed try evernote 
-                    Toast.makeText(MainActivity.this, input.getText(), Toast.LENGTH_SHORT).show();
-                }
-            });
-            alertDialog.show();
-//            notifications(true);
-//            intent = new Intent(this, MyService.class);
-//            intent.putExtra("uni", universities1.get(universityPosition));
-//            Log.d(TAG, "onNavigationItemSelected: start service 191");
-//            startService(intent);
+
+            new TimePickerDialog(MainActivity.this, this, timePickerHour, timePickerMinute, false).show();
         } else if (id == R.id.nav_share) {
 //            notifications(false);
 //            Log.d(TAG, "onNavigationItemSelected: stopping service 192");
@@ -310,13 +283,15 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void evernoteJobs() {
-        Calendar calendar = Calendar.getInstance();
-        long hour1 = calendar.get(Calendar.HOUR_OF_DAY);
-        long minute1 = calendar.get(Calendar.MINUTE);
 
-        long hourChoosed = 8;
-        long startMill = TimeUnit.HOURS.toMillis(hourChoosed + 24 - hour1) + TimeUnit.MINUTES.toMillis(60 - minute1);
+    private void evernoteJobs(int hourChoosed, int minuteChoosed) {
+        Calendar calendar = Calendar.getInstance();
+        long currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+        long currentMinute = calendar.get(Calendar.MINUTE);
+//        long timeChoosedInMinutes = TimeUnit.HOURS.toMinutes(hourChoosed) + TimeUnit.MINUTES.toMillis(minuteChoosed);
+
+        long startMill = TimeUnit.MINUTES.toMillis((minuteChoosed) + (60 * (hourChoosed - currentHour)) - (currentMinute));
+//        long startMill = TimeUnit.HOURS.toMillis(hourChoosed + 24 - currentHour) + TimeUnit.MINUTES.toMillis(60 - currentMinute);
         long totalMinutesLeft = startMill / 1000 / 60;// sum of minutes to choosed hour.
         long hoursLeft = startMill / 3600000;
         long minutesLeft = totalMinutesLeft - ((startMill / 3600000) * 60);
@@ -330,7 +305,7 @@ public class MainActivity extends AppCompatActivity
                 .setUpdateCurrent(true)
                 .build()
                 .schedule();
-        Toast.makeText(this, timeLeft, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Notification set for every " + hourChoosed + ":" + minuteChoosed + " each day.", Toast.LENGTH_SHORT).show();
     }
 
     // callback from DatabaseDropbox
@@ -434,5 +409,10 @@ public class MainActivity extends AppCompatActivity
     public void onDataBaseTableReceived(University university) {
         universities1.set(universityPosition, university);
         fm.beginTransaction().replace(R.id.content_main, FragmentUniversityPage.newInstance(university)).commit();
+    }
+
+    @Override
+    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+        evernoteJobs(hour, minute);
     }
 }
