@@ -41,7 +41,6 @@ public class UniversityHelper {
         } else {
             Log.d("123", "UrlUtils.getStringFromUrl(dropBoxLink) is  null!!! on university helper 28");
         }
-
         JSONObject parentJson;
         parentJson = new JSONObject(stringFromUrl);
         JSONArray parentArray = parentJson.getJSONArray("University"); // array of universities from dropbox file.
@@ -122,7 +121,6 @@ public class UniversityHelper {
 
             Log.d(TAG, "doInBackground: 154");
             Elements trsInPrintersTable;
-            ;
             Log.d("123", "ENTERING PRINTERS TABLE");
             Element printersTable = null;
             printersTable = document.select("table").get(1);

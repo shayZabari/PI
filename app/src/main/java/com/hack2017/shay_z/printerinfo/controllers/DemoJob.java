@@ -1,13 +1,10 @@
 package com.hack2017.shay_z.printerinfo.controllers;
 
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.pm.ComponentInfo;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.evernote.android.job.Job;
-import com.hack2017.shay_z.printerinfo.MyJobService;
 import com.hack2017.shay_z.printerinfo.models.MyEvernoteService;
 
 /**

@@ -21,12 +21,6 @@ import android.widget.Toast;
 
 import com.evernote.android.job.JobManager;
 import com.evernote.android.job.JobRequest;
-import com.firebase.jobdispatcher.FirebaseJobDispatcher;
-import com.firebase.jobdispatcher.GooglePlayDriver;
-import com.firebase.jobdispatcher.Job;
-import com.firebase.jobdispatcher.Lifetime;
-import com.firebase.jobdispatcher.Trigger;
-import com.hack2017.shay_z.printerinfo.MyJobService;
 import com.hack2017.shay_z.printerinfo.models.DatabaseDropbox;
 import com.hack2017.shay_z.printerinfo.R;
 import com.hack2017.shay_z.printerinfo.models.DatabaseTable;
@@ -77,7 +71,6 @@ public class MainActivity extends AppCompatActivity
         JobManager.create(this).addJobCreator(new AdeptAndroidJobCreator());
 
 
-        Toast.makeText(getApplicationContext(), "198 ", Toast.LENGTH_SHORT).show();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -86,12 +79,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Log.d("shay", "shay on create !");
-//        Intent i = new Intent(getBaseContext(), MyService.class);
-        Log.d("shay", "intent");
-//        getBaseContext().startService(i);
-        Log.d("shay", "intent1");
-//refreshUniversities();
 
         //load preferences
         if (UrlUtils.spLoadUniversities(this) != null) {
@@ -104,54 +91,16 @@ public class MainActivity extends AppCompatActivity
 
             onOniversitySelected(UrlUtils.spLoadUniversityPosition(this));
         }
-//        refreshUniversities();
-//        SharedPreferences appSharedPrefs = PreferenceManager
-//                .getDefaultSharedPreferences(this.getApplicationContext());
-//        Gson gson = new Gson();
-//        String json = appSharedPrefs.getString(SAVE_UNIVERSITIES, "");
-//        Type type = new TypeToken<List<University>>() {
-//        }.getType();
-//        universities1 = gson.fromJson(json, type);
     }
 
-    private void notifications(boolean start) {
-        Calendar cal = Calendar.getInstance();
-//        Date currentTime = cal.getTime();
-        int selectedHour = 13;
-        // TODO: 20/07/2017 trying set specific hour
-        int from = (int) TimeUnit.HOURS.toSeconds((selectedHour - (cal.get(Calendar.HOUR))));
-        int to = (int) (from + TimeUnit.HOURS.toSeconds(1));
-//        currentTime.getTime();
-        FirebaseJobDispatcher dispatcher = null;
-        dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
-        if (start) {
-            Job myJob = dispatcher.newJobBuilder()
-                    // the JobService that will be called
-                    .setService(MyJobService.class)
-                    // uniquely identifies the job
-                    .setTag("my-unique-tag")
-                    // one-off job
-                    .setRecurring(true)
-                    // don't persist past a device reboot
-                    .setLifetime(Lifetime.FOREVER)
-                    // start between 0 and 60 seconds from now
-                    .setTrigger(Trigger.executionWindow(from, to))
-
-                    // don't overwrite an existing job with the same tag
-                    .setReplaceCurrent(true)
-                    // retry with exponential backoff
-                    // constraints that need to be satisfied for the job to run
-
-                    .build();
-
-            dispatcher.mustSchedule(myJob);
-        } else {
-            if (dispatcher != null) {
-                dispatcher.cancelAll();
-            } else {
-                Toast.makeText(this, "notification is null", Toast.LENGTH_SHORT).show();
-            }
-        }
+    private void notifications(boolean start) {// TODO: 13/08/2017 delete ?
+//        Calendar cal = Calendar.getInstance();
+////        Date currentTime = cal.getTime();
+//        int selectedHour = 13;
+//        // TODO: 20/07/2017 trying set specific hour
+//        int from = (int) TimeUnit.HOURS.toSeconds((selectedHour - (cal.get(Calendar.HOUR))));
+//        int to = (int) (from + TimeUnit.HOURS.toSeconds(1));
+////        currentTime.getTime();
 
     }
 
@@ -247,7 +196,7 @@ public class MainActivity extends AppCompatActivity
             if (universities1 != null) {
                 fm.beginTransaction().replace(R.id.content_main, FragmentUniversityList.newInstance(universities1)).commit();
             } else {
-                maketoast("universities1 is null");
+                maketoast("universities1 is  null");
             }
         } else if (id == R.id.nav_slideshow) {
 
@@ -304,7 +253,6 @@ public class MainActivity extends AppCompatActivity
     public void getDropBoxDatbase(ArrayList<University> universities) {
         if (universities == null) {
             Log.e(TAG, "getDropBoxDatbase: in mainactivity 215 " + exceptionMessage);
-            maketoast("universityes are null");
             return;
         }
         Log.d("123", "Mainactivity_155");
