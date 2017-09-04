@@ -64,19 +64,19 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         AdeptAndroidJobCreator aajc = new AdeptAndroidJobCreator();
         JobManager.create(this).addJobCreator(new AdeptAndroidJobCreator());
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
 
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity
 //            alert.show();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -241,8 +241,8 @@ public class MainActivity extends AppCompatActivity
         long endMill = startMill + TimeUnit.HOURS.toMillis(2);
         Log.d(TAG, "evernoteJobs: " + hoursLeft);
         new JobRequest.Builder(DemoJob.JOB_TAG)
-                .setExecutionWindow(startMill, endMill)
-                .setPersisted(true)
+                .setExecutionWindow(TimeUnit.MINUTES.toMillis(16), endMill)
+//                .setPersisted(true) // TODO: 04/09/2017 not working with new 4:26.0.1 support library
                 .setUpdateCurrent(true)
                 .build()
                 .schedule();
