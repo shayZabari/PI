@@ -49,7 +49,7 @@ public class UrlUtils {
     public static int spLoadUniversityPosition(Context context) {
         SharedPreferences appSharedPrefs = PreferenceManager
                 .getDefaultSharedPreferences(context.getApplicationContext());
-        return appSharedPrefs.getInt("universityPosition", -1);
+        return appSharedPrefs.getInt("universityPosition", -1); // in not exist then return -1
     }
 
     public static void spSaveUniversityPosition(Context context, int universityPosition) {

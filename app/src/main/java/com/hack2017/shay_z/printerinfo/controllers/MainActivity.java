@@ -81,10 +81,10 @@ public class MainActivity extends AppCompatActivity
 
 
         //load preferences
-        if (UrlUtils.spLoadUniversities(this) != null) {
+        if (UrlUtils.spLoadUniversities(this) != null) {//if not null then load from sp
             universities1 = UrlUtils.spLoadUniversities(this);
         }
-        if (UrlUtils.spLoadUniversityPosition(this) > -1) {
+        if (UrlUtils.spLoadUniversityPosition(this) > -1) { //if > -1 then return position from sp
             Toast.makeText(this, "position > -1", Toast.LENGTH_SHORT).show();
 //            getSupportActionBar().setTitle("test 75 main");
             setToolBar();
