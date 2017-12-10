@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/PI.iml" filepath="$PROJECT_DIR$/.idea/PI.iml" />
+      <module fileurl="file://C:\AndroidStudioProjects20171128\PI-NEW\.idea\PI.iml" filepath="C:\AndroidStudioProjects20171128\PI-NEW\.idea\PI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PI-NEW.iml" filepath="$PROJECT_DIR$/PI-NEW.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
