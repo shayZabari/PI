@@ -9,6 +9,8 @@ import com.hack2017.shay_z.printerinfo.models.MyEvernoteService;
 
 /**
  * Created by Toshiba on 01/08/2017.
+ * Usage
+ The class JobManager serves as entry point. Your jobs need to extend the class Job
  */
 
 class MyEvernoteJob extends Job {

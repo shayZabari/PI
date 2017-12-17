@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle(setTitle);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(true);
         progressDialog.setMessage(setMessage);
         progressDialog.show();
     }
@@ -237,8 +237,8 @@ public class MainActivity extends AppCompatActivity
 
     private void evernoteJobs(int hourChoosed, int minuteChoosed) {
         Calendar calendar = Calendar.getInstance();
-        long currentHour = calendar.get(Calendar.HOUR_OF_DAY);
-        long currentMinute = calendar.get(Calendar.MINUTE);
+        long currentHour = calendar.get(Calendar.HOUR_OF_DAY);// get current hour
+        long currentMinute = calendar.get(Calendar.MINUTE); // get current minute
 //        long timeChoosedInMinutes = TimeUnit.HOURS.toMinutes(hourChoosed) + TimeUnit.MINUTES.toMillis(minuteChoosed);
 
         long startMill = TimeUnit.MINUTES.toMillis((minuteChoosed) + (60 * (hourChoosed + 24 - currentHour)) + (60 - currentMinute));
@@ -296,6 +296,7 @@ public class MainActivity extends AppCompatActivity
             UrlUtils.spSaveUniversities(this, universities);
             universities1 = universities;
         }
+
     }
 
     // calback from FragmentUniversityList
@@ -333,9 +334,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onExceptionCallBack(String message) {
         exceptionMessage = message;
-        Log.e("123", "123");
+
+        Log.e(TAG, "mainActivity-onExceptionCallBack: ");
+        maketoast(message);
         d.cancel(true);
-        Log.e("123", message);
+
+
 //        findViewById(R.id.progressBar).setVisibility(View.GONE);
 //        maketoast();
     }

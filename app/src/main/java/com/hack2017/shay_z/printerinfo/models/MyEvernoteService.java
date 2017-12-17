@@ -27,7 +27,7 @@ import java.util.Date;
 
 public class MyEvernoteService extends Service {
     NotificationManagerCompat mgr;
-    private String TAG = "jobdispatcher";
+    private String TAG = "MyEvernoteServiceTAG";
 
     @Nullable
     @Override
@@ -47,7 +47,7 @@ public class MyEvernoteService extends Service {
         return START_NOT_STICKY;
     }
 
-    private void push() {
+    private void push() {//starting the job in service
         Log.d("123", "MY LOG !!--class= MyEvernoteService: method=push:  ");
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("time", new Date().toString());
@@ -81,12 +81,12 @@ public class MyEvernoteService extends Service {
                 .setAutoCancel(true)
                 .setPriority(Notification.PRIORITY_HIGH)
                 .setDefaults(Notification.DEFAULT_ALL)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(bitmap);
+                .setSmallIcon(R.mipmap.ic_launcher);
+//                .setLargeIcon(bitmap); temporary disabled
 
         Notification notification = builder.build();
         mgr = NotificationManagerCompat.from(this);
-        Log.d(TAG, "push: notification in service" + Calendar.getInstance().get(Calendar.DATE));
+        Log.d("123", "push: notification in service" + Calendar.getInstance().get(Calendar.DATE));
         mgr.notify(1, notification);
 
     }
