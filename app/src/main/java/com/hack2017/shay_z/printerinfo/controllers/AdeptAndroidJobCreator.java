@@ -10,6 +10,6 @@ import com.evernote.android.job.JobCreator;
 class AdeptAndroidJobCreator implements JobCreator {
     @Override
     public Job create(String tag) {
-        return new DemoJob();
+        return new MyEvernoteJob();
     }
 }

@@ -58,6 +58,16 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         // TODO: 03-Jul-17
         refreshUniversities();
+//        testMyService();
+
+    }
+
+    public void testMyService() {
+        // use this to start and trigger a service
+        Intent i= new Intent(this, MyService.class);
+// potentially add data to the intent
+        i.putExtra("KEY1", "Value to be used by the service");
+        this.startService(i);
     }
 
     @Override
@@ -240,7 +250,7 @@ public class MainActivity extends AppCompatActivity
 
         long endMill = startMill + TimeUnit.HOURS.toMillis(2);
         Log.d(TAG, "evernoteJobs: " + hoursLeft);
-        new JobRequest.Builder(DemoJob.JOB_TAG)
+        new JobRequest.Builder(MyEvernoteJob.JOB_TAG)
                 .setExecutionWindow(TimeUnit.MINUTES.toMillis(16), endMill)
 //                .setPersisted(true) // TODO: 04/09/2017 not working with new 4:26.0.1 support library
                 .setUpdateCurrent(true)
@@ -351,7 +361,7 @@ public class MainActivity extends AppCompatActivity
         fm.beginTransaction().replace(R.id.content_main, FragmentUniversityPage.newInstance(university)).commit();
     }
 
-    @Override
+    @Override // callback when timepicker ui done.
     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
         evernoteJobs(hour, minute);
     }

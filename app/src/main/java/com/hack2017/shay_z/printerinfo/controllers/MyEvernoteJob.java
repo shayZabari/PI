@@ -11,7 +11,7 @@ import com.hack2017.shay_z.printerinfo.models.MyEvernoteService;
  * Created by Toshiba on 01/08/2017.
  */
 
-class DemoJob extends Job {
+class MyEvernoteJob extends Job {
     static final String JOB_TAG = "demo_job";
 
     @NonNull
@@ -19,7 +19,7 @@ class DemoJob extends Job {
     protected Result onRunJob(Params params) {
 
         Intent intent = new Intent(getContext(), MyEvernoteService.class);
-        Log.d("123", "MY LOG !!--class= DemoJob: method=onRunJob:  before startservice");
+        Log.d("123", "MY LOG !!--class= MyEvernoteJob: method=onRunJob:  before startservice");
         getContext().startService(intent);
 
         Log.d("123", "evernote success !!!!" + params.getTag());
