@@ -236,6 +236,20 @@ public class MainActivity extends AppCompatActivity
 
 
     private void evernoteJobs(int hourChoosed, int minuteChoosed) {
+        EvernoteDailyJobTest.schedule(hourChoosed,minuteChoosed);// testing EvernoteDailyJob
+        //        Log.d(TAG, "evernoteJobs: starting evernoteJobs from main activity");
+//        new JobRequest.Builder(MyEvernoteJob.JOB_TAG)
+//                .setPeriodic(TimeUnit.MINUTES.toMillis(16))
+////                .setExecutionWindow(TimeUnit.MINUTES.toMillis(15),TimeUnit.MINUTES.toMillis(16))
+//                .setUpdateCurrent(true)
+//                .build()
+//        .schedule();
+
+        maketoast("test evernote job tempppp");
+        //        tempEvernoteMethod(hourChoosed, minuteChoosed);
+    }
+
+    private void tempEvernoteMethod(int hourChoosed, int minuteChoosed) {
         Calendar calendar = Calendar.getInstance();
         long currentHour = calendar.get(Calendar.HOUR_OF_DAY);// get current hour
         long currentMinute = calendar.get(Calendar.MINUTE); // get current minute
@@ -261,6 +275,7 @@ public class MainActivity extends AppCompatActivity
 
     // callback from DatabaseDropbox
     public void getDropBoxDatbase(ArrayList<University> universities) {
+        progressDialog.cancel();
         if (universities == null) {
             Log.e(TAG, "getDropBoxDatbase: in mainactivity 215 " + exceptionMessage);
             return;
@@ -270,7 +285,6 @@ public class MainActivity extends AppCompatActivity
 //        progressDialog.setTitle("CONNECTING ...");
 //        progressDialog.setMessage("Please Wait");
 //        progressDialog.setCancelable(false);
-        progressDialog.cancel();
 //        findViewById(R.id.progressBar).setVisibility(View.GONE);
         int sizeTemp = universities.size();
         maketoast("FOUND " + sizeTemp + " UNIVERSITIES");

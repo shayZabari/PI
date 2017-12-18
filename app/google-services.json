@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1027666634805-cdusf5q4ogdr208tu1usm4hqk83qdq96.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hack2017.shay_z.printerinfo",
+            "certificate_hash": "43ee488c6f1274fe30709de1ac275f4e054d1f23"
+          }
+        },
+        {
           "client_id": "1027666634805-v5esipsj6l5u1ilglgniutuvu08k7kn2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
